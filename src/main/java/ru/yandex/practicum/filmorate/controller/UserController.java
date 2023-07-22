@@ -27,6 +27,7 @@ public class UserController {
     public User put(@RequestBody User user) throws ValidationException {
         return userService.put(user);
     }
+
     @GetMapping({"/users"})
     public HashMap<Integer, User> findAll() {
         return userService.findAll();
