@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class FilmValidator {
     private static final int MAX_DESC_LENGTH = 200;
     private static final LocalDate EARLIEST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
+
     public static Boolean isValid(Film film) throws InvalidNameException, InvalidDescriptionException, InvalidReleaseDateException, InvalidDurationException {
         if (film.getName().isEmpty()) {
             throw new InvalidNameException("Введено пустое имя.");
