@@ -16,6 +16,7 @@ import java.util.HashMap;
 @Slf4j
 public class UserService {
     private final HashMap<Integer, User> users = new HashMap<>();
+
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         if (users.containsKey(user.getId())) {
             throw new ObjectAlreadyExistException("Такой пользователь уже существует.");
@@ -35,6 +36,7 @@ public class UserService {
             }
         }
     }
+
     public User put(User user) throws ValidationException {
         try {
             if (UserValidator.isValid(user)) {
@@ -50,6 +52,7 @@ public class UserService {
             throw new ValidationException(e.getMessage(), e);
         }
     }
+
     public HashMap<Integer, User> findAll() {
         return this.users;
     }
