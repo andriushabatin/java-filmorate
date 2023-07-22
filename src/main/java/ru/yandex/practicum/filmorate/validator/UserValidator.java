@@ -5,6 +5,7 @@ import ru.yandex.practicum.filmorate.exception.user.InvalidEmailException;
 import ru.yandex.practicum.filmorate.exception.user.InvalidLoginException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserValidator {
@@ -18,7 +19,7 @@ public class UserValidator {
             throw new InvalidLoginException("Введён пустой логин.");
         } else if (user.getLogin().contains(" ")) {
             throw new InvalidLoginException("Введенный логин содержит пробелы.");
-        } else if (user.getBirthday().isAfter(LocalDateTime.now())) {
+        } else if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new InvalidBirthdayException("Дата рождения не может быть в будущем.");
         } else {
             return true;
