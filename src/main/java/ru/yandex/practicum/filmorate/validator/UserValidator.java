@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.exception.user.InvalidLoginException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDateTime;
+
 public class UserValidator {
 
     public static boolean isValid(User user) throws InvalidEmailException, InvalidLoginException, InvalidBirthdayException {
