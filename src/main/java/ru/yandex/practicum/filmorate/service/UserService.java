@@ -16,6 +16,7 @@ import java.util.HashMap;
 @Slf4j
 public class UserService {
     private final HashMap<Integer, User> users = new HashMap<>();
+    private int nextId = 1;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         if (users.containsKey(user.getId())) {
@@ -23,9 +24,10 @@ public class UserService {
         } else {
             try {
                 if (UserValidator.isValid(user)) {
-                    if (user.getName().isEmpty()) {
+                    /*if (user.getName().isEmpty()) {
                         user.setName(user.getLogin());
-                    }
+                    }*/
+                    user.setId(getNextId());
                     users.put(user.getId(), user);
                     log.debug("Пользователь " + user.getLogin() + " добавлен.");
                 }
@@ -40,9 +42,9 @@ public class UserService {
     public User put(User user) throws ValidationException {
         try {
             if (UserValidator.isValid(user)) {
-                if (user.getName().isEmpty()) {
+                /*if (user.getName().isEmpty()) {
                     user.setName(user.getLogin());
-                }
+                }*/
                 log.debug("Пользователь " + users.get(user.getId()).getLogin() + " обновлен.");
                 this.users.put(user.getId(), user);
             }
@@ -55,5 +57,9 @@ public class UserService {
 
     public HashMap<Integer, User> findAll() {
         return this.users;
+    }
+
+    public int getNextId() {
+        return nextId++;
     }
 }
