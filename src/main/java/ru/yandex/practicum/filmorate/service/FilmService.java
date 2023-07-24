@@ -14,6 +14,7 @@ import java.util.HashMap;
 @Slf4j
 public class FilmService {
     private final HashMap<Integer, Film> films = new HashMap<>();
+    private int nextId = 1;
 
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
         if (this.films.containsKey(film.getId())) {
@@ -21,6 +22,7 @@ public class FilmService {
         } else {
             try {
                 if (FilmValidator.isValid(film)) {
+                    film.setId(getNextId());
                     this.films.put(film.getId(), film);
                     log.debug("Фильм " + film.getName() + " добавлен.");
                 }
@@ -48,5 +50,9 @@ public class FilmService {
 
     public HashMap<Integer, Film> findAll() {
         return this.films;
+    }
+
+    public int getNextId() {
+        return nextId++;
     }
 }
