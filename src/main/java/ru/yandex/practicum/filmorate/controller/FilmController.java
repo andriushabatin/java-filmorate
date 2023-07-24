@@ -6,7 +6,7 @@ import ru.yandex.practicum.filmorate.exception.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class FilmController {
@@ -29,7 +29,7 @@ public class FilmController {
     }
 
     @GetMapping({"/films"})
-    public HashMap<Integer, Film> findAll() {
+    public List<Film> findAll() {
         return filmService.findAll();
     }
 }

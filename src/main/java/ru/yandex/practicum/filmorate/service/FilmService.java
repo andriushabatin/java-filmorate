@@ -8,7 +8,9 @@ import ru.yandex.practicum.filmorate.exception.film.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -48,8 +50,8 @@ public class FilmService {
         }
     }
 
-    public HashMap<Integer, Film> findAll() {
-        return this.films;
+    public List<Film> findAll() {
+        return new ArrayList<>(this.films.values());
     }
 
     public int getNextId() {
