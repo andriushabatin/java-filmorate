@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping({"/users"})
-    public HashMap<Integer, User> findAll() {
+    public List<User> findAll() {
         return userService.findAll();
     }
 }

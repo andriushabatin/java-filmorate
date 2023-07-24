@@ -10,7 +10,10 @@ import ru.yandex.practicum.filmorate.exception.user.InvalidLoginException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -55,8 +58,8 @@ public class UserService {
         }
     }
 
-    public HashMap<Integer, User> findAll() {
-        return this.users;
+    public List<User> findAll() {
+        return new ArrayList<>(this.users.values());
     }
 
     public int getNextId() {
