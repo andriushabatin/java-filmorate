@@ -12,7 +12,7 @@ out/
 target/
 
 ## Mac:
-/.DS_Store
+.DS_Store
 
 ## Maven:
 !.mvn/wrapper/maven-wrapper.jar
