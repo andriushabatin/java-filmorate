@@ -1,25 +1,23 @@
 package ru.yandex.practicum.filmorate.validator;
 
-import ru.yandex.practicum.filmorate.exception.user.InvalidBirthdayException;
-import ru.yandex.practicum.filmorate.exception.user.InvalidEmailException;
-import ru.yandex.practicum.filmorate.exception.user.InvalidLoginException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
 public class UserValidator {
 
-    public static boolean isValid(User user) throws InvalidEmailException, InvalidLoginException, InvalidBirthdayException {
+    public static boolean isValid(User user) throws ValidationException {
         if (user.getEmail().isEmpty()) {
-            throw new InvalidEmailException("Введена пустая почта.");
+            throw new ValidationException("Введена пустая почта.");
         } else if (!user.getEmail().contains("@"))  {
-            throw new InvalidEmailException("В введенной почте пропущен элемент '@'.");
+            throw new ValidationException("В введенной почте пропущен элемент '@'.");
         } else if (user.getLogin().isEmpty()) {
-            throw new InvalidLoginException("Введён пустой логин.");
+            throw new ValidationException("Введён пустой логин.");
         } else if (user.getLogin().contains(" ")) {
-            throw new InvalidLoginException("Введенный логин содержит пробелы.");
+            throw new ValidationException("Введенный логин содержит пробелы.");
         } else if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new InvalidBirthdayException("Дата рождения не может быть в будущем.");
+            throw new ValidationException("Дата рождения не может быть в будущем.");
         } else {
             return true;
         }

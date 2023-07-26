@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.user.InvalidBirthdayException;
-import ru.yandex.practicum.filmorate.exception.user.InvalidEmailException;
-import ru.yandex.practicum.filmorate.exception.user.InvalidLoginException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
@@ -34,9 +31,9 @@ public class UserService {
                     log.debug("Пользователь " + user.getLogin() + " добавлен.");
                 }
                 return user;
-            } catch (InvalidEmailException | InvalidLoginException | InvalidBirthdayException e) {
+            } catch (ValidationException e) {
                 log.error(e.getMessage());
-                throw new ValidationException(e.getMessage(), e);
+                throw new ValidationException(e.getMessage());
             }
         }
     }
@@ -51,9 +48,9 @@ public class UserService {
                 this.users.put(user.getId(), user);
             }
             return user;
-        } catch (InvalidEmailException | InvalidBirthdayException | InvalidLoginException e) {
+        } catch (ValidationException e) {
             log.error(e.getMessage());
-            throw new ValidationException(e.getMessage(), e);
+            throw new ValidationException(e.getMessage());
         }
     }
 

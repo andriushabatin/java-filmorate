@@ -29,10 +29,9 @@ public class FilmService {
                     log.debug("Фильм " + film.getName() + " добавлен.");
                 }
                 return film;
-            } catch (InvalidNameException | InvalidDurationException | InvalidReleaseDateException |
-                     InvalidDescriptionException e) {
+            } catch (ValidationException e) {
                 log.error(e.getMessage());
-                throw new ValidationException(e.getMessage(), e);
+                throw new ValidationException(e.getMessage());
             }
         }
     }
@@ -44,9 +43,9 @@ public class FilmService {
                 this.films.put(film.getId(), film);
             }
             return film;
-        } catch (InvalidNameException | InvalidDurationException | InvalidReleaseDateException |
-                 InvalidDescriptionException e) {
-            throw new ValidationException(e.getMessage(), e);
+        } catch (ValidationException e) {
+            log.error(e.getMessage());
+            throw new ValidationException(e.getMessage());
         }
     }
 
