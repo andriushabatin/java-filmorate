@@ -23,9 +23,6 @@ public class UserService {
         } else {
             try {
                 if (UserValidator.isValid(user)) {
-                    /*if (user.getName().isEmpty()) {
-                        user.setName(user.getLogin());
-                    }*/
                     user.setId(getNextId());
                     users.put(user.getId(), user);
                     log.debug("Пользователь " + user.getLogin() + " добавлен.");
@@ -41,9 +38,6 @@ public class UserService {
     public User put(User user) throws ValidationException {
         try {
             if (UserValidator.isValid(user)) {
-                /*if (user.getName().isEmpty()) {
-                    user.setName(user.getLogin());
-                }*/
                 log.debug("Пользователь " + users.get(user.getId()).getLogin() + " обновлен.");
                 this.users.put(user.getId(), user);
             }
