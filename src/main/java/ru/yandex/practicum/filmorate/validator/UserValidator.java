@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.validator;
 
+import org.apache.commons.lang3.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 public class UserValidator {
 
     public static boolean isValid(User user) throws ValidationException {
-        if (user.getEmail().isEmpty()) {
+        if (StringUtils.isEmpty(user.getEmail())) {
             throw new ValidationException("Введена пустая почта.");
         } else if (!user.getEmail().contains("@"))  {
             throw new ValidationException("В введенной почте пропущен элемент '@'.");
