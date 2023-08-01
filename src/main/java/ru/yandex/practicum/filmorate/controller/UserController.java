@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
@@ -10,13 +11,9 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping({"/users"})
     public User create(@RequestBody User user) throws ValidationException, ObjectAlreadyExistException {
