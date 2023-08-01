@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -14,10 +15,11 @@ import java.util.List;
 @Slf4j
 public class FilmService {
 
-    FilmStorage filmStorage;
+    private final FilmStorage filmStorage;
 
-    public FilmService() {
-        this.filmStorage = new InMemoryFilmStorage();
+    @Autowired
+    public FilmService(InMemoryFilmStorage inMemoryFilmStorage) {
+        this.filmStorage = inMemoryFilmStorage;
     }
 
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {

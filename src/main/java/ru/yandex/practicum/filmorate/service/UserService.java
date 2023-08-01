@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -16,8 +17,9 @@ public class UserService {
 
     private final UserStorage userStorage;
 
-    public UserService() {
-        this.userStorage =  new InMemoryUserStorage();
+    @Autowired
+    public UserService(InMemoryUserStorage inMemoryUserStorage) {
+        this.userStorage = inMemoryUserStorage;
     }
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
