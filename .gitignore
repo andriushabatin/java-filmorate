@@ -10,20 +10,36 @@
 hs_err_pid*
 out/
 target/
+
+## Mac:
+.DS_Store
+
+## Maven:
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+/.mvn/
+/mvnw
+/mvnw.bat
+mvnw.cmd
+/log/
+*.log*
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
 
 ### STS ###
-.apt_generated
+ .apt_generated
+
+## Eclipse, Spring, and Gradle:
 .classpath
-.factorypath
 .project
 .settings
+.factorypath
 .springBeans
-.sts4-cache
+sts4-cache
 
-### IntelliJ IDEA ###
+## IntelliJ IDEA:
 .idea
 *.iws
 *.iml
@@ -40,7 +56,7 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+ .vscode/
 
-*.db
-db/*
+ *.db
+ db/*
