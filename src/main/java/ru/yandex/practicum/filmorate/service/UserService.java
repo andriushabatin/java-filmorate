@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -33,4 +34,16 @@ public class UserService {
     public List<User> findAll() {
         return userStorage.findAll();
     }
+
+    public User getUserById(int id) {
+        return userStorage.getUserById(id);
+    }
+
+    public User addToFriends(int id, int friendId) throws ValidationException {
+        return userStorage.addToFriends(id, friendId);
+    }
+
+
+
+
 }

@@ -29,4 +29,19 @@ public class UserController {
     public List<User> findAll() {
         return userService.findAll();
     }
+
+    @GetMapping("/users/{id}")
+    public User getUserById(@PathVariable int id) {
+        return userService.getUserById(id);
+    }
+
+    @PutMapping("/users/{id}/friends/{friendId}")
+    public User addToFriends(@PathVariable int id, @PathVariable int friendId) throws ValidationException {
+        return userService.addToFriends(id, friendId);
+    }
+
+    @DeleteMapping("/users/{id}/friends/{friendId}")
+    public User deleteFromFriends(@PathVariable int id, @PathVariable int friendId) {
+        return null;
+    }
 }

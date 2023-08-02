@@ -7,9 +7,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -53,7 +51,28 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(this.users.values());
     }
 
+    public User getUserById(int id) {
+        return users.get(id);
+    }
+
+    public User addToFriends(int id, int friendId) throws ValidationException {
+        User user = getUserById(id);
+        User friend = getUserById(friendId);
+
+        Set<Integer> newFriends = new HashSet<>(user.getFriends());
+        newFriends.add(friendId);
+        user.setFriends(newFriends);
+
+        newFriends = new HashSet<>(friend.getFriends());
+        newFriends.add(id);
+        friend.setFriends(newFriends);
+
+        return put(user);
+    }
+
     public int getNextId() {
         return nextId++;
     }
+
+
 }
