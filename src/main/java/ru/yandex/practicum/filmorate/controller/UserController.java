@@ -36,8 +36,8 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
-    public User addToFriends(@PathVariable int id, @PathVariable int friendId) throws ValidationException {
-        return userService.addToFriends(id, friendId);
+    public void addToFriends(@PathVariable int id, @PathVariable int friendId) throws ValidationException {
+        userService.addToFriends(id, friendId);
     }
 
     @DeleteMapping("/users/{id}/friends/{friendId}")

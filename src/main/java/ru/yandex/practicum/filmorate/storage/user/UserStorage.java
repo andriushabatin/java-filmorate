@@ -15,5 +15,4 @@ public interface UserStorage {
     public List<User> findAll();
 
     public User getUserById(int id);
-    public User addToFriends(int id, int friendId) throws ValidationException;
 }

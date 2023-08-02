@@ -41,8 +41,18 @@ public class UserService {
         return userStorage.getUserById(id);
     }
 
-    public User addToFriends(int id, int friendId) throws ValidationException {
-        return userStorage.addToFriends(id, friendId);
+    public void addToFriends(int id, int friendId) throws ValidationException {
+        User user = userStorage.getUserById(id);
+        User friend = userStorage.getUserById(friendId);
+        Set<Integer> friends = new HashSet<>();
+
+        friends = user.getFriends();
+        friends.add(friendId);
+        user.setFriends(friends);
+
+        friends = friend.getFriends();
+        friends.add(id);
+        friend.setFriends(friends);
     }
 
     public void deleteFromFriends(int id, int friendId) {
