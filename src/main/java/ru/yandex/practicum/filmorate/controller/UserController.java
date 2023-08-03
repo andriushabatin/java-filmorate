@@ -1,13 +1,16 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +33,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable int id) {
-        return userService.getUserById(id);
+    public User getUserById(@PathVariable int id) throws UserNotFoundException {
+        if (userService.getUserById(id) == null) {
+            throw new UserNotFoundException();
+        } else {
+            return userService.getUserById(id);
+        }
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
@@ -52,6 +59,12 @@ public class UserController {
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.findCommonFriends(id, otherId);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleRunTimeException (final UserNotFoundException e) {
+        return Map.of("error:", "Произошла ошибка!");
     }
 
 
