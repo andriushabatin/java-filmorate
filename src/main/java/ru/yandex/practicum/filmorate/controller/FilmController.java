@@ -39,4 +39,9 @@ public class FilmController {
     public void likeFilm(@PathVariable int id, @PathVariable int userId) {
         filmService.likeFilm(id, userId);
     }
+
+    @DeleteMapping("films/{id}/like/{userId}")
+    public void DeleteLike(@PathVariable int id, @PathVariable int userId) {
+        filmService.DeleteLike(id, userId);
+    }
 }
