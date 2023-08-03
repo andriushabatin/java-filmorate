@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
@@ -42,10 +43,13 @@ public class UserService {
         return userStorage.getUserById(id);
     }
 
-    public void addToFriends(int id, int friendId) throws ValidationException {
+    public void addToFriends(int id, int friendId) throws UserNotFoundException {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
-        Set<Integer> friends = new HashSet<>();
+        if (user == null || friend == null) {
+            throw new UserNotFoundException();
+        }
+        Set<Integer> friends;
 
         friends = user.getFriends();
         friends.add(friendId);
