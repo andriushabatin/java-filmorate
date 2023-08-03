@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
@@ -49,7 +48,7 @@ public class FilmService {
         film.setLikes(likes);
     }
 
-    public void deleteLike(int id, int userId) throws FilmNotFoundException, UserNotFoundException {
+    public void deleteLike(int id, int userId) throws FilmNotFoundException {
         Film film = filmStorage.findFilmById(id);
         if (film == null) {
             throw new FilmNotFoundException();

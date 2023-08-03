@@ -66,6 +66,4 @@ public class UserController {
     public Map<String, String> handleNotFoundException (final UserNotFoundException e) {
         return Map.of("error:", "Произошла ошибка!");
     }
-
-
 }
