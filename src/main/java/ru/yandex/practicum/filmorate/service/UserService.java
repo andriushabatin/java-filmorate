@@ -70,6 +70,13 @@ public class UserService {
         friend.setFriends(friends);
     }
 
+    public List<User> getAllFriends(int id) {
+        User user = userStorage.getUserById(id);
+        return user.getFriends().stream()
+                .map(userStorage::getUserById)
+                .collect(Collectors.toList());
+    }
+
     public List<User> findCommonFriends(int id, int otherId) {
         User user = userStorage.getUserById(id);
         User other = userStorage.getUserById(otherId);

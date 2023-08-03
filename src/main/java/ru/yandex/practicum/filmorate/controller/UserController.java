@@ -44,8 +44,15 @@ public class UserController {
         userService.deleteFromFriends(id, friendId);
     }
 
+    @GetMapping("users/{id}/friends")
+    public List<User> getAllFriends(@PathVariable int id) {
+        return userService.getAllFriends(id);
+    }
+
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.findCommonFriends(id, otherId);
     }
+
+
 }
