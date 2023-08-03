@@ -19,6 +19,9 @@ public class UserValidator {
             throw new ValidationException("Введенный логин содержит пробелы.");
         } else if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("Дата рождения не может быть в будущем.");
+        } else if (user.getName().isBlank() || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+            return true;
         } else {
             return true;
         }

@@ -12,9 +12,8 @@ public class User {
     private int id;
     private final String email;
     private final String login;
-    private final String name;
+    private String name;
     private final LocalDate birthday;
-
     private Set<Integer> friends;
 
     public User(String email, String login, LocalDate birthday) {
