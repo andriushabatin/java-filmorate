@@ -10,8 +10,8 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -47,10 +47,23 @@ public class FilmService {
         film.setLikes(likes);
     }
 
-    public void DeleteLike(int id, int userId) {
+    public void deleteLike(int id, int userId) {
         Film film = filmStorage.findFilmById(id);
         Set<Integer> likes = film.getLikes();
         likes.remove(userId);
         film.setLikes(likes);
+    }
+
+    public List<Film> getPopularFilms(int count) {
+        List<Film> sortedFilms = filmStorage.findAll()
+                .stream()
+                .sorted(((o1, o2) -> (o2.getLikes().size() - o1.getLikes().size())))
+                .collect(Collectors.toList());
+        System.out.println(sortedFilms);
+        try {
+            return sortedFilms.subList(0, count);
+        } catch (IndexOutOfBoundsException e) {
+            return sortedFilms;
+        }
     }
 }

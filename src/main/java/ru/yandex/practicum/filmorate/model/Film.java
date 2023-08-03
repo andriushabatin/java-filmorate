@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.converter.DurationSerializer;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -32,5 +33,16 @@ public class Film {
         this.likes = new HashSet<>();;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Film film = (Film) o;
+        return likes.size() == film.likes.size();
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(likes.size());
+    }
 }

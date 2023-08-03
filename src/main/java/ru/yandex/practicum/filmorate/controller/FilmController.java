@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.*;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.util.List;
@@ -41,7 +40,12 @@ public class FilmController {
     }
 
     @DeleteMapping("films/{id}/like/{userId}")
-    public void DeleteLike(@PathVariable int id, @PathVariable int userId) {
-        filmService.DeleteLike(id, userId);
+    public void deleteLike(@PathVariable int id, @PathVariable int userId) {
+        filmService.deleteLike(id, userId);
+    }
+
+    @GetMapping("films/popular")
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") String count) {
+        return filmService.getPopularFilms(Integer.parseInt(count));
     }
 }
