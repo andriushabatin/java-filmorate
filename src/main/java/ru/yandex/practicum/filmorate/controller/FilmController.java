@@ -57,7 +57,7 @@ public class FilmController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNotFoundException (final FilmNotFoundException e) {
+    public Map<String, String> handleNotFoundException(final FilmNotFoundException e) {
         return Map.of("error:", "Фильм не найден!");
     }
 }
