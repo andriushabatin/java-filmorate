@@ -2,9 +2,11 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.util.ArrayList;
@@ -54,6 +56,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public List<Film> findAll() {
         return new ArrayList<>(this.films.values());
+    }
+
+    @Override
+    public Film findFilmById(int id) {
+        return films.get(id);
     }
 
     public int getNextId() {

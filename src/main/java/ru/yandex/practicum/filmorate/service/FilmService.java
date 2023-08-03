@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -33,4 +34,16 @@ public class FilmService {
     public List<Film> findAll() {
         return filmStorage.findAll();
     }
+
+    public Film findFilmById(int id) {
+        return filmStorage.findFilmById(id);
+    }
+
+    public void likeFilm(int id, int userId) {
+        Film film = filmStorage.findFilmById(id);
+        Set<Integer> likes = film.getLikes();
+        likes.add(userId);
+        film.setLikes(likes);
+    }
+    
 }

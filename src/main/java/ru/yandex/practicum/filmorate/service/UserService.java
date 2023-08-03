@@ -13,6 +13,7 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -67,6 +68,18 @@ public class UserService {
         friends = friend.getFriends();
         friends.remove(id);
         friend.setFriends(friends);
+    }
+
+    public List<User> findCommonFriends(int id, int otherId) {
+        User user = userStorage.getUserById(id);
+        User other = userStorage.getUserById(otherId);
+        Set<Integer> userFriends = user.getFriends();
+        Set<Integer> otherFriends = other.getFriends();
+
+        return userFriends.stream()
+                .filter(otherFriends::contains)
+                .map(userStorage::getUserById)
+                .collect(Collectors.toList());
     }
 
 

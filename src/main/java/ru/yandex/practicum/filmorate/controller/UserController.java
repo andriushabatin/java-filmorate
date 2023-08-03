@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -43,5 +42,10 @@ public class UserController {
     @DeleteMapping("/users/{id}/friends/{friendId}")
     public void deleteFromFriends(@PathVariable int id, @PathVariable int friendId) {
         userService.deleteFromFriends(id, friendId);
+    }
+
+    @GetMapping("/users/{id}/friends/common/{otherId}")
+    public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.findCommonFriends(id, otherId);
     }
 }
