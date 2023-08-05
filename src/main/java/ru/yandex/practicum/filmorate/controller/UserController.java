@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -33,12 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable int id) throws UserNotFoundException {
-        if (userService.getUserById(id) == null) {
-            throw new UserNotFoundException();
-        } else {
-            return userService.getUserById(id);
-        }
+    public User getUserById(@PathVariable int id) {
+        return userService.getUserById(id);
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
@@ -63,7 +60,7 @@ public class UserController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNotFoundException(final UserNotFoundException e) {
+    public Map<String, String> handleNotFoundException(final NotFoundException e) {
         return Map.of("error:", "Произошла ошибка!");
     }
 }
