@@ -57,8 +57,9 @@ public class FilmService {
     public void deleteLike(int id, int userId) throws NotFoundException {
         Film film = filmStorage.findFilmById(id);
         Set<Integer> likes = film.getLikes();
-        if (likes.contains(userId)) {
-            likes.remove(userId);
+        User user = userStorage.getUserById(userId);
+        if (likes.contains(user.getId())) {
+            likes.remove(user.getId());
         } else {
             throw new NotFoundException();
         }
