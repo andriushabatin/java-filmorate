@@ -32,12 +32,8 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}")
-    public Film findFilmById(@PathVariable int id) throws FilmNotFoundException {
-        if (filmService.findFilmById(id) == null) {
-            throw new FilmNotFoundException();
-        } else {
-            return filmService.findFilmById(id);
-        }
+    public Film findFilmById(@PathVariable int id) {
+        return filmService.findFilmById(id);
     }
 
     @PutMapping("films/{id}/like/{userId}")
@@ -46,7 +42,7 @@ public class FilmController {
     }
 
     @DeleteMapping("films/{id}/like/{userId}")
-    public void deleteLike(@PathVariable int id, @PathVariable int userId) throws FilmNotFoundException, UserNotFoundException {
+    public void deleteLike(@PathVariable int id, @PathVariable int userId) throws NotFoundException, UserNotFoundException {
         filmService.deleteLike(id, userId);
     }
 
@@ -57,7 +53,7 @@ public class FilmController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNotFoundException(final FilmNotFoundException e) {
+    public Map<String, String> handleNotFoundException(final NotFoundException e) {
         return Map.of("error:", "Фильм не найден!");
     }
 }
