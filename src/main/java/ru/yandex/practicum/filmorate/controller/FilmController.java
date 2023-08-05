@@ -42,7 +42,7 @@ public class FilmController {
     }
 
     @DeleteMapping("films/{id}/like/{userId}")
-    public void deleteLike(@PathVariable int id, @PathVariable int userId) throws NotFoundException, UserNotFoundException {
+    public void deleteLike(@PathVariable int id, @PathVariable int userId) {
         filmService.deleteLike(id, userId);
     }
 

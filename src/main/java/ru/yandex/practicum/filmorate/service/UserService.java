@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
@@ -42,12 +41,10 @@ public class UserService {
         return userStorage.getUserById(id);
     }
 
-    public void addToFriends(int id, int friendId) throws UserNotFoundException {
+    public void addToFriends(int id, int friendId) {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
-        if (user == null || friend == null) {
-            throw new UserNotFoundException();
-        }
+
         Set<Integer> friends;
 
         friends = user.getFriends();
