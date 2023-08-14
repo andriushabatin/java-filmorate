@@ -8,13 +8,13 @@ import java.util.HashMap;
 @Component
 public class FriendshipStorage {
 
-    private HashMap<int[], FriendshipStatus> friendshipStatusHashMap = new HashMap<>();
+    private HashMap<String, FriendshipStatus> fshipStatusMap = new HashMap<>();
 
-    public HashMap<int[], FriendshipStatus> getFriendshipStatusHashMap() {
-        return friendshipStatusHashMap;
+    public HashMap<String, FriendshipStatus> getFshipStatusMap() {
+        return fshipStatusMap;
     }
 
-    public void setFriendshipStatusHashMap(HashMap<int[], FriendshipStatus> friendshipStatusHashMap) {
-        this.friendshipStatusHashMap = friendshipStatusHashMap;
+    public void setFshipStatusMap(HashMap<String, FriendshipStatus> fshipStatusMap) {
+        this.fshipStatusMap = fshipStatusMap;
     }
 }

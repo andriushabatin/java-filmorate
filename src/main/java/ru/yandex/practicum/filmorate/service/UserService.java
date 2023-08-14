@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.storage.user.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.sql.Array;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -51,27 +50,27 @@ public class UserService {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
 
-        int[] key = {id, friendId};
-        int[] alterKey = {friendId, id};
+        String key = id + "," + friendId;
+        String alterKey = friendId + "," + id;
 
-        HashMap<int[], FriendshipStatus> friendshipStatusHashMap = friendshipStorage.getFriendshipStatusHashMap();
+        HashMap<String, FriendshipStatus> fshipStatusMap = friendshipStorage.getFshipStatusMap();
 
-        if (friendshipStatusHashMap.containsKey(key)) {
+        if (fshipStatusMap.containsKey(key)) {
 
-            friendshipStatusHashMap.put(key, FriendshipStatus.CONFIRMED);
-            friendshipStorage.setFriendshipStatusHashMap(friendshipStatusHashMap);
+            fshipStatusMap.put(key, FriendshipStatus.CONFIRMED);
+            friendshipStorage.setFshipStatusMap(fshipStatusMap);
             addToFriendsForBoth(user, friend);
 
-        } else if (friendshipStatusHashMap.containsKey(alterKey)) {
+        } else if (fshipStatusMap.containsKey(alterKey)) {
 
-            friendshipStatusHashMap.put(alterKey, FriendshipStatus.CONFIRMED);
-            friendshipStorage.setFriendshipStatusHashMap(friendshipStatusHashMap);
+            fshipStatusMap.put(alterKey, FriendshipStatus.CONFIRMED);
+            friendshipStorage.setFshipStatusMap(fshipStatusMap);
             addToFriendsForBoth(user, friend);
 
         } else {
 
-            friendshipStatusHashMap.put(key, FriendshipStatus.NOT_CONFIRMED);
-            friendshipStorage.setFriendshipStatusHashMap(friendshipStatusHashMap);
+            fshipStatusMap.put(key, FriendshipStatus.NOT_CONFIRMED);
+            friendshipStorage.setFshipStatusMap(fshipStatusMap);
         }
     }
 
