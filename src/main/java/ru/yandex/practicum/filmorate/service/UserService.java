@@ -3,12 +3,16 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.FriendshipStatus;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
+import java.sql.Array;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,10 +23,12 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserStorage userStorage;
+    private final FriendshipStorage friendshipStorage;
 
     @Autowired
-    public UserService(InMemoryUserStorage inMemoryUserStorage) {
+    public UserService(InMemoryUserStorage inMemoryUserStorage, FriendshipStorage friendshipStorage) {
         this.userStorage = inMemoryUserStorage;
+        this.friendshipStorage = friendshipStorage;
     }
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
@@ -45,14 +51,39 @@ public class UserService {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
 
+        int[] key = {id, friendId};
+        int[] alterKey = {friendId, id};
+
+        HashMap<int[], FriendshipStatus> friendshipStatusHashMap = friendshipStorage.getFriendshipStatusHashMap();
+
+        if (friendshipStatusHashMap.containsKey(key)) {
+
+            friendshipStatusHashMap.put(key, FriendshipStatus.CONFIRMED);
+            friendshipStorage.setFriendshipStatusHashMap(friendshipStatusHashMap);
+            addToFriendsForBoth(user, friend);
+
+        } else if (friendshipStatusHashMap.containsKey(alterKey)) {
+
+            friendshipStatusHashMap.put(alterKey, FriendshipStatus.CONFIRMED);
+            friendshipStorage.setFriendshipStatusHashMap(friendshipStatusHashMap);
+            addToFriendsForBoth(user, friend);
+
+        } else {
+
+            friendshipStatusHashMap.put(key, FriendshipStatus.NOT_CONFIRMED);
+            friendshipStorage.setFriendshipStatusHashMap(friendshipStatusHashMap);
+        }
+    }
+
+    private static void addToFriendsForBoth(User user, User friend) {
         Set<Integer> friends;
 
         friends = user.getFriends();
-        friends.add(friendId);
+        friends.add(friend.getId());
         user.setFriends(friends);
 
         friends = friend.getFriends();
-        friends.add(id);
+        friends.add(user.getId());
         friend.setFriends(friends);
     }
 
