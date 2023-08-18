@@ -63,9 +63,14 @@ public class InMemoryUserStorage implements UserStorage {
         }
     }
 
+    public void deleteAll() {
+        users.clear();
+    }
+
     public int getNextId() {
         return nextId++;
     }
+
 
 
 }

@@ -40,6 +40,10 @@ public class UserService {
         return userStorage.findAll();
     }
 
+    public void deleteAll() {
+        userStorage.deleteAll();
+    }
+
     public User getUserById(int id) {
         return userStorage.getUserById(id);
     }
@@ -118,4 +122,6 @@ public class UserService {
                 .collect(Collectors.toList());*/
         return null;
     }
+
+
 }

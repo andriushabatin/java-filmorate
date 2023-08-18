@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS user_table (
   user_id integer NOT NULL,
   email varchar(40),

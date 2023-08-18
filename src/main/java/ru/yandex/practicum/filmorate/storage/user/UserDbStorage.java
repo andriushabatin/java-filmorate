@@ -59,5 +59,8 @@ public class UserDbStorage implements UserStorage {
         }
     }
 
-
+    @Override
+    public void deleteAll() {
+        this.userRepository.deleteAll();
+    }
 }
