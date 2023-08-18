@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Qualifier("UserDbStorage")
@@ -25,7 +27,20 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User put(User user) throws ValidationException {
-        return null;
+
+        Optional<User> userDb = this.userRepository.findById(user.getId());
+        if (userDb.isPresent()) {
+            User userUpdate = userDb.get();
+            userUpdate.setId(user.getId());
+            userUpdate.setEmail(user.getEmail());
+            userUpdate.setLogin(user.getLogin());
+            userUpdate.setName(user.getName());
+            userUpdate.setBirthday(user.getBirthday());
+            userRepository.save(userUpdate);
+            return userUpdate;
+        } else {
+            throw new NotFoundException("User not found with id : " + user.getId());
+        }
     }
 
     @Override
@@ -35,7 +50,13 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User getUserById(int id) {
-        return null;
+        Optional <User> userDb = this.userRepository.findById(id);
+
+        if (userDb.isPresent()) {
+            return userDb.get();
+        } else {
+            throw new NotFoundException("User not found with id : " + id);
+        }
     }
 
 
