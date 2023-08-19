@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS film_genre (
   FOREIGN KEY (genre) REFERENCES genre (genre_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS likes (
   film_id integer NOT NULL,
   user_id integer NOT NULL,

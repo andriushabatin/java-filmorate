@@ -4,19 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.FriendshipStatus;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.FriendshipStorage;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,7 +19,7 @@ public class UserService {
     @Qualifier("UserDbStorage")
     private UserStorage userStorage;
     @Autowired
-    private FriendshipStorage friendshipStorage;
+    private FriendshipService friendshipService;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         return userStorage.create(user);
@@ -51,8 +44,9 @@ public class UserService {
     public void addToFriends(int id, int friendId) {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
+        friendshipService.addToFriends(user, friend);
 
-        String key = id + "," + friendId;
+        /*String key = id + "," + friendId;
         String alterKey = friendId + "," + id;
 
         HashMap<String, FriendshipStatus> fshipStatusMap = friendshipStorage.getFshipStatusMap();
@@ -73,7 +67,7 @@ public class UserService {
 
             fshipStatusMap.put(key, FriendshipStatus.NOT_CONFIRMED);
             friendshipStorage.setFshipStatusMap(fshipStatusMap);
-        }
+        }*/
     }
 
     private static void addToFriendsForBoth(User user, User friend) {
