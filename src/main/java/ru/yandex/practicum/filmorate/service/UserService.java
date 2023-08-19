@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -96,12 +97,12 @@ public class UserService {
         friend.setFriends(friends);*/
     }
 
-    public List<User> getAllFriends(int id) {
+    public List<Friendship> getAllFriends(int id) {
+        return friendshipService.getAllFriends(id);
         /*User user = userStorage.getUserById(id);
         return user.getFriends().stream()
                 .map(userStorage::getUserById)
                 .collect(Collectors.toList());*/
-        return null;
     }
 
     public List<User> findCommonFriends(int id, int otherId) {

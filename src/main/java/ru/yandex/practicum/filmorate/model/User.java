@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class User {
     private LocalDate birthday;
 
     //private Set<Integer> friends;
+
     public User() {
     }
 

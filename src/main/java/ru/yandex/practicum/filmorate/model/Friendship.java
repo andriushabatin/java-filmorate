@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.key.FriendshipPrimaryKey;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,4 +29,5 @@ public class Friendship {
 
     @Column(name = "status")
     private int status;
+
 }

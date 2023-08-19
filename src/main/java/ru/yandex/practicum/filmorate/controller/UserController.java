@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
@@ -53,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("users/{id}/friends")
-    public List<User> getAllFriends(@PathVariable int id) {
+    public List<Friendship> getAllFriends(@PathVariable int id) {
         return userService.getAllFriends(id);
     }
 

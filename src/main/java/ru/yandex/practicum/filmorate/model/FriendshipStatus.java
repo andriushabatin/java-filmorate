@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.FriendshipStatuses;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -25,4 +22,7 @@ public class FriendshipStatus {
 
     @Column(name = "status")
     FriendshipStatuses status;
+
+    @OneToOne
+    Friendship friendship;
 }
