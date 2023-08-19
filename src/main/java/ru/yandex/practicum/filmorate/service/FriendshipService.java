@@ -18,8 +18,7 @@ public class FriendshipService {
         friendshipStorage.addToFriends(user, friend);
     }
 
-
-    public List<Friendship> getAllFriends(int id) {
+    public List<User> getAllFriends(int id) {
         return friendshipStorage.getAllFriends(id);
     }
 }

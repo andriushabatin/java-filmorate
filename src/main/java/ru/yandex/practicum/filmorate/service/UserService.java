@@ -97,8 +97,10 @@ public class UserService {
         friend.setFriends(friends);*/
     }
 
-    public List<Friendship> getAllFriends(int id) {
+    public List<User> getAllFriends(int id) {
+
         return friendshipService.getAllFriends(id);
+
         /*User user = userStorage.getUserById(id);
         return user.getFriends().stream()
                 .map(userStorage::getUserById)

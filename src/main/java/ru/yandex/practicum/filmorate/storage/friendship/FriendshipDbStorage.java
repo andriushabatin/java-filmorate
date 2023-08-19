@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.FriendshipRepository;
+import ru.yandex.practicum.filmorate.storage.user.UserMapper;
 
 import java.util.List;
 
@@ -29,7 +30,15 @@ public class FriendshipDbStorage {
     }
 
 
-    public List<Friendship> getAllFriends(int id) {
+    /*public List<Friendship> getAllFriends(int id) {
         return jdbcTemplate.query("SELECT * FROM friendship", new FriendshipMapper());
+    }*/
+
+    public List<User> getAllFriends(int id) {
+        return jdbcTemplate.query(
+                "SELECT * FROM USER_TABLE WHERE user_id IN (SELECT user_id FROM FRIENDSHIP WHERE friend_id=?)",
+                new Object[]{id},
+                new UserMapper()
+        );
     }
 }

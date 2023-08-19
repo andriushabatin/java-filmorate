@@ -22,7 +22,4 @@ public class FriendshipStatus {
 
     @Column(name = "status")
     FriendshipStatuses status;
-
-    @OneToOne
-    Friendship friendship;
 }
