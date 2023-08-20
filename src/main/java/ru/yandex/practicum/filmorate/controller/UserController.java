@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
-    public void addToFriends(@PathVariable int id, @PathVariable int friendId) {
+    public void addToFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.addToFriends(id, friendId);
     }
 

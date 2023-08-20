@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.sun.istack.NotNull;
+import lombok.*;
 import ru.yandex.practicum.filmorate.key.FriendshipPrimaryKey;
 
 import javax.persistence.*;

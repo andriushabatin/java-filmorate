@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -42,7 +43,7 @@ public class UserService {
         return userStorage.getUserById(id);
     }
 
-    public void addToFriends(int id, int friendId) {
+    public void addToFriends(int id, int friendId) throws SQLException {
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
         friendshipService.addToFriends(user, friend);

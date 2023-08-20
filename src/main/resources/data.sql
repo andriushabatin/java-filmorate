@@ -1,8 +1,8 @@
 MERGE INTO friendship_status
 KEY(status_id)
-VALUES ('1', 'CONFIRMED');
+VALUES ('1', 'NOT_CONFIRMED');
 
 MERGE INTO friendship_status
 KEY(status_id)
-VALUES ('2', 'NOT_CONFIRMED');
+VALUES ('2', 'CONFIRMED');
 

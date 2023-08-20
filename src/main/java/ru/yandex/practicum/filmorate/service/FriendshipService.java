@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.friendship.FriendshipDbStorage;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -14,7 +15,7 @@ public class FriendshipService {
 
     @Autowired
     FriendshipDbStorage friendshipStorage;
-    public void addToFriends(User user, User friend) {
+    public void addToFriends(User user, User friend) throws SQLException {
         friendshipStorage.addToFriends(user, friend);
     }
 
