@@ -31,6 +31,9 @@ public class FilmService {
     private final UserStorage userStorage;
 
     @Autowired
+    private LikeService likeService;
+
+    @Autowired
     public FilmService(InMemoryFilmStorage inMemoryFilmStorage, InMemoryUserStorage inMemoryUserStorage) {
         this.filmStorage = inMemoryFilmStorage;
         this.userStorage = inMemoryUserStorage;
@@ -53,27 +56,23 @@ public class FilmService {
     }
 
     public void likeFilm(int id, int userId) {
-        /*Film film = filmStorage.findFilmById(id);
-        User user = userStorage.getUserById(userId);
 
-        Set<Integer> likes = film.getLikes();
-        likes.add(user.getId());
-        film.setLikes(likes);*/
+        Film film = filmStorage.findFilmById(id);
+        User user = userStorage.getUserById(userId);
+        likeService.likeFilm(film, user);
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
-        /*Film film = filmStorage.findFilmById(id);
-        Set<Integer> likes = film.getLikes();
+
+        Film film = filmStorage.findFilmById(id);
         User user = userStorage.getUserById(userId);
-        if (likes.contains(user.getId())) {
-            likes.remove(user.getId());
-        } else {
-            throw new NotFoundException();
-        }
-        film.setLikes(likes);*/;
+        likeService.deleteLike(film, user);
     }
 
     public List<Film> getPopularFilms(int count) {
+
+
+
         /*List<Film> sortedFilms = filmStorage.findAll()
                 .stream()
                 .sorted(((o1, o2) -> (o2.getLikes().size() - o1.getLikes().size())))

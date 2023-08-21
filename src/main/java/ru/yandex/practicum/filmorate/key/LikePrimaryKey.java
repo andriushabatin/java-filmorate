@@ -11,8 +11,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class FriendshipPrimaryKey implements Serializable {
+public class LikePrimaryKey implements Serializable {
 
+    private int film_id;
     private int user_id;
-    private int friend_id;
 }

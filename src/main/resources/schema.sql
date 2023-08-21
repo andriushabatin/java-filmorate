@@ -1,11 +1,11 @@
-drop table user_table CASCADE;
+/*drop table user_table CASCADE;
 drop table friendship_status CASCADE;
 drop table friendship CASCADE;
 drop table rating CASCADE;
 drop table film CASCADE;
 drop table genre CASCADE;
 drop table film_genre  CASCADE;
-drop table likes CASCADE;
+drop table likes CASCADE;*/
 
 
 CREATE TABLE IF NOT EXISTS user_table (
