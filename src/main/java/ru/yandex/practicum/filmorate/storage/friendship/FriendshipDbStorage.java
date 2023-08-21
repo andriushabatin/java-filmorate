@@ -24,16 +24,18 @@ public class FriendshipDbStorage {
 
     public void addToFriends(User user, User friend) throws SQLException {
 
-            if (friendshipExist(friend, user)) {
+            if (friendshipExist(user, friend)) {
                 throw new ObjectAlreadyExistException("Дружба уже существует!");
-            } else if (friendshipExist(user, friend)) {
+            } else if (friendshipExist(friend, user)) {
                 //update
-                friendshipUpdateStatus(2, user.getId(), friend.getId());
+                friendshipUpdateStatus(friend.getId(), user.getId(), 2);
                 //insert
-                insertNewFriendship(friend.getId(), user.getId(), 2);
+                //insertNewFriendship(friend.getId(), user.getId(), 2);
+                insertNewFriendship(user.getId(), friend.getId(), 2);
             } else {
                 //insert
-                insertNewFriendship(friend.getId(), user.getId(), 1);
+                //insertNewFriendship(friend.getId(), user.getId(), 1);
+                insertNewFriendship(user.getId(), friend.getId(), 1);
             }
     }
 
@@ -69,20 +71,20 @@ public class FriendshipDbStorage {
         );
     }
 
-    private boolean friendshipExist(User friend, User user) throws SQLException {
+    private boolean friendshipExist(User user, User friend) throws SQLException {
 
         String sql = "SELECT USER_ID FROM FRIENDSHIP WHERE USER_ID=? AND friend_id=?";
-        List<Integer> a = jdbcTemplate.queryForList(sql, Integer.class, friend.getId(), user.getId());
+        List<Integer> a = jdbcTemplate.queryForList(sql, Integer.class, user.getId(), friend.getId());
         return !a.isEmpty();
     }
 
-    private void friendshipUpdateStatus(int status, int firstId, int SecondId) {
+    private void friendshipUpdateStatus(int user_id, int friend_id, int status) {
 
-        jdbcTemplate.update(
-                "UPDATE friendship SET status=? WHERE user_id=? AND friend_id=?",
+        String sql = "UPDATE friendship SET status=? WHERE user_id=? AND friend_id=?";
+        jdbcTemplate.update(sql,
                 status,
-                firstId,
-                SecondId
+                user_id,
+                friend_id
         );
     }
 
