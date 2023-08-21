@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.storage.genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.repository.GenreRepository;
 
@@ -21,6 +20,7 @@ public class GenreDbStorage {
     }
 
     public Genre getGenreById(int id) {
+
         Optional <Genre> genreDb = this.genreRepository.findById(id);
         if (genreDb.isPresent()) {
             return genreDb.get();

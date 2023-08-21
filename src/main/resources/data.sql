@@ -32,4 +32,20 @@ VALUES ('6', 'ACTION');
 
 MERGE INTO rating
 KEY(rating_id)
-VALUES ('1', '13+');
+VALUES ('1', 'G');
+
+MERGE INTO rating
+KEY(rating_id)
+VALUES ('2', 'PG');
+
+MERGE INTO rating
+KEY(rating_id)
+VALUES ('3', 'PG13');
+
+MERGE INTO rating
+KEY(rating_id)
+VALUES ('4', 'R');
+
+MERGE INTO rating
+KEY(rating_id)
+VALUES ('5', 'NC17');
