@@ -1,3 +1,4 @@
+
 drop table IF EXISTS user_table CASCADE;
 drop table IF EXISTS friendship_status CASCADE;
 drop table IF EXISTS friendship CASCADE;

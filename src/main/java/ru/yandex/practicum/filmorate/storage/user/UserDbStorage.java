@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.UserRepository;
+import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,24 +22,37 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
-        return userRepository.save(user);
+        try {
+            if (UserValidator.isValid(user)) {
+                return userRepository.save(user);
+            }
+            return user;
+        } catch (ValidationException e) {
+            throw new ValidationException(e.getMessage());
+        }
     }
 
     @Override
     public User put(User user) throws ValidationException {
-
-        Optional<User> userDb = this.userRepository.findById(user.getId());
-        if (userDb.isPresent()) {
-            User userUpdate = userDb.get();
-            userUpdate.setId(user.getId());
-            userUpdate.setEmail(user.getEmail());
-            userUpdate.setLogin(user.getLogin());
-            userUpdate.setName(user.getName());
-            userUpdate.setBirthday(user.getBirthday());
-            userRepository.save(userUpdate);
-            return userUpdate;
-        } else {
-            throw new NotFoundException("User not found with id : " + user.getId());
+        try {
+            if (UserValidator.isValid(user)) {
+                Optional<User> userDb = this.userRepository.findById(user.getId());
+                if (userDb.isPresent()) {
+                    User userUpdate = userDb.get();
+                    userUpdate.setId(user.getId());
+                    userUpdate.setEmail(user.getEmail());
+                    userUpdate.setLogin(user.getLogin());
+                    userUpdate.setName(user.getName());
+                    userUpdate.setBirthday(user.getBirthday());
+                    userRepository.save(userUpdate);
+                    return userUpdate;
+                } else {
+                    throw new NotFoundException("User not found with id : " + user.getId());
+                }
+            }
+            return user;
+        } catch (ValidationException e) {
+            throw new ValidationException(e.getMessage());
         }
     }
 

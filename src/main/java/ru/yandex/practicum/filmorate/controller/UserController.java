@@ -21,6 +21,7 @@ public class UserController {
 
     @PostMapping({"/users"})
     public User create(@RequestBody User user) throws ValidationException, ObjectAlreadyExistException {
+
         return userService.create(user);
     }
 
@@ -67,6 +68,12 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
+        return Map.of("error:", "Произошла ошибка!");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationException(final ValidationException e) {
         return Map.of("error:", "Произошла ошибка!");
     }
 }
