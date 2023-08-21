@@ -71,6 +71,7 @@ public class FilmService {
 
     public List<Film> getPopularFilms(int count) {
 
+        return filmStorage.getPopularFilms(count);
 
 
         /*List<Film> sortedFilms = filmStorage.findAll()
@@ -83,6 +84,5 @@ public class FilmService {
         } catch (IndexOutOfBoundsException e) {
             return sortedFilms;
         }*/
-        return null;
     }
 }

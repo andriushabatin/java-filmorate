@@ -50,12 +50,9 @@ public class FriendshipDbStorage {
 
         if (friendshipExist(user, friend)) {
             if (friendshipExist(friend, user)) {
-                //del u,f
                 deleteFriendship(user, friend);
-                //update f,u
                 friendshipUpdateStatus(1, friend.getId(), user.getId());
             } else {
-                //del u,f
                 deleteFriendship(user, friend);
             }
         } else {

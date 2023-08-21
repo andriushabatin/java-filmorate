@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage.film;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
@@ -10,7 +11,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.FilmRepository;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +20,9 @@ public class FilmDbStorage implements FilmStorage {
 
     @Autowired
     private FilmRepository filmRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
@@ -71,5 +74,25 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             throw new NotFoundException("Film not found with id : " + id);
         }
+    }
+
+    @Override
+    public List<Film> getPopularFilms(int count) {
+
+        String sql = "SELECT *\n" +
+                "FROM film AS a\n" +
+                "LEFT OUTER JOIN\n" +
+                "  (SELECT film_id,\n" +
+                "          count(*) AS COUNT\n" +
+                "   FROM likes\n" +
+                "   GROUP BY film_id) AS b ON b.film_id = a.film_id\n" +
+                "ORDER BY COUNT DESC\n" +
+                "LIMIT ?;";
+
+        return jdbcTemplate.query(sql,
+                new FilmMapper(),
+                count);
+
+
     }
 }
