@@ -12,6 +12,7 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -44,32 +45,10 @@ public class UserService {
     }
 
     public void addToFriends(int id, int friendId) throws SQLException {
+
         User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
         friendshipService.addToFriends(user, friend);
-
-        /*String key = id + "," + friendId;
-        String alterKey = friendId + "," + id;
-
-        HashMap<String, FriendshipStatus> fshipStatusMap = friendshipStorage.getFshipStatusMap();
-
-        if (fshipStatusMap.containsKey(key)) {
-
-            fshipStatusMap.put(key, FriendshipStatus.CONFIRMED);
-            friendshipStorage.setFshipStatusMap(fshipStatusMap);
-            addToFriendsForBoth(user, friend);
-
-        } else if (fshipStatusMap.containsKey(alterKey)) {
-
-            fshipStatusMap.put(alterKey, FriendshipStatus.CONFIRMED);
-            friendshipStorage.setFshipStatusMap(fshipStatusMap);
-            addToFriendsForBoth(user, friend);
-
-        } else {
-
-            fshipStatusMap.put(key, FriendshipStatus.NOT_CONFIRMED);
-            friendshipStorage.setFshipStatusMap(fshipStatusMap);
-        }*/
     }
 
     private static void addToFriendsForBoth(User user, User friend) {
@@ -84,31 +63,29 @@ public class UserService {
         friend.setFriends(friends);*/
     }
 
-    public void deleteFromFriends(int id, int friendId) {
-        /*User user = userStorage.getUserById(id);
+    public void deleteFromFriends(int id, int friendId) throws SQLException {
+
+        User user = userStorage.getUserById(id);
         User friend = userStorage.getUserById(friendId);
-        Set<Integer> friends = new HashSet<>();
-
-        friends = user.getFriends();
-        friends.remove(friendId);
-        user.setFriends(friends);
-
-        friends = friend.getFriends();
-        friends.remove(id);
-        friend.setFriends(friends);*/
+        friendshipService.deleteFromFriends(user, friend);
     }
 
     public List<User> getAllFriends(int id) {
 
         return friendshipService.getAllFriends(id);
-
-        /*User user = userStorage.getUserById(id);
-        return user.getFriends().stream()
-                .map(userStorage::getUserById)
-                .collect(Collectors.toList());*/
     }
 
     public List<User> findCommonFriends(int id, int otherId) {
+        List<User> friends = getAllFriends(id);
+        List<User> otherFriends = getAllFriends(otherId);
+
+        return friends.stream()
+                .filter(otherFriends::contains)
+                .collect(Collectors.toList());
+
+
+
+
         /*User user = userStorage.getUserById(id);
         User other = userStorage.getUserById(otherId);
         Set<Integer> userFriends = user.getFriends();
@@ -117,8 +94,8 @@ public class UserService {
         return userFriends.stream()
                 .filter(otherFriends::contains)
                 .map(userStorage::getUserById)
-                .collect(Collectors.toList());*/
-        return null;
+                .collect(Collectors.toList());
+        return null;*/
     }
 
 

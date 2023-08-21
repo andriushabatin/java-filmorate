@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
@@ -20,7 +22,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FilmService {
 
+    @Autowired
+    @Qualifier("FilmDbStorage")
     private final FilmStorage filmStorage;
+
+    @Autowired
+    @Qualifier("UserDbStorage")
     private final UserStorage userStorage;
 
     @Autowired
@@ -46,16 +53,16 @@ public class FilmService {
     }
 
     public void likeFilm(int id, int userId) {
-        Film film = filmStorage.findFilmById(id);
+        /*Film film = filmStorage.findFilmById(id);
         User user = userStorage.getUserById(userId);
 
         Set<Integer> likes = film.getLikes();
         likes.add(user.getId());
-        film.setLikes(likes);
+        film.setLikes(likes);*/
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
-        Film film = filmStorage.findFilmById(id);
+        /*Film film = filmStorage.findFilmById(id);
         Set<Integer> likes = film.getLikes();
         User user = userStorage.getUserById(userId);
         if (likes.contains(user.getId())) {
@@ -63,11 +70,11 @@ public class FilmService {
         } else {
             throw new NotFoundException();
         }
-        film.setLikes(likes);
+        film.setLikes(likes);*/;
     }
 
     public List<Film> getPopularFilms(int count) {
-        List<Film> sortedFilms = filmStorage.findAll()
+        /*List<Film> sortedFilms = filmStorage.findAll()
                 .stream()
                 .sorted(((o1, o2) -> (o2.getLikes().size() - o1.getLikes().size())))
                 .collect(Collectors.toList());
@@ -76,6 +83,7 @@ public class FilmService {
             return sortedFilms.subList(0, count);
         } catch (IndexOutOfBoundsException e) {
             return sortedFilms;
-        }
+        }*/
+        return null;
     }
 }

@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
-    public void deleteFromFriends(@PathVariable int id, @PathVariable int friendId) {
+    public void deleteFromFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.deleteFromFriends(id, friendId);
     }
 

@@ -1,11 +1,11 @@
-DROP TABLE user_table CASCADE;
-DROP TABLE friendship_status CASCADE;
-DROP TABLE friendship CASCADE;
-DROP TABLE rating CASCADE;
-DROP TABLE film CASCADE;
-DROP TABLE genre CASCADE;
-DROP TABLE film_genre CASCADE;
-DROP TABLE likes CASCADE;
+drop table user_table CASCADE;
+drop table friendship_status CASCADE;
+drop table friendship CASCADE;
+drop table rating CASCADE;
+drop table film CASCADE;
+drop table genre CASCADE;
+drop table film_genre  CASCADE;
+drop table likes CASCADE;
 
 
 CREATE TABLE IF NOT EXISTS user_table (
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS film (
   name varchar(40),
   description varchar(200),
   releaseDate date,
-  duration integer,
-  rating integer NOT NULL,
+  duration long,
+  rating integer,
   PRIMARY KEY (film_id),
   FOREIGN KEY (rating) REFERENCES rating (rating_id)
 );

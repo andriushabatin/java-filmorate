@@ -22,4 +22,9 @@ public class FriendshipService {
     public List<User> getAllFriends(int id) {
         return friendshipStorage.getAllFriends(id);
     }
+
+    public void deleteFromFriends(User user, User friend) throws SQLException {
+        friendshipStorage.deleteFromFriends(user, friend);
+
+    }
 }

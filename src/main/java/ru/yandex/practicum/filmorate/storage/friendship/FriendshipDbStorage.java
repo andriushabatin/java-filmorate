@@ -2,18 +2,15 @@ package ru.yandex.practicum.filmorate.storage.friendship;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
-import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.FriendshipRepository;
 import ru.yandex.practicum.filmorate.storage.user.UserMapper;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class FriendshipDbStorage {
@@ -42,9 +39,35 @@ public class FriendshipDbStorage {
     public List<User> getAllFriends(int id) {
 
         return jdbcTemplate.query(
-                "SELECT * FROM USER_TABLE WHERE user_id IN (SELECT user_id FROM FRIENDSHIP WHERE friend_id=?)",
+                "SELECT * FROM USER_TABLE WHERE user_id IN (SELECT friend_id FROM FRIENDSHIP WHERE user_id=?)",
                 new UserMapper(),
                 id
+        );
+    }
+
+    public void deleteFromFriends(User user, User friend) throws SQLException {
+
+        if (friendshipExist(user, friend)) {
+            if (friendshipExist(friend, user)) {
+                //del u,f
+                deleteFriendship(user, friend);
+                //update f,u
+                friendshipUpdateStatus(1, friend.getId(), user.getId());
+            } else {
+                //del u,f
+                deleteFriendship(user, friend);
+            }
+        } else {
+            throw new NotFoundException();
+        }
+    }
+
+    private void deleteFriendship(User user, User friend) {
+
+        String sql = "DELETE FROM FRIENDSHIP WHERE user_id=? AND friend_id=?";
+        jdbcTemplate.update(sql,
+                user.getId(),
+                friend.getId()
         );
     }
 
@@ -74,4 +97,6 @@ public class FriendshipDbStorage {
                 status
         );
     }
+
+
 }
