@@ -12,20 +12,20 @@ import java.util.Optional;
 @Component
 public class RatingDbStorage {
 
-    @Autowired
-    private RatingRepository ratingRepository;
 
     public List<Rating> getMpa() {
-        return ratingRepository.findAll();
+        //return ratingRepository.findAll();
+        return null;
     }
 
     public Rating getMpaById(int id) {
 
-        Optional<Rating> ratingDb = this.ratingRepository.findById(id);
+        /*Optional<Rating> ratingDb = this.ratingRepository.findById(id);
         if (ratingDb.isPresent()) {
             return ratingDb.get();
         } else {
             throw new NotFoundException("Genre not found with id : " + id);
-        }
+        }*/
+        return null;
     }
 }

@@ -3,34 +3,17 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
-import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-@Table(name = "user_table")
 @Data
 @AllArgsConstructor
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private int id;
-    @Column(name = "email")
     private String email;
-    @Column(name = "login")
-
     private String login;
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "birthday")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
 

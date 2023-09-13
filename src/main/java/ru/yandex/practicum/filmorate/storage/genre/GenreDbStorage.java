@@ -12,20 +12,20 @@ import java.util.Optional;
 @Component
 public class GenreDbStorage {
 
-    @Autowired
-    private GenreRepository genreRepository;
 
     public List<Genre> getGenres() {
-        return genreRepository.findAll();
+        //return genreRepository.findAll();
+        return null;
     }
 
     public Genre getGenreById(int id) {
 
-        Optional <Genre> genreDb = this.genreRepository.findById(id);
+       /* Optional <Genre> genreDb = this.genreRepository.findById(id);
         if (genreDb.isPresent()) {
             return genreDb.get();
         } else {
             throw new NotFoundException("Genre not found with id : " + id);
-        }
+        }*/
+        return null;
     }
 }

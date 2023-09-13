@@ -17,9 +17,6 @@ import java.util.List;
 public class FriendshipDbStorage {
 
     @Autowired
-    private FriendshipRepository friendshipRepository;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public void addToFriends(User user, User friend) throws SQLException {

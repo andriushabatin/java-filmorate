@@ -17,24 +17,23 @@ import java.util.Optional;
 @Qualifier("UserDbStorage")
 public class UserDbStorage implements UserStorage {
 
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
-        try {
+        /*try {
             if (UserValidator.isValid(user)) {
                 return userRepository.save(user);
             }
             return user;
         } catch (ValidationException e) {
             throw new ValidationException(e.getMessage());
-        }
+        }*/
+        return null;
     }
 
     @Override
     public User put(User user) throws ValidationException {
-        try {
+        /*try {
             if (UserValidator.isValid(user)) {
                 Optional<User> userDb = this.userRepository.findById(user.getId());
                 if (userDb.isPresent()) {
@@ -53,27 +52,31 @@ public class UserDbStorage implements UserStorage {
             return user;
         } catch (ValidationException e) {
             throw new ValidationException(e.getMessage());
-        }
+        }*/
+        return null;
     }
 
     @Override
     public List<User> findAll() {
-        return this.userRepository.findAll();
+        //return this.userRepository.findAll();
+        return null;
     }
 
     @Override
     public User getUserById(int id) {
-        Optional <User> userDb = this.userRepository.findById(id);
+        /*Optional <User> userDb = this.userRepository.findById(id);
 
         if (userDb.isPresent()) {
             return userDb.get();
         } else {
             throw new NotFoundException("User not found with id : " + id);
-        }
+        }*/
+
+        return null;
     }
 
     @Override
     public void deleteAll() {
-        this.userRepository.deleteAll();
+        //this.userRepository.deleteAll();
     }
 }

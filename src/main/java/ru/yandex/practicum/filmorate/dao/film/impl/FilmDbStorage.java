@@ -20,21 +20,19 @@ import java.util.Optional;
 public class FilmDbStorage implements FilmStorage {
 
     @Autowired
-    private FilmRepository filmRepository;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
 
-        return filmRepository.save(film);
+        //return filmRepository.save(film);
+        return null;
     }
 
     @Override
     public Film put(Film film) throws ValidationException {
 
-        Optional<Film> filmDb = this.filmRepository.findById(film.getId());
+        /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
         if (filmDb.isPresent()) {
             Film filmUpdate = filmDb.get();
             filmUpdate.setId(film.getId());
@@ -47,7 +45,7 @@ public class FilmDbStorage implements FilmStorage {
             return filmUpdate;
         } else {
             throw new NotFoundException("Film not found with id : " + film.getId());
-        }
+        }*/
 
         /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
         if (filmDb.isPresent()) {
@@ -59,22 +57,27 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             throw new NotFoundException("User not found with id : " + user.getId());
         }*/
+
+        return null;
     }
 
     @Override
     public List<Film> findAll() {
-        return this.filmRepository.findAll();
+        //return this.filmRepository.findAll();
+        return null;
     }
 
     @Override
     public Film findFilmById(int id) {
 
-        Optional <Film> filmDb = this.filmRepository.findById(id);
+        /*Optional <Film> filmDb = this.filmRepository.findById(id);
         if (filmDb.isPresent()) {
             return filmDb.get();
         } else {
             throw new NotFoundException("Film not found with id : " + id);
-        }
+        }*/
+
+        return null;
     }
 
     @Override

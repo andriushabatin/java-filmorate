@@ -14,8 +14,6 @@ import java.util.List;
 @Component
 public class LikeDbStorage {
 
-    @Autowired
-    private LikeRepository friendshipRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
