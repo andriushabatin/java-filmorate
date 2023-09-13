@@ -26,6 +26,15 @@ public class FilmDbStorage implements FilmStorage {
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
 
         //return filmRepository.save(film);
+
+        String sqlQuery = "insert into film(name, description, release, duration) " +
+                "values (?, ?, ?, ?)";
+        jdbcTemplate.update(sqlQuery,
+                film.getName(),
+                film.getDescription(),
+                film.getReleaseDate(),
+                film.getDuration());
+
         return null;
     }
 

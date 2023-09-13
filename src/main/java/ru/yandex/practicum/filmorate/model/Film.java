@@ -34,5 +34,6 @@ public class Film {
 
     //private List<Genre> genre;
 
-    private int rating;
+    //private int rating;
+
 }
