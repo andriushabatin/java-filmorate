@@ -73,11 +73,18 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public List<Film> findAll() {
         //return this.filmRepository.findAll();
+
+        String sqlQuery = "";
+
         return null;
     }
 
     @Override
     public Film findFilmById(int id) {
+
+        String sqlQuery = "select * " +
+                "from film where film_id = ?";
+        return jdbcTemplate.queryForObject(sqlQuery, new FilmMapper(), id);
 
         /*Optional <Film> filmDb = this.filmRepository.findById(id);
         if (filmDb.isPresent()) {
@@ -86,7 +93,7 @@ public class FilmDbStorage implements FilmStorage {
             throw new NotFoundException("Film not found with id : " + id);
         }*/
 
-        return null;
+        //return null;
     }
 
     @Override

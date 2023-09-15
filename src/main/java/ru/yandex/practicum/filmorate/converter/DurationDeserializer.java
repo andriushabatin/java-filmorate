@@ -14,8 +14,6 @@ public class DurationDeserializer extends JsonDeserializer<Duration> {
 
     @Override
     public Duration deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
-        System.out.println("Десер");
-        System.out.println(Duration.ofMinutes(jsonParser.getValueAsLong()));
         return Duration.ofMinutes(jsonParser.getValueAsLong());
     }
 }
