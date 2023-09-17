@@ -32,6 +32,7 @@ public class Film {
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
 
+
     //private List<Genre> genre;
 
     //private int rating;

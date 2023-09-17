@@ -3,6 +3,9 @@ package ru.yandex.practicum.filmorate.dao.film.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -12,6 +15,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.repository.FilmRepository;
 import ru.yandex.practicum.filmorate.storage.film.FilmMapper;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,13 +33,18 @@ public class FilmDbStorage implements FilmStorage {
 
         String sqlQuery = "insert into film(name, description, release, duration) " +
                 "values (?, ?, ?, ?)";
-        jdbcTemplate.update(sqlQuery,
-                film.getName(),
-                film.getDescription(),
-                film.getReleaseDate(),
-                film.getDuration().toMinutes());
 
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"film_id"});
+            stmt.setString(1, film.getName());
+            stmt.setString(2, film.getDescription());
+            stmt.setObject(3, film.getReleaseDate());
+            stmt.setObject(4,  film.getDuration().toMinutes());
+            return stmt;
+        }, keyHolder);
+
+        return findFilmById(keyHolder.getKey().intValue());
     }
 
     @Override
