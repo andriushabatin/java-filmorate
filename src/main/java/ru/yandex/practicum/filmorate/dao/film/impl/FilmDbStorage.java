@@ -6,16 +6,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.repository.FilmRepository;
 import ru.yandex.practicum.filmorate.storage.film.FilmMapper;
 
 import java.sql.PreparedStatement;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +34,8 @@ public class FilmDbStorage implements FilmStorage {
 
         //return filmRepository.save(film);
 
-        String sqlQuery = "insert into film(name, description, release, duration) " +
-                "values (?, ?, ?, ?)";
+        String sqlQuery = "insert into film(name, description, release, duration, rating_id) " +
+                "values (?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -40,7 +43,8 @@ public class FilmDbStorage implements FilmStorage {
             stmt.setString(1, film.getName());
             stmt.setString(2, film.getDescription());
             stmt.setObject(3, film.getReleaseDate());
-            stmt.setObject(4,  film.getDuration().toMinutes());
+            stmt.setObject(4, film.getDuration().toMinutes());
+            stmt.setObject(5, film.getRating().getId());
             return stmt;
         }, keyHolder);
 
@@ -91,9 +95,27 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film findFilmById(int id) {
 
-        String sqlQuery = "select * " +
-                "from film where film_id = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, new FilmMapper(), id);
+        String sqlQuery = "SELECT f.film_id,\n" +
+                "f.name,\n" +
+                "f.description,\n" +
+                "f.release,\n" +
+                "f.duration,\n" +
+                "f.rating_id,\n" +
+                "r.rating\n" +
+        "FROM film AS f\n" +
+        "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
+        "HAVING f.film_id = 1";
+
+        SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery);
+        filmRows.next();
+
+        Film film = new Film();
+        film.setId(filmRows.getInt("film_id"));
+        film.setName(filmRows.getString("name"));
+        film.setDescription(filmRows.getString("description"));
+        film.setReleaseDate(filmRows.getDate("release"));
+        film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
+        film.setRating(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
 
         /*Optional <Film> filmDb = this.filmRepository.findById(id);
         if (filmDb.isPresent()) {
@@ -102,7 +124,7 @@ public class FilmDbStorage implements FilmStorage {
             throw new NotFoundException("Film not found with id : " + id);
         }*/
 
-        //return null;
+        return film;
     }
 
     @Override

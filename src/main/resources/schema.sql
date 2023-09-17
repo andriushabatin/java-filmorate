@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS film (
   description varchar(200),
   release date,
   duration long,
-  rating integer,
+  rating_id integer,
   PRIMARY KEY (film_id),
-  FOREIGN KEY (rating) REFERENCES rating (rating_id)
+  FOREIGN KEY (rating_id) REFERENCES rating (rating_id)
 );
 
 CREATE TABLE IF NOT EXISTS genre (

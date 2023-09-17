@@ -27,14 +27,11 @@ public class Film {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date releaseDate;
 
-
     @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
 
+    private Mpa rating;
 
     //private List<Genre> genre;
-
-    //private int rating;
-
 }
