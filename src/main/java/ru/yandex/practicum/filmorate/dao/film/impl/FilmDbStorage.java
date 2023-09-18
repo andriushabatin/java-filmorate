@@ -18,6 +18,8 @@ import ru.yandex.practicum.filmorate.repository.FilmRepository;
 import ru.yandex.practicum.filmorate.storage.film.FilmMapper;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +33,6 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
-
-        //return filmRepository.save(film);
 
         String sqlQuery = "insert into film(name, description, release, duration, rating_id) " +
                 "values (?, ?, ?, ?, ?)";
@@ -49,6 +49,7 @@ public class FilmDbStorage implements FilmStorage {
         }, keyHolder);
 
         return findFilmById(keyHolder.getKey().intValue());
+        //return filmRepository.save(film);
     }
 
     @Override
@@ -85,11 +86,34 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public List<Film> findAll() {
+
+        String sqlQuery = "SELECT f.film_id,\n" +
+                "f.name,\n" +
+                "f.description,\n" +
+                "f.release,\n" +
+                "f.duration,\n" +
+                "f.rating_id,\n" +
+                "r.rating\n" +
+                "FROM film AS f\n" +
+                "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
+                "GROUP BY f.FILM_ID\n";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs));
+
         //return this.filmRepository.findAll();
+    }
 
-        String sqlQuery = "";
+    private Film makeFilm(ResultSet rs) throws SQLException {
 
-        return null;
+        Film film = new Film();
+        film.setId(rs.getInt("film_id"));
+        film.setName(rs.getString("name"));
+        film.setDescription(rs.getString("description"));
+        film.setReleaseDate(rs.getDate("release"));
+        film.setDuration(Duration.ofMinutes(rs.getLong("duration")));
+        film.setRating(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
+
+        return film;
     }
 
     @Override
@@ -118,14 +142,13 @@ public class FilmDbStorage implements FilmStorage {
         film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
         film.setRating(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
 
+        return film;
         /*Optional <Film> filmDb = this.filmRepository.findById(id);
         if (filmDb.isPresent()) {
             return filmDb.get();
         } else {
             throw new NotFoundException("Film not found with id : " + id);
         }*/
-
-        return film;
     }
 
     @Override
@@ -144,7 +167,5 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.query(sql,
                 new FilmMapper(),
                 count);
-
-
     }
 }
