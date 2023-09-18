@@ -59,7 +59,7 @@ public class FilmDbStorage implements FilmStorage {
     public Film put(Film film) throws ValidationException {
 
         String sqlQuery = "UPDATE film\n" +
-                "SET name=?, description=?, release=?, duration=?, rating_id=?\n" +
+                "SET name=?, description=?, release=?, duration=?, rate=?, rating_id=?\n" +
                 "WHERE film_id=?";
 
         jdbcTemplate.update(sqlQuery,
@@ -67,6 +67,7 @@ public class FilmDbStorage implements FilmStorage {
                 film.getDescription(),
                 film.getReleaseDate(),
                 film.getDuration().toMinutes(),
+                film.getRate(),
                 film.getMpa().getId(),
                 film.getId());
 
