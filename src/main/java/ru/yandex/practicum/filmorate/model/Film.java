@@ -18,18 +18,13 @@ import java.util.*;
 public class Film {
 
     private int id;
-
     private String name;
-
     private String description;
-
     private Date releaseDate;
-
     @JsonSerialize(using = DurationSerializer.class)
     @JsonDeserialize(using = DurationDeserializer.class)
     private Duration duration;
-
+    private int rate;
     private Mpa mpa;
-
     private List<Genre> genres;
 }

@@ -34,8 +34,8 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
 
-        String sqlQuery = "insert into film(name, description, release, duration, rating_id) " +
-                "values (?, ?, ?, ?, ?)";
+        String sqlQuery = "insert into film(name, description, release, duration, rate, rating_id) " +
+                "values (?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -44,7 +44,8 @@ public class FilmDbStorage implements FilmStorage {
             stmt.setString(2, film.getDescription());
             stmt.setObject(3, film.getReleaseDate());
             stmt.setObject(4, film.getDuration().toMinutes());
-            stmt.setObject(5, film.getMpa().getId());
+            stmt.setInt(5, film.getRate());
+            stmt.setObject(6, film.getMpa().getId());
             return stmt;
         }, keyHolder);
 
