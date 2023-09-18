@@ -104,6 +104,7 @@ public class FilmDbStorage implements FilmStorage {
                 "r.rating\n" +
         "FROM film AS f\n" +
         "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
+        "GROUP BY f.FILM_ID\n" +
         "HAVING f.film_id = 1";
 
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery);
