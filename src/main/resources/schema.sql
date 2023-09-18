@@ -59,10 +59,10 @@ CREATE TABLE IF NOT EXISTS genre (
 
 CREATE TABLE IF NOT EXISTS film_genre (
   film_id integer NOT NULL,
-  genre varchar(10) NOT NULL,
-  PRIMARY KEY (film_id, genre),
+  genre_id varchar(10) NOT NULL,
+  PRIMARY KEY (film_id, genre_id),
   FOREIGN KEY (film_id) REFERENCES film (film_id),
-  FOREIGN KEY (genre) REFERENCES genre (genre_id)
+  FOREIGN KEY (genre_id) REFERENCES genre (genre_id)
 );
 
 CREATE TABLE IF NOT EXISTS likes (
