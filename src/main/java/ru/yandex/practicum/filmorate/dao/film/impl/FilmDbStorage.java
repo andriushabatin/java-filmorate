@@ -55,6 +55,19 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film put(Film film) throws ValidationException {
 
+        String sqlQuery = "UPDATE film\n" +
+                "SET name=?, description=?, release=?, duration=?, rating_id=?\n" +
+                "WHERE film_id=?";
+
+        jdbcTemplate.update(sqlQuery,
+                film.getName(),
+                film.getDescription(),
+                film.getReleaseDate(),
+                film.getDuration().toMinutes(),
+                film.getRating().getId(),
+                film.getId());
+
+        return findFilmById(film.getId());
         /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
         if (filmDb.isPresent()) {
             Film filmUpdate = filmDb.get();
@@ -80,8 +93,6 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             throw new NotFoundException("User not found with id : " + user.getId());
         }*/
-
-        return null;
     }
 
     @Override
@@ -99,7 +110,6 @@ public class FilmDbStorage implements FilmStorage {
                 "GROUP BY f.FILM_ID\n";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs));
-
         //return this.filmRepository.findAll();
     }
 
