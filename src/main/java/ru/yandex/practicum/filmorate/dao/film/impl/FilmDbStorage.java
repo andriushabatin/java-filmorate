@@ -106,6 +106,7 @@ public class FilmDbStorage implements FilmStorage {
                 "f.description,\n" +
                 "f.release,\n" +
                 "f.duration,\n" +
+                "f.rate,\n" +
                 "f.rating_id,\n" +
                 "r.rating\n" +
                 "FROM film AS f\n" +
@@ -124,6 +125,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setDescription(rs.getString("description"));
         film.setReleaseDate(rs.getDate("release"));
         film.setDuration(Duration.ofMinutes(rs.getLong("duration")));
+        film.setRate(rs.getInt("rate"));
         film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
         film.setGenres(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id")));
 
