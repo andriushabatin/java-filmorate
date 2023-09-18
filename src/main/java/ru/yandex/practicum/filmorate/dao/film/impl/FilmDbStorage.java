@@ -105,9 +105,9 @@ public class FilmDbStorage implements FilmStorage {
         "FROM film AS f\n" +
         "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
         "GROUP BY f.FILM_ID\n" +
-        "HAVING f.film_id = 1";
+        "HAVING f.film_id = ?";
 
-        SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery);
+        SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
         filmRows.next();
 
         Film film = new Film();
