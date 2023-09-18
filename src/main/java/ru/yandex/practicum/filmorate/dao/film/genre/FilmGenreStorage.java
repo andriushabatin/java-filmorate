@@ -7,4 +7,5 @@ import java.util.List;
 public interface FilmGenreStorage {
 
     public void createFilmGenreRelations(int filmId, List<Genre> genres);
+    public List<Genre> findGenresByFilmId (int id);
 }

@@ -153,6 +153,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setReleaseDate(filmRows.getDate("release"));
         film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
         film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
+        film.setGenres(filmGenreStorage.findGenresByFilmId(id));
 
         return film;
         /*Optional <Film> filmDb = this.filmRepository.findById(id);
