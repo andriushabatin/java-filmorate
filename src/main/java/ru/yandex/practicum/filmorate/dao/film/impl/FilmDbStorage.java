@@ -141,6 +141,7 @@ public class FilmDbStorage implements FilmStorage {
                 "f.release,\n" +
                 "f.duration,\n" +
                 "f.rating_id,\n" +
+                "f.rate,\n" +
                 "r.rating\n" +
         "FROM film AS f\n" +
         "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
@@ -156,6 +157,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setDescription(filmRows.getString("description"));
         film.setReleaseDate(filmRows.getDate("release"));
         film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
+        film.setRate(filmRows.getInt("rate"));
         film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
         film.setGenres(filmGenreStorage.findGenresByFilmId(id));
 
