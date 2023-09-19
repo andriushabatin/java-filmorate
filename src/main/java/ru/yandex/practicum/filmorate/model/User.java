@@ -16,7 +16,6 @@ public class User {
     private String email;
     private String login;
     private String name;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date birthday;
     //private Set<Integer> friends;
 }
