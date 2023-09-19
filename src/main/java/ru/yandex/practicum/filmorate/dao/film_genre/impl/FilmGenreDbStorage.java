@@ -1,9 +1,9 @@
-package ru.yandex.practicum.filmorate.dao.film.genre.impl;
+package ru.yandex.practicum.filmorate.dao.film_genre.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.dao.film.genre.FilmGenreStorage;
+import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
 import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.sql.ResultSet;

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,7 @@ public class GenreController {
 
     @GetMapping({"/genres"})
     public List<Genre> getGenres() {
-        return genreService.getGenres();
+        return genreService.getAllGenres();
     }
 
     @GetMapping({"/genres/{id}"})
