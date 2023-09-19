@@ -1,25 +1,45 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.dao.user.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repository.UserRepository;
-import ru.yandex.practicum.filmorate.validator.UserValidator;
 
+import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Qualifier("UserDbStorage")
 public class UserDbStorage implements UserStorage {
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
+
+        String sqlQuery = "INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY)\n" +
+                "VALUES (?, ?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"USER_ID"});
+            stmt.setString(1, user.getEmail());
+            stmt.setString(2, user.getLogin());
+            stmt.setString(3, user.getName());
+            stmt.setObject(4, user.getBirthday());
+            return stmt;
+        }, keyHolder);
+
+        //return keyHolder.getKey().intValue();
+        return null;
+
         /*try {
             if (UserValidator.isValid(user)) {
                 return userRepository.save(user);
@@ -28,7 +48,6 @@ public class UserDbStorage implements UserStorage {
         } catch (ValidationException e) {
             throw new ValidationException(e.getMessage());
         }*/
-        return null;
     }
 
     @Override
@@ -63,7 +82,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User findUserById(int id) {
         /*Optional <User> userDb = this.userRepository.findById(id);
 
         if (userDb.isPresent()) {
@@ -73,10 +92,5 @@ public class UserDbStorage implements UserStorage {
         }*/
 
         return null;
-    }
-
-    @Override
-    public void deleteAll() {
-        //this.userRepository.deleteAll();
     }
 }

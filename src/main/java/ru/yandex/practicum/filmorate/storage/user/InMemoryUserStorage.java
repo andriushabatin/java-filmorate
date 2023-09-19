@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -54,7 +55,7 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(this.users.values());
     }
 
-    public User getUserById(int id) {
+    public User findUserById(int id) {
         if (users.containsKey(id)) {
             return users.get(id);
         } else {

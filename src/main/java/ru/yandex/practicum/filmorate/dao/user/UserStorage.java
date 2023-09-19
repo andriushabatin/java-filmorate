@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.dao.user;
 
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -14,7 +14,5 @@ public interface UserStorage  {
 
     public List<User> findAll();
 
-    public User getUserById(int id);
-
-    public void deleteAll();
+    public User findUserById(int id);
 }

@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.Friendship;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -41,13 +40,13 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userStorage.getUserById(id);
+        return userStorage.findUserById(id);
     }
 
     public void addToFriends(int id, int friendId) throws SQLException {
 
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.getUserById(friendId);
+        User user = userStorage.findUserById(id);
+        User friend = userStorage.findUserById(friendId);
         friendshipService.addToFriends(user, friend);
     }
 
@@ -65,8 +64,8 @@ public class UserService {
 
     public void deleteFromFriends(int id, int friendId) throws SQLException {
 
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.getUserById(friendId);
+        User user = userStorage.findUserById(id);
+        User friend = userStorage.findUserById(friendId);
         friendshipService.deleteFromFriends(user, friend);
     }
 
