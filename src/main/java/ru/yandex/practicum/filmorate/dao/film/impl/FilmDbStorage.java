@@ -13,7 +13,6 @@ import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.storage.film.FilmMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -120,21 +119,6 @@ public class FilmDbStorage implements FilmStorage {
         //return this.filmRepository.findAll();
     }
 
-    private Film makeFilm(ResultSet rs) throws SQLException {
-
-        Film film = new Film();
-        film.setId(rs.getInt("film_id"));
-        film.setName(rs.getString("name"));
-        film.setDescription(rs.getString("description"));
-        film.setReleaseDate(rs.getDate("release"));
-        film.setDuration(Duration.ofMinutes(rs.getLong("duration")));
-        film.setRate(rs.getInt("rate"));
-        film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
-        film.setGenres(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id")));
-
-        return film;
-    }
-
     @Override
     public Film findFilmById(int id) {
 
@@ -176,7 +160,21 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public List<Film> getPopularFilms(int count) {
 
-        String sql = "SELECT *\n" +
+        String sqlQuery = "SELECT f.FILM_ID, \n" +
+                "       f.NAME, \n" +
+                "       f.DESCRIPTION, \n" +
+                "       f.RELEASE,\n" +
+                "       f.DURATION,\n" +
+                "       f.RATE,\n" +
+                "       f.RATING_ID,\n" +
+                "       r.RATING \n" +
+                "FROM FILM f \n" +
+                "LEFT JOIN RATING AS r ON f.RATING_ID  = r.RATING_ID \n" +
+                "ORDER BY f.RATE DESC\n" +
+                "LIMIT ?;";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
+        /*String sql = "SELECT *\n" +
                 "FROM film AS a\n" +
                 "LEFT OUTER JOIN\n" +
                 "  (SELECT film_id,\n" +
@@ -188,6 +186,21 @@ public class FilmDbStorage implements FilmStorage {
 
         return jdbcTemplate.query(sql,
                 new FilmMapper(),
-                count);
+                count);*/
+    }
+
+    private Film makeFilm(ResultSet rs) throws SQLException {
+
+        Film film = new Film();
+        film.setId(rs.getInt("film_id"));
+        film.setName(rs.getString("name"));
+        film.setDescription(rs.getString("description"));
+        film.setReleaseDate(rs.getDate("release"));
+        film.setDuration(Duration.ofMinutes(rs.getLong("duration")));
+        film.setRate(rs.getInt("rate"));
+        film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
+        film.setGenres(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id")));
+
+        return film;
     }
 }
