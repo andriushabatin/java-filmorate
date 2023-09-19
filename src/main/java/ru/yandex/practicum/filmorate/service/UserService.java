@@ -35,10 +35,6 @@ public class UserService {
         return userStorage.findAll();
     }
 
-    public void deleteAll() {
-        userStorage.deleteAll();
-    }
-
     public User getUserById(int id) {
         return userStorage.findUserById(id);
     }

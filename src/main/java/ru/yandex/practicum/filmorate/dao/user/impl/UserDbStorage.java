@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
@@ -83,6 +85,22 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User findUserById(int id) {
+
+        String sqlQuery = "SELECT *\n" +
+                "FROM USERS u \n" +
+                "WHERE u.USER_ID = ?;";
+
+        SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
+        filmRows.next();
+
+        User user = new User();
+        user.setId(filmRows.getInt("USER_ID"));
+        user.setEmail(filmRows.getString("EMAIL"));
+        user.setLogin(filmRows.getString("LOGIN"));
+        user.setName(filmRows.getString("NAME"));
+        user.setBirthday(filmRows.getDate("BIRTHDAY"));
+
+        return user;
         /*Optional <User> userDb = this.userRepository.findById(id);
 
         if (userDb.isPresent()) {
@@ -90,7 +108,5 @@ public class UserDbStorage implements UserStorage {
         } else {
             throw new NotFoundException("User not found with id : " + id);
         }*/
-
-        return null;
     }
 }
