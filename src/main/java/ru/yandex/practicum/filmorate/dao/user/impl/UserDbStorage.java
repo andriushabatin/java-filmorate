@@ -39,8 +39,7 @@ public class UserDbStorage implements UserStorage {
             return stmt;
         }, keyHolder);
 
-        //return keyHolder.getKey().intValue();
-        return null;
+        return findUserById(keyHolder.getKey().intValue());
 
         /*try {
             if (UserValidator.isValid(user)) {
