@@ -11,9 +11,13 @@ import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.Duration;
 import java.util.List;
 
 @Component
@@ -40,7 +44,6 @@ public class UserDbStorage implements UserStorage {
         }, keyHolder);
 
         return findUserById(keyHolder.getKey().intValue());
-
         /*try {
             if (UserValidator.isValid(user)) {
                 return userRepository.save(user);
@@ -78,8 +81,12 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public List<User> findAll() {
+
+        String sqlQuery = "SELECT * \n" +
+                "FROM users;";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUser(rs));
         //return this.userRepository.findAll();
-        return null;
     }
 
     @Override
@@ -107,5 +114,17 @@ public class UserDbStorage implements UserStorage {
         } else {
             throw new NotFoundException("User not found with id : " + id);
         }*/
+    }
+
+    private User makeUser(ResultSet rs) throws SQLException {
+
+        User user = new User();
+        user.setId(rs.getInt("USER_ID"));
+        user.setEmail(rs.getString("EMAIL"));
+        user.setLogin(rs.getString("LOGIN"));
+        user.setName(rs.getString("NAME"));
+        user.setBirthday(rs.getDate("BIRTHDAY"));
+
+        return user;
     }
 }
