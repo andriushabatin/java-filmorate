@@ -71,6 +71,8 @@ public class FilmDbStorage implements FilmStorage {
                 film.getMpa().getId(),
                 film.getId());
 
+        filmGenreStorage.updateFilmGenreRelations(film.getId(), film.getGenres());
+
         return findFilmById(film.getId());
         /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
         if (filmDb.isPresent()) {

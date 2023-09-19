@@ -46,6 +46,22 @@ public class FilmGenreDbStorage implements FilmGenreStorage {
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeGenre(rs), id);
     }
 
+    @Override
+    public void updateFilmGenreRelations(int filmId, List<Genre> newGenres) {
+        deleteAllFilmGenreRelationsById(filmId);
+        createFilmGenreRelations(filmId, newGenres);
+    }
+
+    @Override
+    public void deleteAllFilmGenreRelationsById(int filmId) {
+
+        String sqlQuery = "DELETE\n" +
+                "FROM film_genre\n" +
+                "WHERE genre_id = ?";
+
+        jdbcTemplate.update(sqlQuery, filmId);
+    }
+
     private Genre makeGenre(ResultSet rs) throws SQLException {
 
         Genre genre = new Genre();
