@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.dao.genre.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.genre.GenreStorage;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -28,7 +29,19 @@ public class GenreDbStorage implements GenreStorage {
 
     @Override
     public Genre getGenreById(int id) {
-        return null;
+
+        String sqlQuery = "SELECT * \n" +
+                "FROM GENRE g \n" +
+                "WHERE g.GENRE_ID = ?;";
+
+        SqlRowSet genreRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
+        genreRows.next();
+
+        Genre genre = new Genre();
+        genre.setId(genreRows.getInt("genre_id"));
+        genre.setGenre(genreRows.getString("genre"));
+
+        return genre;
     }
 
     private Genre makeGenre(ResultSet rs) throws SQLException {
