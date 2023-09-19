@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.dao.mpa.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.mpa.MpaStorage;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -28,7 +29,19 @@ public class MpaDbStorage implements MpaStorage {
 
     @Override
     public Mpa getMpaById(int id) {
-        return null;
+
+        String sqlQuery = "SELECT * \n" +
+                "FROM RATING r \n" +
+                "WHERE r.RATING_ID = ?;";
+
+        SqlRowSet mpaRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
+        mpaRows.next();
+
+        Mpa mpa = new Mpa();
+        mpa.setId(mpaRows.getInt("rating_id"));
+        mpa.setRating(mpaRows.getString("rating"));
+
+        return mpa;
     }
 
     private Mpa makeMpa(ResultSet rs) throws SQLException {
