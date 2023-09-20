@@ -1,8 +1,9 @@
-package ru.yandex.practicum.filmorate.storage.Like;
+package ru.yandex.practicum.filmorate.dao.like.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -12,12 +13,12 @@ import ru.yandex.practicum.filmorate.repository.LikeRepository;
 import java.util.List;
 
 @Component
-public class LikeDbStorage {
-
+public class LikeDbStorage implements LikeStorage {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Override
     public void likeFilm(Film film, User user) {
 
         if (likeExists(film.getId(), user.getId())) {
@@ -27,6 +28,7 @@ public class LikeDbStorage {
         }
     }
 
+    @Override
     public void deleteLike(Film film, User user) {
 
         if (likeExists(film.getId(), user.getId())) {
