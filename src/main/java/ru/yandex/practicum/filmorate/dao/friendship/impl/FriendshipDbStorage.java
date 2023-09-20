@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserMapper;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -40,7 +39,7 @@ public class FriendshipDbStorage implements FriendshipStorage {
     public List<User> getAllFriends(int id) {
 
         return jdbcTemplate.query(
-                "SELECT * FROM USER_TABLE WHERE user_id IN (SELECT friend_id FROM FRIENDSHIP WHERE user_id=?)",
+                "SELECT * FROM USERS WHERE user_id IN (SELECT friend_id FROM FRIENDSHIP WHERE user_id=?)",
                 new UserMapper(),
                 id
         );
