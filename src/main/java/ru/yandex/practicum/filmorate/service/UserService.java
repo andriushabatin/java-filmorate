@@ -70,15 +70,13 @@ public class UserService {
     }
 
     public List<User> findCommonFriends(int id, int otherId) {
+
         List<User> friends = getAllFriends(id);
         List<User> otherFriends = getAllFriends(otherId);
 
         return friends.stream()
                 .filter(otherFriends::contains)
                 .collect(Collectors.toList());
-
-
-
 
         /*User user = userStorage.getUserById(id);
         User other = userStorage.getUserById(otherId);
