@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.friendship.FriendshipStorage;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserMapper;
@@ -48,16 +49,16 @@ public class FriendshipDbStorage implements FriendshipStorage {
     @Override
     public void deleteFromFriends(User user, User friend) {
 
-        /*if (friendshipExist(user, friend)) {
+        if (friendshipExist(user, friend)) {
             if (friendshipExist(friend, user)) {
                 deleteFriendship(user, friend);
-                friendshipUpdateStatus(1, friend.getId(), user.getId());
+                friendshipUpdateStatus(friend.getId(), user.getId(), 1);
             } else {
                 deleteFriendship(user, friend);
             }
         } else {
             throw new NotFoundException();
-        }*/
+        }
     }
 
     private void deleteFriendship(User user, User friend) {
