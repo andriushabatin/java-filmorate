@@ -2,9 +2,9 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.dao.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.friendship.FriendshipDbStorage;
+import ru.yandex.practicum.filmorate.dao.friendship.impl.FriendshipDbStorage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.List;
 public class FriendshipService {
 
     @Autowired
-    FriendshipDbStorage friendshipStorage;
+    FriendshipStorage friendshipStorage;
 
-    public void addToFriends(User user, User friend) throws SQLException {
+    public void addToFriends(User user, User friend) {
 
         friendshipStorage.addToFriends(user, friend);
     }
@@ -25,7 +25,7 @@ public class FriendshipService {
         return friendshipStorage.getAllFriends(id);
     }
 
-    public void deleteFromFriends(User user, User friend) throws SQLException {
+    public void deleteFromFriends(User user, User friend) {
 
         friendshipStorage.deleteFromFriends(user, friend);
     }

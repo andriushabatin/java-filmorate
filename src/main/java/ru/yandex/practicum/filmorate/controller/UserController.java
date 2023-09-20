@@ -40,6 +40,13 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+
+
+
+
+
+
+
     @PutMapping("/users/{id}/friends/{friendId}")
     public void addToFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.addToFriends(id, friendId);
@@ -59,6 +66,8 @@ public class UserController {
     public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.findCommonFriends(id, otherId);
     }
+
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)

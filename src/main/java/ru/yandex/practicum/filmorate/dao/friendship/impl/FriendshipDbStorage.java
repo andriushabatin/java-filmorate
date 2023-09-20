@@ -1,25 +1,24 @@
-package ru.yandex.practicum.filmorate.storage.friendship;
+package ru.yandex.practicum.filmorate.dao.friendship.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.dao.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repository.FriendshipRepository;
 import ru.yandex.practicum.filmorate.storage.user.UserMapper;
 
 import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class FriendshipDbStorage {
+public class FriendshipDbStorage implements FriendshipStorage {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void addToFriends(User user, User friend) throws SQLException {
+    @Override
+    public void addToFriends(User user, User friend) {
 
             if (friendshipExist(user, friend)) {
                 throw new ObjectAlreadyExistException("Дружба уже существует!");
@@ -36,6 +35,7 @@ public class FriendshipDbStorage {
             }
     }
 
+    @Override
     public List<User> getAllFriends(int id) {
 
         return jdbcTemplate.query(
@@ -45,9 +45,10 @@ public class FriendshipDbStorage {
         );
     }
 
-    public void deleteFromFriends(User user, User friend) throws SQLException {
+    @Override
+    public void deleteFromFriends(User user, User friend) {
 
-        if (friendshipExist(user, friend)) {
+        /*if (friendshipExist(user, friend)) {
             if (friendshipExist(friend, user)) {
                 deleteFriendship(user, friend);
                 friendshipUpdateStatus(1, friend.getId(), user.getId());
@@ -56,7 +57,7 @@ public class FriendshipDbStorage {
             }
         } else {
             throw new NotFoundException();
-        }
+        }*/
     }
 
     private void deleteFriendship(User user, User friend) {
@@ -68,7 +69,7 @@ public class FriendshipDbStorage {
         );
     }
 
-    private boolean friendshipExist(User user, User friend) throws SQLException {
+    private boolean friendshipExist(User user, User friend) {
 
         String sql = "SELECT USER_ID FROM FRIENDSHIP WHERE USER_ID=? AND friend_id=?";
         List<Integer> a = jdbcTemplate.queryForList(sql, Integer.class, user.getId(), friend.getId());
@@ -85,7 +86,8 @@ public class FriendshipDbStorage {
         );
     }
 
-    private void insertNewFriendship(int firstId, int secondId, int status) throws SQLException {
+    private void insertNewFriendship(int firstId, int secondId, int status) {
+
         String sqlQuery = "INSERT INTO FRIENDSHIP(user_id, friend_id, status) " +
                 "values (?, ?, ?)";
         jdbcTemplate.update(sqlQuery,
@@ -94,6 +96,4 @@ public class FriendshipDbStorage {
                 status
         );
     }
-
-
 }

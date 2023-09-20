@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ public class UserService {
         return userStorage.findUserById(id);
     }
 
-    public void addToFriends(int id, int friendId) throws SQLException {
+    public void addToFriends(int id, int friendId) {
 
         User user = userStorage.findUserById(id);
         User friend = userStorage.findUserById(friendId);
@@ -58,7 +57,7 @@ public class UserService {
         friend.setFriends(friends);*/
     }
 
-    public void deleteFromFriends(int id, int friendId) throws SQLException {
+    public void deleteFromFriends(int id, int friendId) {
 
         User user = userStorage.findUserById(id);
         User friend = userStorage.findUserById(friendId);
