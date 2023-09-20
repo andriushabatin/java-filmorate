@@ -56,6 +56,19 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User put(User user) throws ValidationException {
+
+        String sqlQuery = "UPDATE USERS\n" +
+                "SET EMAIL=?, LOGIN=?, NAME=?, BIRTHDAY=?\n" +
+                "WHERE USER_ID=?";
+
+        jdbcTemplate.update(sqlQuery,
+                user.getEmail(),
+                user.getLogin(),
+                user.getName(),
+                user.getBirthday(),
+                user.getId());
+
+        return findUserById(user.getId());
         /*try {
             if (UserValidator.isValid(user)) {
                 Optional<User> userDb = this.userRepository.findById(user.getId());
@@ -76,7 +89,6 @@ public class UserDbStorage implements UserStorage {
         } catch (ValidationException e) {
             throw new ValidationException(e.getMessage());
         }*/
-        return null;
     }
 
     @Override
