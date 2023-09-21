@@ -53,6 +53,10 @@ public class LikeDbStorage implements LikeStorage {
                 filmId,
                 userId
         );
+
+        //sqlQuery
+
+
     }
 
     private void deleteLike(int filmId, int userId) {

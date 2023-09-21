@@ -59,4 +59,10 @@ public class FilmController {
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
         return Map.of("error:", "Фильм не найден!");
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
+        return Map.of("error:", e.getMessage());
+    }
 }
