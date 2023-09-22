@@ -63,7 +63,7 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
-        return Map.of("error:", "Произошла ошибка!");
+        return Map.of("error:", e.getMessage());
     }
 
     @ExceptionHandler

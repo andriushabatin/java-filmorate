@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.user.UserStorage;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -118,16 +119,20 @@ public class UserDbStorage implements UserStorage {
                 "WHERE u.USER_ID = ?;";
 
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
-        filmRows.next();
 
-        User user = new User();
-        user.setId(filmRows.getInt("USER_ID"));
-        user.setEmail(filmRows.getString("EMAIL"));
-        user.setLogin(filmRows.getString("LOGIN"));
-        user.setName(filmRows.getString("NAME"));
-        user.setBirthday(filmRows.getDate("BIRTHDAY"));
+        if(filmRows.next()) {
 
-        return user;
+            User user = new User();
+            user.setId(filmRows.getInt("USER_ID"));
+            user.setEmail(filmRows.getString("EMAIL"));
+            user.setLogin(filmRows.getString("LOGIN"));
+            user.setName(filmRows.getString("NAME"));
+            user.setBirthday(filmRows.getDate("BIRTHDAY"));
+            return user;
+
+        } else {
+            throw new NotFoundException("Пользователь не найден!");
+        }
         /*Optional <User> userDb = this.userRepository.findById(id);
 
         if (userDb.isPresent()) {
