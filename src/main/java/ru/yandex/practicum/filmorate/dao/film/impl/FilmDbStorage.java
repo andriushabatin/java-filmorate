@@ -9,10 +9,12 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
+import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,9 +29,10 @@ public class FilmDbStorage implements FilmStorage {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     @Autowired
     private FilmGenreStorage filmGenreStorage;
+    @Autowired
+    private LikeStorage likeStorage;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
@@ -158,6 +161,15 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             throw new NotFoundException("Film not found with id : " + id);
         }*/
+    }
+
+    @Override
+    public void likeFilm(int id, User user) throws ValidationException {
+
+        Film film = findFilmById(id);
+        likeStorage.likeFilm(film, user);
+        film.setRate(film.getRate() + 1);
+        put(film);
     }
 
     @Override

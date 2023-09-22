@@ -38,6 +38,7 @@ public class LikeDbStorage implements LikeStorage {
         }
     }
 
+
     private boolean likeExists(int filmId, int userId) {
 
         String sql = "SELECT FILM_ID FROM LIKES WHERE FILM_ID=? AND USER_ID=?";

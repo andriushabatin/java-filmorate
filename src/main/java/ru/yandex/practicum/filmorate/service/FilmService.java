@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.dao.film.impl.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 
@@ -55,9 +55,10 @@ public class FilmService {
 
     public void likeFilm(int id, int userId) {
 
-        Film film = filmStorage.findFilmById(id);
+        filmStorage.likeFilm(id, userStorage.findUserById(userId));
+        /*Film film = filmStorage.findFilmById(id);
         User user = userStorage.findUserById(userId);
-        likeService.likeFilm(film, user);
+        likeService.likeFilm(film, user);*/
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
