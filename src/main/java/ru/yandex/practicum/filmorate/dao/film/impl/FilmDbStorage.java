@@ -65,8 +65,7 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film put(Film film) throws ValidationException {
 
-        //if (FilmValidator.isValid(film)) {
-
+        if (FilmValidator.isValid(film)) {
             String sqlQuery = "UPDATE film\n" +
                     "SET name=?, description=?, release=?, duration=?, rate=?, rating_id=?\n" +
                     "WHERE film_id=?";
@@ -83,9 +82,9 @@ public class FilmDbStorage implements FilmStorage {
             filmGenreStorage.updateFilmGenreRelations(film.getId(), film.getGenres());
 
             return findFilmById(film.getId());
-       /* } else {
+        } else {
             return null;
-        }*/
+        }
 
         /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
         if (filmDb.isPresent()) {
