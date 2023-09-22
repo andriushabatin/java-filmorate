@@ -40,7 +40,7 @@ VALUES ('2', 'PG');
 
 MERGE INTO rating
 KEY(rating_id)
-VALUES ('3', 'PG13');
+VALUES ('3', 'PG-13');
 
 MERGE INTO rating
 KEY(rating_id)
@@ -48,4 +48,4 @@ VALUES ('4', 'R');
 
 MERGE INTO rating
 KEY(rating_id)
-VALUES ('5', 'NC17');
+VALUES ('5', 'NC-17');
