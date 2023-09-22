@@ -8,27 +8,27 @@ VALUES ('2', 'CONFIRMED');
 
 MERGE INTO genre
 KEY(genre_id)
-VALUES ('1', 'COMEDY');
+VALUES ('1', 'Комедия');
 
 MERGE INTO genre
 KEY(genre_id)
-VALUES ('2', 'DRAMA');
+VALUES ('2', 'Драма');
 
 MERGE INTO genre
 KEY(genre_id)
-VALUES ('3', 'CARTOON');
+VALUES ('3', 'Мультфильм');
 
 MERGE INTO genre
 KEY(genre_id)
-VALUES ('4', 'THRILLER');
+VALUES ('4', 'Триллер');
 
 MERGE INTO genre
 KEY(genre_id)
-VALUES ('5', 'DOCUMENTARY');
+VALUES ('5', 'Документальный');
 
 MERGE INTO genre
 KEY(genre_id)
-VALUES ('6', 'ACTION');
+VALUES ('6', 'Боевик');
 
 MERGE INTO rating
 KEY(rating_id)
