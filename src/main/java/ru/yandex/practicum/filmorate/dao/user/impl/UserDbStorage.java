@@ -13,6 +13,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validator.UserValidator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,20 +31,25 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
 
-        String sqlQuery = "INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY)\n" +
-                "VALUES (?, ?, ?, ?)";
+        if (UserValidator.isValid(user)) {
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"USER_ID"});
-            stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getLogin());
-            stmt.setString(3, user.getName());
-            stmt.setObject(4, user.getBirthday());
-            return stmt;
-        }, keyHolder);
+            String sqlQuery = "INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY)\n" +
+                    "VALUES (?, ?, ?, ?)";
 
-        return findUserById(keyHolder.getKey().intValue());
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"USER_ID"});
+                stmt.setString(1, user.getEmail());
+                stmt.setString(2, user.getLogin());
+                stmt.setString(3, user.getName());
+                stmt.setObject(4, user.getBirthday());
+                return stmt;
+            }, keyHolder);
+
+            return findUserById(keyHolder.getKey().intValue());
+        } else {
+            return null;
+        }
         /*try {
             if (UserValidator.isValid(user)) {
                 return userRepository.save(user);
