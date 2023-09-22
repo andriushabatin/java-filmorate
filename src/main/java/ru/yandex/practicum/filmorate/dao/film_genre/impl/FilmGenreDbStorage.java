@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class FilmGenreDbStorage implements FilmGenreStorage {
@@ -19,13 +20,17 @@ public class FilmGenreDbStorage implements FilmGenreStorage {
     @Override
     public void createFilmGenreRelations(int filmId, List<Genre> genres) {
 
-        String sqlQuery = "INSERT INTO film_genre(film_id, genre_id) " +
-                "values (?, ?)";
+        //System.out.println(genres);
 
-        for (Genre genre : genres) {
-            jdbcTemplate.update(sqlQuery,
-                    filmId,
-                    genre.getId());
+        if (Optional.ofNullable(genres).isPresent()) {
+            String sqlQuery = "INSERT INTO film_genre(film_id, genre_id) " +
+                    "values (?, ?)";
+
+            for (Genre genre : genres) {
+                jdbcTemplate.update(sqlQuery,
+                        filmId,
+                        genre.getId());
+            }
         }
     }
 
