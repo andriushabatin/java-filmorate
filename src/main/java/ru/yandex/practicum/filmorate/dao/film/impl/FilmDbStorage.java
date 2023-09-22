@@ -21,7 +21,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -51,8 +50,6 @@ public class FilmDbStorage implements FilmStorage {
             stmt.setObject(6, film.getMpa().getId());
             return stmt;
         }, keyHolder);
-
-        System.out.println(findFilmById(keyHolder.getKey().intValue()));
 
         filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), film.getGenres());
 
@@ -169,6 +166,15 @@ public class FilmDbStorage implements FilmStorage {
         Film film = findFilmById(id);
         likeStorage.likeFilm(film, user);
         film.setRate(film.getRate() + 1);
+        put(film);
+    }
+
+    @Override
+    public void deleteLike(int id, User user) {
+
+        Film film = findFilmById(id);
+        likeStorage.deleteLike(film, user);
+        film.setRate(film.getRate() - 1);
         put(film);
     }
 
