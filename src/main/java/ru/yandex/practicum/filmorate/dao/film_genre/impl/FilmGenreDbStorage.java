@@ -71,7 +71,7 @@ public class FilmGenreDbStorage implements FilmGenreStorage {
 
         Genre genre = new Genre();
         genre.setId(rs.getInt("genre_id"));
-        genre.setGenre(rs.getString("genre"));
+        genre.setName(rs.getString("genre"));
 
         return genre;
     }

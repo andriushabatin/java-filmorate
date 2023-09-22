@@ -38,7 +38,7 @@ public class GenreDbStorage implements GenreStorage {
 
         Genre genre = new Genre();
         genre.setId(genreRows.getInt("genre_id"));
-        genre.setGenre(genreRows.getString("genre"));
+        genre.setName(genreRows.getString("genre"));
 
         return genre;
     }
@@ -47,7 +47,7 @@ public class GenreDbStorage implements GenreStorage {
 
         Genre genre = new Genre();
         genre.setId(rs.getInt("genre_id"));
-        genre.setGenre(rs.getString("genre"));
+        genre.setName(rs.getString("genre"));
 
         return genre;
     }
