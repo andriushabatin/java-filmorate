@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class Mpa {
 
     private int id;
-    private String rating;
+    private String name;
 }

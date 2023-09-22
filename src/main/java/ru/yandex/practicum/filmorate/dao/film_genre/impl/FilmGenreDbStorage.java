@@ -62,7 +62,7 @@ public class FilmGenreDbStorage implements FilmGenreStorage {
 
         String sqlQuery = "DELETE\n" +
                 "FROM film_genre\n" +
-                "WHERE genre_id = ?";
+                "WHERE film_id = ?";
 
         jdbcTemplate.update(sqlQuery, filmId);
     }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
 import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -149,19 +150,22 @@ public class FilmDbStorage implements FilmStorage {
         "HAVING f.film_id = ?";
 
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
-        filmRows.next();
 
-        Film film = new Film();
-        film.setId(filmRows.getInt("film_id"));
-        film.setName(filmRows.getString("name"));
-        film.setDescription(filmRows.getString("description"));
-        film.setReleaseDate(filmRows.getDate("release"));
-        film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
-        film.setRate(filmRows.getInt("rate"));
-        film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
-        film.setGenres(filmGenreStorage.findGenresByFilmId(id));
+        if (filmRows.next()) {
+            Film film = new Film();
+            film.setId(filmRows.getInt("film_id"));
+            film.setName(filmRows.getString("name"));
+            film.setDescription(filmRows.getString("description"));
+            film.setReleaseDate(filmRows.getDate("release"));
+            film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
+            film.setRate(filmRows.getInt("rate"));
+            film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
+            film.setGenres(filmGenreStorage.findGenresByFilmId(id));
 
-        return film;
+            return film;
+        } else {
+            throw new NotFoundException("Фильм не найден!");
+        }
         /*Optional <Film> filmDb = this.filmRepository.findById(id);
         if (filmDb.isPresent()) {
             return filmDb.get();
