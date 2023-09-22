@@ -26,5 +26,5 @@ public class Film {
     private Duration duration;
     private int rate;
     private Mpa mpa;
-    private List<Genre> genres;
+    private HashSet<Genre> genres;
 }

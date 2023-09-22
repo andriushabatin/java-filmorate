@@ -34,6 +34,8 @@ public class GenreDbStorage implements GenreStorage {
                 "WHERE g.GENRE_ID = ?;";
 
         SqlRowSet genreRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
+
+
         genreRows.next();
 
         Genre genre = new Genre();

@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
@@ -22,7 +23,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -54,7 +59,14 @@ public class FilmDbStorage implements FilmStorage {
                 return stmt;
             }, keyHolder);
 
-            filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), film.getGenres());
+            List<Genre> genres;
+            if (Optional.ofNullable(film.getGenres()).isPresent()) {
+                genres = new ArrayList<>(film.getGenres());
+            } else {
+                genres = new ArrayList<>();
+            }
+
+            filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), genres);
 
             return findFilmById(keyHolder.getKey().intValue());
         } else {
@@ -80,7 +92,13 @@ public class FilmDbStorage implements FilmStorage {
                     film.getMpa().getId(),
                     film.getId());
 
-            filmGenreStorage.updateFilmGenreRelations(film.getId(), film.getGenres());
+            List<Genre> genres;
+            if (Optional.ofNullable(film.getGenres()).isPresent()) {
+                genres = new ArrayList<>(film.getGenres());
+            } else {
+                genres = new ArrayList<>();
+            }
+            filmGenreStorage.updateFilmGenreRelations(film.getId(), genres);
 
             return findFilmById(film.getId());
         } else {
@@ -160,7 +178,7 @@ public class FilmDbStorage implements FilmStorage {
             film.setDuration(Duration.ofMinutes(filmRows.getLong("duration")));
             film.setRate(filmRows.getInt("rate"));
             film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
-            film.setGenres(filmGenreStorage.findGenresByFilmId(id));
+            film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(id)));
 
             return film;
         } else {
@@ -234,7 +252,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setDuration(Duration.ofMinutes(rs.getLong("duration")));
         film.setRate(rs.getInt("rate"));
         film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
-        film.setGenres(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id")));
+        film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id"))));
 
         return film;
     }
