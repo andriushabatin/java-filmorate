@@ -4,14 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
 
 public class FilmValidator {
     private static final int MAX_DESC_LENGTH = 200;
     //private static final LocalDate EARLIEST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
-    private static final Date EARLIEST_RELEASE_DATE = Date.from(Instant.from(LocalDate.of(1895, 12, 28)));
+    private static final Date EARLIEST_RELEASE_DATE = java.sql.Date.valueOf(LocalDate.of(1895, 12, 28));
 
     public static Boolean isValid(Film film) throws ValidationException {
         if (StringUtils.isEmpty(film.getName())) {

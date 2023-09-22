@@ -15,6 +15,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,46 +37,56 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
 
-        String sqlQuery = "insert into film(name, description, release, duration, rate, rating_id) " +
-                "values (?, ?, ?, ?, ?, ?)";
+        if (FilmValidator.isValid(film)) {
+            String sqlQuery = "insert into film(name, description, release, duration, rate, rating_id) " +
+                    "values (?, ?, ?, ?, ?, ?)";
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"film_id"});
-            stmt.setString(1, film.getName());
-            stmt.setString(2, film.getDescription());
-            stmt.setObject(3, film.getReleaseDate());
-            stmt.setObject(4, film.getDuration().toMinutes());
-            stmt.setInt(5, film.getRate());
-            stmt.setObject(6, film.getMpa().getId());
-            return stmt;
-        }, keyHolder);
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"film_id"});
+                stmt.setString(1, film.getName());
+                stmt.setString(2, film.getDescription());
+                stmt.setObject(3, film.getReleaseDate());
+                stmt.setObject(4, film.getDuration().toMinutes());
+                stmt.setInt(5, film.getRate());
+                stmt.setObject(6, film.getMpa().getId());
+                return stmt;
+            }, keyHolder);
 
-        filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), film.getGenres());
+            filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), film.getGenres());
 
-        return findFilmById(keyHolder.getKey().intValue());
+            return findFilmById(keyHolder.getKey().intValue());
+        } else {
+            return null;
+        }
         //return filmRepository.save(film);
     }
 
     @Override
     public Film put(Film film) throws ValidationException {
 
-        String sqlQuery = "UPDATE film\n" +
-                "SET name=?, description=?, release=?, duration=?, rate=?, rating_id=?\n" +
-                "WHERE film_id=?";
+        //if (FilmValidator.isValid(film)) {
 
-        jdbcTemplate.update(sqlQuery,
-                film.getName(),
-                film.getDescription(),
-                film.getReleaseDate(),
-                film.getDuration().toMinutes(),
-                film.getRate(),
-                film.getMpa().getId(),
-                film.getId());
+            String sqlQuery = "UPDATE film\n" +
+                    "SET name=?, description=?, release=?, duration=?, rate=?, rating_id=?\n" +
+                    "WHERE film_id=?";
 
-        filmGenreStorage.updateFilmGenreRelations(film.getId(), film.getGenres());
+            jdbcTemplate.update(sqlQuery,
+                    film.getName(),
+                    film.getDescription(),
+                    film.getReleaseDate(),
+                    film.getDuration().toMinutes(),
+                    film.getRate(),
+                    film.getMpa().getId(),
+                    film.getId());
 
-        return findFilmById(film.getId());
+            filmGenreStorage.updateFilmGenreRelations(film.getId(), film.getGenres());
+
+            return findFilmById(film.getId());
+       /* } else {
+            return null;
+        }*/
+
         /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
         if (filmDb.isPresent()) {
             Film filmUpdate = filmDb.get();
