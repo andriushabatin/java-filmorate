@@ -32,7 +32,6 @@ public class UserDbStorage implements UserStorage {
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
 
         if (UserValidator.isValid(user)) {
-
             String sqlQuery = "INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY)\n" +
                     "VALUES (?, ?, ?, ?)";
 
@@ -63,18 +62,22 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User put(User user) throws ValidationException {
 
-        String sqlQuery = "UPDATE USERS\n" +
-                "SET EMAIL=?, LOGIN=?, NAME=?, BIRTHDAY=?\n" +
-                "WHERE USER_ID=?";
+        if (UserValidator.isValid(user)) {
+            String sqlQuery = "UPDATE USERS\n" +
+                    "SET EMAIL=?, LOGIN=?, NAME=?, BIRTHDAY=?\n" +
+                    "WHERE USER_ID=?";
 
-        jdbcTemplate.update(sqlQuery,
-                user.getEmail(),
-                user.getLogin(),
-                user.getName(),
-                user.getBirthday(),
-                user.getId());
+            jdbcTemplate.update(sqlQuery,
+                    user.getEmail(),
+                    user.getLogin(),
+                    user.getName(),
+                    user.getBirthday(),
+                    user.getId());
 
-        return findUserById(user.getId());
+            return findUserById(user.getId());
+        } else {
+            return null;
+        }
         /*try {
             if (UserValidator.isValid(user)) {
                 Optional<User> userDb = this.userRepository.findById(user.getId());
