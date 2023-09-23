@@ -4,8 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class UserValidator {
