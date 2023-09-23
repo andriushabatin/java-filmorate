@@ -20,8 +20,6 @@ public class FilmGenreDbStorage implements FilmGenreStorage {
     @Override
     public void createFilmGenreRelations(int filmId, List<Genre> genres) {
 
-        //System.out.println(genres);
-
         if (Optional.ofNullable(genres).isPresent()) {
             String sqlQuery = "INSERT INTO film_genre(film_id, genre_id) " +
                     "values (?, ?)";

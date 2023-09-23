@@ -14,6 +14,5 @@ import ru.yandex.practicum.filmorate.data.FriendshipStatuses;
 public class FriendshipStatus {
 
     int status_id;
-
     FriendshipStatuses status;
 }

@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.dao.friendship.impl.FriendshipDbStorage;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service

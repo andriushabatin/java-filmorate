@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.repository.LikeRepository;
 
 import java.util.List;
 
@@ -54,10 +53,6 @@ public class LikeDbStorage implements LikeStorage {
                 filmId,
                 userId
         );
-
-        //sqlQuery
-
-
     }
 
     private void deleteLike(int filmId, int userId) {

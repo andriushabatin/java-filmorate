@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.dao.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.UserMapper;
+import ru.yandex.practicum.filmorate.mapper.UserMapper;
 
 import java.util.List;
 
@@ -23,14 +23,9 @@ public class FriendshipDbStorage implements FriendshipStorage {
             if (friendshipExist(user, friend)) {
                 throw new ObjectAlreadyExistException("Дружба уже существует!");
             } else if (friendshipExist(friend, user)) {
-                //update
                 friendshipUpdateStatus(friend.getId(), user.getId(), 2);
-                //insert
-                //insertNewFriendship(friend.getId(), user.getId(), 2);
                 insertNewFriendship(user.getId(), friend.getId(), 2);
             } else {
-                //insert
-                //insertNewFriendship(friend.getId(), user.getId(), 1);
                 insertNewFriendship(user.getId(), friend.getId(), 1);
             }
     }

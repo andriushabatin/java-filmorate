@@ -9,10 +9,7 @@ import java.util.List;
 public interface UserStorage  {
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException;
-
     public User put(User user) throws ValidationException;
-
     public List<User> findAll();
-
     public User findUserById(int id);
 }

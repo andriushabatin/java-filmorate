@@ -45,18 +45,6 @@ public class UserService {
         friendshipService.addToFriends(user, friend);
     }
 
-    private static void addToFriendsForBoth(User user, User friend) {
-        /*Set<Integer> friends;
-
-        friends = user.getFriends();
-        friends.add(friend.getId());
-        user.setFriends(friends);
-
-        friends = friend.getFriends();
-        friends.add(user.getId());
-        friend.setFriends(friends);*/
-    }
-
     public void deleteFromFriends(int id, int friendId) {
 
         User user = userStorage.findUserById(id);
@@ -77,17 +65,6 @@ public class UserService {
         return friends.stream()
                 .filter(otherFriends::contains)
                 .collect(Collectors.toList());
-
-        /*User user = userStorage.getUserById(id);
-        User other = userStorage.getUserById(otherId);
-        Set<Integer> userFriends = user.getFriends();
-        Set<Integer> otherFriends = other.getFriends();
-
-        return userFriends.stream()
-                .filter(otherFriends::contains)
-                .map(userStorage::getUserById)
-                .collect(Collectors.toList());
-        return null;*/
     }
 
 

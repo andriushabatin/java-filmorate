@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.validator;
+package ru.yandex.practicum.filmorate.dao.user.validator;
 
 import org.apache.commons.lang3.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -9,10 +9,10 @@ import java.util.Date;
 
 public class FilmValidator {
     private static final int MAX_DESC_LENGTH = 200;
-    //private static final LocalDate EARLIEST_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     private static final Date EARLIEST_RELEASE_DATE = java.sql.Date.valueOf(LocalDate.of(1895, 12, 28));
 
     public static Boolean isValid(Film film) throws ValidationException {
+
         if (StringUtils.isEmpty(film.getName())) {
             throw new ValidationException("Введено пустое имя.");
         } else if (film.getDescription().length() > MAX_DESC_LENGTH) {

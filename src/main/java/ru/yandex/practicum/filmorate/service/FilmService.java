@@ -32,6 +32,7 @@ public class FilmService {
 
     @Autowired
     public FilmService(InMemoryFilmStorage inMemoryFilmStorage, InMemoryUserStorage inMemoryUserStorage) {
+
         this.filmStorage = inMemoryFilmStorage;
         this.userStorage = inMemoryUserStorage;
     }
@@ -55,33 +56,15 @@ public class FilmService {
     public void likeFilm(int id, int userId) {
 
         filmStorage.likeFilm(id, userStorage.findUserById(userId));
-        /*Film film = filmStorage.findFilmById(id);
-        User user = userStorage.findUserById(userId);
-        likeService.likeFilm(film, user);*/
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
 
         filmStorage.deleteLike(id, userStorage.findUserById(userId));
-        /*Film film = filmStorage.findFilmById(id);
-        User user = userStorage.findUserById(userId);
-        likeService.deleteLike(film, user);*/
     }
 
     public List<Film> getPopularFilms(int count) {
 
         return filmStorage.getPopularFilms(count);
-
-
-        /*List<Film> sortedFilms = filmStorage.findAll()
-                .stream()
-                .sorted(((o1, o2) -> (o2.getLikes().size() - o1.getLikes().size())))
-                .collect(Collectors.toList());
-        System.out.println(sortedFilms);
-        try {
-            return sortedFilms.subList(0, count);
-        } catch (IndexOutOfBoundsException e) {
-            return sortedFilms;
-        }*/
     }
 }

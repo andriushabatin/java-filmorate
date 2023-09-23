@@ -17,7 +17,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.validator.FilmValidator;
+import ru.yandex.practicum.filmorate.dao.user.validator.FilmValidator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -72,7 +71,6 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             return null;
         }
-        //return filmRepository.save(film);
     }
 
     @Override
@@ -104,32 +102,6 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             return null;
         }
-
-        /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
-        if (filmDb.isPresent()) {
-            Film filmUpdate = filmDb.get();
-            filmUpdate.setId(film.getId());
-            filmUpdate.setName(film.getName());
-            filmUpdate.setDescription(film.getDescription());
-            filmUpdate.setReleaseDate(film.getReleaseDate());
-            filmUpdate.setDuration(film.getDuration());
-            filmUpdate.setRating(film.getRating());
-            filmRepository.save(filmUpdate);
-            return filmUpdate;
-        } else {
-            throw new NotFoundException("Film not found with id : " + film.getId());
-        }*/
-
-        /*Optional<Film> filmDb = this.filmRepository.findById(film.getId());
-        if (filmDb.isPresent()) {
-            Film filmUpdate = filmDb.get();
-            filmUpdate.setId(film.getId());
-            filmUpdate.getReleaseDate(film.getReleaseDate());
-            userRepository.save(filmUpdate);
-            return filmUpdate;
-        } else {
-            throw new NotFoundException("User not found with id : " + user.getId());
-        }*/
     }
 
     @Override
@@ -148,7 +120,6 @@ public class FilmDbStorage implements FilmStorage {
                 "GROUP BY f.FILM_ID\n";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs));
-        //return this.filmRepository.findAll();
     }
 
     @Override
@@ -184,12 +155,6 @@ public class FilmDbStorage implements FilmStorage {
         } else {
             throw new NotFoundException("Фильм не найден!");
         }
-        /*Optional <Film> filmDb = this.filmRepository.findById(id);
-        if (filmDb.isPresent()) {
-            return filmDb.get();
-        } else {
-            throw new NotFoundException("Film not found with id : " + id);
-        }*/
     }
 
     @Override
