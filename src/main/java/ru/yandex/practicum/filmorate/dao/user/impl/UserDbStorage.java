@@ -47,14 +47,6 @@ public class UserDbStorage implements UserStorage {
         } else {
             return null;
         }
-        /*try {
-            if (UserValidator.isValid(user)) {
-                return userRepository.save(user);
-            }
-            return user;
-        } catch (ValidationException e) {
-            throw new ValidationException(e.getMessage());
-        }*/
     }
 
     @Override
@@ -76,26 +68,6 @@ public class UserDbStorage implements UserStorage {
         } else {
             return null;
         }
-        /*try {
-            if (UserValidator.isValid(user)) {
-                Optional<User> userDb = this.userRepository.findById(user.getId());
-                if (userDb.isPresent()) {
-                    User userUpdate = userDb.get();
-                    userUpdate.setId(user.getId());
-                    userUpdate.setEmail(user.getEmail());
-                    userUpdate.setLogin(user.getLogin());
-                    userUpdate.setName(user.getName());
-                    userUpdate.setBirthday(user.getBirthday());
-                    userRepository.save(userUpdate);
-                    return userUpdate;
-                } else {
-                    throw new NotFoundException("User not found with id : " + user.getId());
-                }
-            }
-            return user;
-        } catch (ValidationException e) {
-            throw new ValidationException(e.getMessage());
-        }*/
     }
 
     @Override
@@ -105,7 +77,6 @@ public class UserDbStorage implements UserStorage {
                 "FROM users;";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUser(rs));
-        //return this.userRepository.findAll();
     }
 
     @Override
@@ -117,7 +88,7 @@ public class UserDbStorage implements UserStorage {
 
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
 
-        if(filmRows.next()) {
+        if (filmRows.next()) {
 
             User user = new User();
             user.setId(filmRows.getInt("USER_ID"));
@@ -130,13 +101,6 @@ public class UserDbStorage implements UserStorage {
         } else {
             throw new NotFoundException("Пользователь не найден!");
         }
-        /*Optional <User> userDb = this.userRepository.findById(id);
-
-        if (userDb.isPresent()) {
-            return userDb.get();
-        } else {
-            throw new NotFoundException("User not found with id : " + id);
-        }*/
     }
 
     private User makeUser(ResultSet rs) throws SQLException {
