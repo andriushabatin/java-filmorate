@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate;
+package ru.yandex.practicum.filmorate.config;
 
 
 import org.h2.tools.Server;
@@ -14,5 +14,4 @@ public class H2Config {
     public Server databaseServer() throws SQLException {
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9090");
     }
-
 }
