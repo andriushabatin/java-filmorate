@@ -28,9 +28,6 @@ public class FilmService {
     private final UserStorage userStorage;
 
     @Autowired
-    private LikeService likeService;
-
-    @Autowired
     public FilmService(InMemoryFilmStorage inMemoryFilmStorage, InMemoryUserStorage inMemoryUserStorage) {
 
         this.filmStorage = inMemoryFilmStorage;
@@ -54,17 +51,14 @@ public class FilmService {
     }
 
     public void likeFilm(int id, int userId) {
-
         filmStorage.likeFilm(id, userStorage.findUserById(userId));
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
-
         filmStorage.deleteLike(id, userStorage.findUserById(userId));
     }
 
     public List<Film> getPopularFilms(int count) {
-
         return filmStorage.getPopularFilms(count);
     }
 }

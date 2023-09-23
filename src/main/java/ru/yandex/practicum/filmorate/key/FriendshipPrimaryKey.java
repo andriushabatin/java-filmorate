@@ -13,6 +13,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class FriendshipPrimaryKey implements Serializable {
 
-    private int user_id;
-    private int friend_id;
+    private int userId;
+    private int friendId;
 }

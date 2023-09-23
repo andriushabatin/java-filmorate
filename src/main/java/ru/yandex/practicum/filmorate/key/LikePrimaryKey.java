@@ -13,6 +13,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class LikePrimaryKey implements Serializable {
 
-    private int film_id;
-    private int user_id;
+    private int filmId;
+    private int userId;
 }

@@ -53,7 +53,6 @@ public class UserService {
     }
 
     public List<User> getAllFriends(int id) {
-
         return friendshipService.getAllFriends(id);
     }
 
@@ -66,6 +65,4 @@ public class UserService {
                 .filter(otherFriends::contains)
                 .collect(Collectors.toList());
     }
-
-
 }

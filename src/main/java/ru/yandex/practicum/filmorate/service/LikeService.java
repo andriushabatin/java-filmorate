@@ -13,12 +13,10 @@ public class LikeService {
     LikeStorage likeStorage ;
 
     public void likeFilm(Film film, User user) {
-
         likeStorage.likeFilm(film, user);
     }
 
     public void deleteLike(Film film, User user) {
-
         likeStorage.deleteLike(film, user);
     }
 }

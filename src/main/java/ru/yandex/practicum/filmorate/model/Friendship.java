@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Friendship {
 
-    private int user_id;
-    private int friend_id;
+    private int userId;
+    private int friendId;
     private int status;
 }

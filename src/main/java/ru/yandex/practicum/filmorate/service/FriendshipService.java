@@ -14,17 +14,14 @@ public class FriendshipService {
     FriendshipStorage friendshipStorage;
 
     public void addToFriends(User user, User friend) {
-
         friendshipStorage.addToFriends(user, friend);
     }
 
     public List<User> getAllFriends(int id) {
-
         return friendshipStorage.getAllFriends(id);
     }
 
     public void deleteFromFriends(User user, User friend) {
-
         friendshipStorage.deleteFromFriends(user, friend);
     }
 
