@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dao.user.validator;
+package ru.yandex.practicum.filmorate.validator;
 
 import org.apache.commons.lang3.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
