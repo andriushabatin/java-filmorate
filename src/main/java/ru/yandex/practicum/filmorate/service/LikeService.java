@@ -10,7 +10,7 @@ import ru.yandex.practicum.filmorate.model.User;
 public class LikeService {
 
     @Autowired
-    LikeStorage likeStorage ;
+    LikeStorage likeStorage;
 
     public void likeFilm(Film film, User user) {
         likeStorage.likeFilm(film, user);
