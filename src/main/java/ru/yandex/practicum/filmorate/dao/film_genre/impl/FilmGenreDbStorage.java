@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.film_genre.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
