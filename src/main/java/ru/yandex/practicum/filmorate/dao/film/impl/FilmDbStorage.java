@@ -191,19 +191,6 @@ public class FilmDbStorage implements FilmStorage {
                 "LIMIT ?;";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
-        /*String sql = "SELECT *\n" +
-                "FROM film AS a\n" +
-                "LEFT OUTER JOIN\n" +
-                "  (SELECT film_id,\n" +
-                "          count(*) AS COUNT\n" +
-                "   FROM likes\n" +
-                "   GROUP BY film_id) AS b ON b.film_id = a.film_id\n" +
-                "ORDER BY COUNT DESC\n" +
-                "LIMIT ?;";
-
-        return jdbcTemplate.query(sql,
-                new FilmMapper(),
-                count);*/
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
