@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,18 +22,11 @@ public class FilmService {
 
     @Autowired
     @Qualifier("FilmDbStorage")
-    private final FilmStorage filmStorage;
+    private FilmStorage filmStorage;
 
     @Autowired
     @Qualifier("UserDbStorage")
-    private final UserStorage userStorage;
-
-    @Autowired
-    public FilmService(InMemoryFilmStorage inMemoryFilmStorage, InMemoryUserStorage inMemoryUserStorage) {
-
-        this.filmStorage = inMemoryFilmStorage;
-        this.userStorage = inMemoryUserStorage;
-    }
+    private UserStorage userStorage;
 
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
         return filmStorage.create(film);

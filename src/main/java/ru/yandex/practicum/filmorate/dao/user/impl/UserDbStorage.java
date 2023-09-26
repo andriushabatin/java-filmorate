@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.user.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,10 +22,10 @@ import java.util.List;
 
 @Component
 @Qualifier("UserDbStorage")
+@RequiredArgsConstructor
 public class UserDbStorage implements UserStorage {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {

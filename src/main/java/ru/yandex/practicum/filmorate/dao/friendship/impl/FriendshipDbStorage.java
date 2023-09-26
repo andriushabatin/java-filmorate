@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.friendship.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,10 @@ import ru.yandex.practicum.filmorate.mapper.UserMapper;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class FriendshipDbStorage implements FriendshipStorage {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void addToFriends(User user, User friend) {

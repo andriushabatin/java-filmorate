@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.like.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,10 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class LikeDbStorage implements LikeStorage {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void likeFilm(Film film, User user) {

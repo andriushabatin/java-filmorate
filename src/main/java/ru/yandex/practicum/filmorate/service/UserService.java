@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,14 +19,9 @@ public class UserService {
 
     @Autowired
     @Qualifier("UserDbStorage")
-    private final UserStorage userStorage;
+    private UserStorage userStorage;
     @Autowired
-    private final FriendshipService friendshipService;
-
-    public UserService(UserStorage userStorage, FriendshipService friendshipService) {
-        this.userStorage = userStorage;
-        this.friendshipService = friendshipService;
-    }
+    private FriendshipService friendshipService;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         return userStorage.create(user);

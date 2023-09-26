@@ -18,7 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
     private final UserService userService;
 
     @PostMapping({"/users"})

@@ -15,7 +15,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MpaController {
 
-    @Autowired
     private final MpaService mpaService;
 
     @GetMapping({"/mpa"})

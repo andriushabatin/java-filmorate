@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.dao.film.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,14 +31,12 @@ import java.util.Optional;
 
 @Component
 @Qualifier("FilmDbStorage")
+@RequiredArgsConstructor
 public class FilmDbStorage implements FilmStorage {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private FilmGenreStorage filmGenreStorage;
-    @Autowired
-    private LikeStorage likeStorage;
+    private final JdbcTemplate jdbcTemplate;
+    private final FilmGenreStorage filmGenreStorage;
+    private final LikeStorage likeStorage;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {

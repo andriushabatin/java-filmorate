@@ -17,7 +17,6 @@ public class InMemoryUserStorage implements UserStorage {
 
     private final HashMap<Integer, User> users = new HashMap<>();
 
-
     private int nextId = 1;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {

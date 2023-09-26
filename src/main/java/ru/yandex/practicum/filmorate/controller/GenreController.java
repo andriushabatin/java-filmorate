@@ -15,7 +15,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GenreController {
 
-    @Autowired
     private final GenreService genreService;
 
     @GetMapping({"/genres"})

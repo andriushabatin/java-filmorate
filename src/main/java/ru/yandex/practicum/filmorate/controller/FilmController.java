@@ -15,7 +15,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FilmController {
 
-    @Autowired
     private final FilmService filmService;
 
     @PostMapping({"/films"})
