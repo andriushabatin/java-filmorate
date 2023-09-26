@@ -16,7 +16,7 @@ import java.util.Map;
 public class GenreController {
 
     @Autowired
-    GenreService genreService;
+    private final GenreService genreService;
 
     @GetMapping({"/genres"})
     public List<Genre> getGenres() {

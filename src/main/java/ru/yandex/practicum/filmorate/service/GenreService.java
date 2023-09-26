@@ -11,7 +11,11 @@ import java.util.List;
 public class GenreService {
 
     @Autowired
-    private GenreStorage genreStorage;
+    private final GenreStorage genreStorage;
+
+    public GenreService(GenreStorage genreStorage) {
+        this.genreStorage = genreStorage;
+    }
 
     public List<Genre> getAllGenres() {
         return genreStorage.getAllGenres();

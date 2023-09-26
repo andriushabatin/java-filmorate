@@ -13,6 +13,6 @@ import ru.yandex.practicum.filmorate.data.FriendshipStatuses;
 @AllArgsConstructor
 public class FriendshipStatus {
 
-    int statusId;
-    FriendshipStatuses status;
+    private int statusId;
+    private FriendshipStatuses status;
 }

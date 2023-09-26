@@ -11,7 +11,11 @@ import java.util.List;
 public class MpaService {
 
     @Autowired
-    private MpaStorage mpaStorage;
+    private final MpaStorage mpaStorage;
+
+    public MpaService(MpaStorage mpaStorage) {
+        this.mpaStorage = mpaStorage;
+    }
 
     public List<Mpa> getAllMpa() {
         return mpaStorage.getAllMpa();

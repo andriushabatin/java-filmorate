@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class Rating {
 
     private int id;
-    String genre;
+    private String genre;
 }

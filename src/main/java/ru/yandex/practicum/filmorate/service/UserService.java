@@ -18,9 +18,14 @@ public class UserService {
 
     @Autowired
     @Qualifier("UserDbStorage")
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
     @Autowired
-    private FriendshipService friendshipService;
+    private final FriendshipService friendshipService;
+
+    public UserService(UserStorage userStorage, FriendshipService friendshipService) {
+        this.userStorage = userStorage;
+        this.friendshipService = friendshipService;
+    }
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         return userStorage.create(user);
