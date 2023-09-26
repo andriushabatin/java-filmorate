@@ -20,17 +20,17 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping({"/users"})
+    @PostMapping("/users")
     public User create(@RequestBody User user) throws ValidationException, ObjectAlreadyExistException {
         return userService.create(user);
     }
 
-    @PutMapping({"/users"})
+    @PutMapping("/users")
     public User put(@RequestBody User user) throws ValidationException {
         return userService.put(user);
     }
 
-    @GetMapping({"/users"})
+    @GetMapping("/users")
     public List<User> findAll() {
         return userService.findAll();
     }

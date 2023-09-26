@@ -17,17 +17,17 @@ public class FilmController {
 
     private final FilmService filmService;
 
-    @PostMapping({"/films"})
+    @PostMapping("/films")
     public Film create(@RequestBody Film film) throws ValidationException, ObjectAlreadyExistException {
         return filmService.create(film);
     }
 
-    @PutMapping({"/films"})
+    @PutMapping("/films")
     public Film put(@RequestBody Film film) throws ValidationException {
         return filmService.put(film);
     }
 
-    @GetMapping({"/films"})
+    @GetMapping("/films")
     public List<Film> findAll() {
         return filmService.findAll();
     }
