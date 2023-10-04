@@ -9,25 +9,27 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
-    @PostMapping({"/users"})
+    @PostMapping("/users")
     public User create(@RequestBody User user) throws ValidationException, ObjectAlreadyExistException {
         return userService.create(user);
     }
 
-    @PutMapping({"/users"})
+    @PutMapping("/users")
     public User put(@RequestBody User user) throws ValidationException {
         return userService.put(user);
     }
 
-    @GetMapping({"/users"})
+    @GetMapping("/users")
     public List<User> findAll() {
         return userService.findAll();
     }
@@ -38,12 +40,12 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
-    public void addToFriends(@PathVariable int id, @PathVariable int friendId) {
+    public void addToFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.addToFriends(id, friendId);
     }
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
-    public void deleteFromFriends(@PathVariable int id, @PathVariable int friendId) {
+    public void deleteFromFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.deleteFromFriends(id, friendId);
     }
 
@@ -60,6 +62,12 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
+        return Map.of("error:", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationException(final ValidationException e) {
         return Map.of("error:", "Произошла ошибка!");
     }
 }

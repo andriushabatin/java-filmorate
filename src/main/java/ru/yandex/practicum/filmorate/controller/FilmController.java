@@ -16,17 +16,17 @@ public class FilmController {
 
     private final FilmService filmService;
 
-    @PostMapping({"/films"})
+    @PostMapping("/films")
     public Film create(@RequestBody Film film) throws ValidationException, ObjectAlreadyExistException {
         return filmService.create(film);
     }
 
-    @PutMapping({"/films"})
+    @PutMapping("/films")
     public Film put(@RequestBody Film film) throws ValidationException {
         return filmService.put(film);
     }
 
-    @GetMapping({"/films"})
+    @GetMapping("/films")
     public List<Film> findAll() {
         return filmService.findAll();
     }
@@ -54,6 +54,12 @@ public class FilmController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
-        return Map.of("error:", "Фильм не найден!");
+        return Map.of("error:", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
+        return Map.of("error:", e.getMessage());
     }
 }

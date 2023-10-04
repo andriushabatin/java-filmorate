@@ -2,28 +2,25 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class UserService {
 
-    private final UserStorage userStorage;
-
     @Autowired
-    public UserService(InMemoryUserStorage inMemoryUserStorage) {
-        this.userStorage = inMemoryUserStorage;
-    }
+    @Qualifier("UserDbStorage")
+    private UserStorage userStorage;
+    @Autowired
+    private FriendshipService friendshipService;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         return userStorage.create(user);
@@ -38,54 +35,34 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userStorage.getUserById(id);
+        return userStorage.findUserById(id);
     }
 
     public void addToFriends(int id, int friendId) {
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.getUserById(friendId);
 
-        Set<Integer> friends;
-
-        friends = user.getFriends();
-        friends.add(friendId);
-        user.setFriends(friends);
-
-        friends = friend.getFriends();
-        friends.add(id);
-        friend.setFriends(friends);
+        User user = userStorage.findUserById(id);
+        User friend = userStorage.findUserById(friendId);
+        friendshipService.addToFriends(user, friend);
     }
 
     public void deleteFromFriends(int id, int friendId) {
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.getUserById(friendId);
-        Set<Integer> friends = new HashSet<>();
 
-        friends = user.getFriends();
-        friends.remove(friendId);
-        user.setFriends(friends);
-
-        friends = friend.getFriends();
-        friends.remove(id);
-        friend.setFriends(friends);
+        User user = userStorage.findUserById(id);
+        User friend = userStorage.findUserById(friendId);
+        friendshipService.deleteFromFriends(user, friend);
     }
 
     public List<User> getAllFriends(int id) {
-        User user = userStorage.getUserById(id);
-        return user.getFriends().stream()
-                .map(userStorage::getUserById)
-                .collect(Collectors.toList());
+        return friendshipService.getAllFriends(id);
     }
 
     public List<User> findCommonFriends(int id, int otherId) {
-        User user = userStorage.getUserById(id);
-        User other = userStorage.getUserById(otherId);
-        Set<Integer> userFriends = user.getFriends();
-        Set<Integer> otherFriends = other.getFriends();
 
-        return userFriends.stream()
+        List<User> friends = getAllFriends(id);
+        List<User> otherFriends = getAllFriends(otherId);
+
+        return friends.stream()
                 .filter(otherFriends::contains)
-                .map(userStorage::getUserById)
                 .collect(Collectors.toList());
     }
 }

@@ -4,11 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class UserValidator {
 
     public static boolean isValid(User user) throws ValidationException {
+
         if (StringUtils.isEmpty(user.getEmail())) {
             throw new ValidationException("Введена пустая почта.");
         } else if (!user.getEmail().contains("@"))  {
@@ -17,7 +18,7 @@ public class UserValidator {
             throw new ValidationException("Введён пустой логин.");
         } else if (user.getLogin().contains(" ")) {
             throw new ValidationException("Введенный логин содержит пробелы.");
-        } else if (user.getBirthday().isAfter(LocalDate.now())) {
+        } else if (user.getBirthday().after(new Date())) {
             throw new ValidationException("Дата рождения не может быть в будущем.");
         } else if (user.getName().isBlank() || user.getName().isBlank()) {
             user.setName(user.getLogin());

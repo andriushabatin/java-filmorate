@@ -1,7 +1,8 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.dao.user.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -15,6 +16,7 @@ import java.util.*;
 public class InMemoryUserStorage implements UserStorage {
 
     private final HashMap<Integer, User> users = new HashMap<>();
+
     private int nextId = 1;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
@@ -52,7 +54,7 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(this.users.values());
     }
 
-    public User getUserById(int id) {
+    public User findUserById(int id) {
         if (users.containsKey(id)) {
             return users.get(id);
         } else {
@@ -60,9 +62,14 @@ public class InMemoryUserStorage implements UserStorage {
         }
     }
 
+    public void deleteAll() {
+        users.clear();
+    }
+
     public int getNextId() {
         return nextId++;
     }
+
 
 
 }
