@@ -4,7 +4,7 @@ public enum Operation {
     ADD(1),
     REMOVE(2),
     UPDATE(3);
-    private int id;
+    private final int id;
 
     private Operation(int id) {
         this.id = id;
