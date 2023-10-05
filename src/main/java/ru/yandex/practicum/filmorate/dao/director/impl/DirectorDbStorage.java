@@ -68,7 +68,16 @@ public class DirectorDbStorage implements DirectorStorage {
 
     @Override
     public Director put(Director director) {
-        return null;
+
+        String sqlQuery = "UPDATE DIRECTORS \n" +
+                "SET name = ?\n" +
+                "WHERE DIRECTOR_ID  = ?;";
+
+        jdbcTemplate.update(sqlQuery,
+                director.getName(),
+                director.getId());
+
+        return findDirectorById(director.getId());
     }
 
     private Director makeDirector(ResultSet rs) throws SQLException {
