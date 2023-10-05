@@ -18,6 +18,16 @@ public class DirectorDbStorage implements DirectorStorage {
 
     @Override
     public Director create(Director director) {
-        return null;
+        String sqlQuery = "INSERT INTO DIRECTORS (name)\n" +
+                "VALUES ('tarantino');";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"director_id"});
+            stmt.setString(1, director.getName());
+            return stmt;
+        }, keyHolder);
+
+        return null; //Предварительная реализация.
     }
 }
