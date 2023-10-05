@@ -66,6 +66,11 @@ public class DirectorDbStorage implements DirectorStorage {
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeDirector(rs));
     }
 
+    @Override
+    public Director put(Director director) {
+        return null;
+    }
+
     private Director makeDirector(ResultSet rs) throws SQLException {
 
         Director director = new Director();

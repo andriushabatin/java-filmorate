@@ -10,4 +10,6 @@ public interface DirectorStorage {
     Director findDirectorById(int id);
 
     List<Director> findAll();
+
+    Director put(Director director);
 }

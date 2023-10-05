@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Director;
-import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.DirectorService;
 
 import java.util.List;
@@ -30,6 +29,13 @@ public class DirectorController {
     public List<Director> findAll() {
         return directorService.findAll();
     }
+
+    @PutMapping("/directors")
+    public Director put(@RequestBody Director director) throws ValidationException {
+        return directorService.put(director);
+    }
+
+
 }
 
 

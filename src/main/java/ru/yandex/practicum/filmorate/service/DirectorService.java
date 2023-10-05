@@ -26,4 +26,8 @@ public class DirectorService {
     public List<Director> findAll() {
         return directorStorage.findAll();
     }
+
+    public Director put(Director director) {
+        return directorStorage.put(director);
+    }
 }
