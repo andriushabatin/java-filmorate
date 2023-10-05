@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
+import ru.yandex.practicum.filmorate.model.Film;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -56,6 +59,18 @@ public class DirectorDbStorage implements DirectorStorage {
 
     @Override
     public List<Director> findAll() {
-        return null;
+
+        String sqlQuery = "SELECT * \n" +
+                "FROM DIRECTORS;";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeDirector(rs));
+    }
+
+    private Director makeDirector(ResultSet rs) throws SQLException {
+
+        Director director = new Director();
+        director.setId(rs.getInt("director_id"));
+        director.setName(rs.getString("name"));
+        return director;
     }
 }
