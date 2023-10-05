@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
 import ru.yandex.practicum.filmorate.model.Director;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class DirectorService {
@@ -19,5 +21,9 @@ public class DirectorService {
 
     public Director findDirectorById(int id) {
         return directorStorage.findDirectorById(id);
+    }
+
+    public List<Director> findAll() {
+        return directorStorage.findAll();
     }
 }

@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
 
 import java.sql.PreparedStatement;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -51,5 +52,10 @@ public class DirectorDbStorage implements DirectorStorage {
         } else {
             throw new NotFoundException("Режиссёр не найден!");
         }
+    }
+
+    @Override
+    public List<Director> findAll() {
+        return null;
     }
 }
