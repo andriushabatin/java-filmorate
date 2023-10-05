@@ -4,11 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.PreparedStatement;
+import java.time.Duration;
+import java.util.HashSet;
 
 @Component
 @RequiredArgsConstructor
@@ -34,6 +40,20 @@ public class DirectorDbStorage implements DirectorStorage {
 
     @Override
     public Director findDirectorById(int id) {
-        return null;
+
+        String sqlQuery = "SELECT * \n" +
+                "FROM DIRECTORS d\n" +
+                "WHERE DIRECTOR_ID = ?;";
+
+        SqlRowSet DirectorRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
+
+        if (DirectorRows.next()) {
+            Director director = new Director();
+            director.setId(DirectorRows.getInt("director_id"));
+            director.setName(DirectorRows.getString("name"));
+            return director;
+        } else {
+            throw new NotFoundException("Режиссёр не найден!");
+        }
     }
 }
