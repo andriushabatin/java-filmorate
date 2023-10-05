@@ -12,4 +12,6 @@ public interface DirectorStorage {
     List<Director> findAll();
 
     Director put(Director director);
+
+    void delete(int id);
 }

@@ -30,4 +30,8 @@ public class DirectorService {
     public Director put(Director director) {
         return directorStorage.put(director);
     }
+
+    public void delete(int id) {
+        directorStorage.delete(id);
+    }
 }

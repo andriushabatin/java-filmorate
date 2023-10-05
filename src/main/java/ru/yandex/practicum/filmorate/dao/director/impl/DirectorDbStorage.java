@@ -80,6 +80,16 @@ public class DirectorDbStorage implements DirectorStorage {
         return findDirectorById(director.getId());
     }
 
+    @Override
+    public void delete(int id) {
+
+        String sqlQuery = "DELETE \n" +
+                "FROM DIRECTORS \n" +
+                "WHERE DIRECTOR_ID = ?;";
+
+        jdbcTemplate.update(sqlQuery, id);
+    }
+
     private Director makeDirector(ResultSet rs) throws SQLException {
 
         Director director = new Director();
