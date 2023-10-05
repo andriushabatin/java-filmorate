@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -24,11 +25,12 @@ class EventServiceTest {
     private final UserService userService;
     @Autowired
     private final EventService eventService;
+
     @Test
     void eventServiceTest() {
         final NotFoundException exception = assertThrows(
                 NotFoundException.class,
-                () ->eventService.getFeed(2222));
+                () -> eventService.getFeed(2222));
         assertTrue(Objects.requireNonNull(exception.getMessage()).contains("Пользователь не найден!"),
                 "При попытке получения ленты событий для пользователя с не верным id получено не верное исключение");
 
@@ -46,7 +48,7 @@ class EventServiceTest {
         ));
         final NotFoundException exception1 = assertThrows(
                 NotFoundException.class,
-                () ->eventService.createEvent(2222, EventType.FRIEND, Operation.ADD, user2.getId()));
+                () -> eventService.createEvent(2222, EventType.FRIEND, Operation.ADD, user2.getId()));
         assertTrue(Objects.requireNonNull(exception1.getMessage()).contains("Пользователь не найден!"),
                 "При попытке получения ленты событий для пользователя с не верным id получено не верное исключение");
         eventService.createEvent(user1.getId(), EventType.FRIEND, Operation.ADD, user2.getId());
