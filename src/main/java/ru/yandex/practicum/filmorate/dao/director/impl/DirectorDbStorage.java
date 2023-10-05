@@ -18,8 +18,9 @@ public class DirectorDbStorage implements DirectorStorage {
 
     @Override
     public Director create(Director director) {
+
         String sqlQuery = "INSERT INTO DIRECTORS (name)\n" +
-                "VALUES ('tarantino');";
+                "VALUES (?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -29,5 +30,10 @@ public class DirectorDbStorage implements DirectorStorage {
         }, keyHolder);
 
         return null; //Предварительная реализация.
+    }
+
+    @Override
+    public Director findDirectorById(int id) {
+        return null;
     }
 }

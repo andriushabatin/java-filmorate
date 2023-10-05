@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Director;
@@ -19,6 +17,12 @@ public class DirectorController {
     public Director create(@RequestBody Director director) throws ValidationException, ObjectAlreadyExistException {
         return directorService.create(director);
     }
+
+    @GetMapping("/directors/{id}")
+    public Director findDirectorById(@PathVariable int id) {
+        return directorService.findDirectorById(id);
+    }
+
 }
 
 

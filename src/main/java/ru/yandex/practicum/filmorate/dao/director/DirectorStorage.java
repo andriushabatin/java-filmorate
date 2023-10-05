@@ -4,4 +4,6 @@ import ru.yandex.practicum.filmorate.model.Director;
 
 public interface DirectorStorage {
     Director create(Director director);
+
+    Director findDirectorById(int id);
 }
