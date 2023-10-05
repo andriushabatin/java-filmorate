@@ -9,12 +9,8 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.PreparedStatement;
-import java.time.Duration;
-import java.util.HashSet;
 
 @Component
 @RequiredArgsConstructor
@@ -35,7 +31,7 @@ public class DirectorDbStorage implements DirectorStorage {
             return stmt;
         }, keyHolder);
 
-        return null; //Предварительная реализация.
+        return findDirectorById(keyHolder.getKey().intValue());
     }
 
     @Override
