@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Event;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.EventService;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.sql.SQLException;
@@ -18,6 +20,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final EventService eventService;
 
     @PostMapping("/users")
     public User create(@RequestBody User user) throws ValidationException, ObjectAlreadyExistException {
@@ -57,6 +60,11 @@ public class UserController {
     @GetMapping("/users/{id}/friends/common/{otherId}")
     public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.findCommonFriends(id, otherId);
+    }
+
+    @GetMapping("/{id}/feed")
+    public List<Event> getFeed(@PathVariable int id) {
+        return eventService.getFeed(id);
     }
 
     @ExceptionHandler
