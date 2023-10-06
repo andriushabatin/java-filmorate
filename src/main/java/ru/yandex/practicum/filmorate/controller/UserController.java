@@ -63,7 +63,7 @@ public class UserController {
         return userService.findCommonFriends(id, otherId);
     }
 
-    @GetMapping("/{id}/feed")
+    @GetMapping("/users/{id}/feed")
     public List<Event> getFeed(@PathVariable int id) {
         return eventService.getFeed(id);
     }
