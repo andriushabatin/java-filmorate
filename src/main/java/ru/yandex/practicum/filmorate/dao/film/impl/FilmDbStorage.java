@@ -13,10 +13,7 @@ import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.sql.PreparedStatement;
@@ -62,7 +59,6 @@ public class FilmDbStorage implements FilmStorage {
             } else {
                 genres = new ArrayList<>();
             }
-
             filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), genres);
 
             return findFilmById(keyHolder.getKey().intValue());

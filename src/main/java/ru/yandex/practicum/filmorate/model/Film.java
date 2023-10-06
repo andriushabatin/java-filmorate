@@ -27,5 +27,5 @@ public class Film {
     private int rate;
     private Mpa mpa;
     private HashSet<Genre> genres;
-    private HashSet<Integer> director;
+    private HashSet<Director> director;
 }
