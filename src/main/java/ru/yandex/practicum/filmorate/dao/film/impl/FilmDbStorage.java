@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
+import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
 import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -33,6 +34,7 @@ public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final FilmGenreStorage filmGenreStorage;
     private final LikeStorage likeStorage;
+    private final FilmDirectorStorage filmDirectorStorage;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
@@ -60,6 +62,14 @@ public class FilmDbStorage implements FilmStorage {
                 genres = new ArrayList<>();
             }
             filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), genres);
+
+            List<Director> directors;
+            if (Optional.ofNullable(film.getDirector()).isPresent()) {
+                directors = new ArrayList<>(film.getDirector());
+            } else {
+                directors = new ArrayList<>();
+            }
+            filmDirectorStorage.createFilmDirectorRelations(keyHolder.getKey().intValue(), directors);
 
             return findFilmById(keyHolder.getKey().intValue());
         } else {
