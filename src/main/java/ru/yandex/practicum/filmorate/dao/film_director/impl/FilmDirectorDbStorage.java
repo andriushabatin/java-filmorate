@@ -26,4 +26,9 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
                     director.getId());
         }
     }
+
+    @Override
+    public List<Director> findDirectorByFilmId(int id) {
+        return null;
+    }
 }
