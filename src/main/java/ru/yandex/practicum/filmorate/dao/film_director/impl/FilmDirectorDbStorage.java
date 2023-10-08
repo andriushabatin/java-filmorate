@@ -46,6 +46,17 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
 
     @Override
     public void updateFilmDirectorRelations(int id, List<Director> newDirector) {
+
+    }
+
+    @Override
+    public void deleteAllFilmDirectorRelationsById(int filmId) {
+
+        String sqlQuery = "DELETE\n" +
+                "FROM film_director\n" +
+                "WHERE film_id = ?";
+
+        jdbcTemplate.update(sqlQuery, filmId);
     }
 
     private Director makeDirector(ResultSet rs) throws SQLException {
