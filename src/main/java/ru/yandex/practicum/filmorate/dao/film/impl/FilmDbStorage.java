@@ -102,6 +102,9 @@ public class FilmDbStorage implements FilmStorage {
             }
             filmGenreStorage.updateFilmGenreRelations(film.getId(), genres);
 
+
+
+
             return findFilmById(film.getId());
         } else {
             return null;
