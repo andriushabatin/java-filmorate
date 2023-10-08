@@ -102,8 +102,13 @@ public class FilmDbStorage implements FilmStorage {
             }
             filmGenreStorage.updateFilmGenreRelations(film.getId(), genres);
 
-
-
+            List<Director> directors;
+            if (Optional.ofNullable(film.getDirector()).isPresent()) {
+                directors = new ArrayList<>(film.getDirector());
+            } else {
+                directors = new ArrayList<>();
+            }
+            filmDirectorStorage.updateFilmDirectorRelations(film.getId(), directors);
 
             return findFilmById(film.getId());
         } else {
