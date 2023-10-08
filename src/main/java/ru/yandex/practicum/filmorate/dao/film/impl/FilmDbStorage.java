@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -189,8 +190,11 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public List<Film> findAllFilmsByDirector(int id, String sortBy) {
-        List<Integer> filmIds = filmDirectorStorage.findFilmIdsOfDirector(id);
-        return null;
+        List<Integer> filmIds = filmDirectorStorage.findFilmIdsOfDirector(id, sortBy);
+
+        return filmIds.stream()
+                .map(this::findFilmById)
+                .collect(Collectors.toList());
     }
 
     @Override

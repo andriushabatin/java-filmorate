@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
 
 import java.sql.ResultSet;
@@ -62,10 +63,23 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
     }
 
     @Override
-    public List<Integer> findFilmIdsOfDirector(int id) {
+    public List<Integer> findFilmIdsOfDirector(int id, String sortBy) {
 
-        String sqlQuery = "";
-        return null;
+        String sqlQuery = "SELECT *\n" +
+                "FROM FILM_DIRECTOR fd\n" +
+                "LEFT JOIN FILM f ON fd.FILM_ID = f.FILM_ID\n" +
+                "GROUP BY fd.FILM_ID  \n" +
+                "HAVING fd.DIRECTOR_ID = ?\n";
+
+        if (sortBy.equals("year")) {
+            sqlQuery = sqlQuery + "ORDER BY f.RELEASE;";
+        } else if(sortBy.equals("likes")) {
+            sqlQuery = sqlQuery + "ORDER BY f.RATE;";
+        } else {
+            throw new NotFoundException("Не найдена категория сортировки!");
+        }
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> rs.getInt("film_id"), id);
     }
 
     private Director makeDirector(ResultSet rs) throws SQLException {

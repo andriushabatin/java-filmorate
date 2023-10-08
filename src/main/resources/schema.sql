@@ -1,5 +1,5 @@
 
-drop table IF EXISTS user_table CASCADE;
+/*drop table IF EXISTS user_table CASCADE;
 drop table IF EXISTS users CASCADE;
 drop table IF EXISTS friendship_status CASCADE;
 drop table IF EXISTS friendship CASCADE;
@@ -9,7 +9,7 @@ drop table IF EXISTS genre CASCADE;
 drop table IF EXISTS film_genre  CASCADE;
 drop table IF EXISTS directors CASCADE;
 drop table IF EXISTS film_director CASCADE;
-drop table IF EXISTS likes CASCADE;
+drop table IF EXISTS likes CASCADE;*/
 
 
 CREATE TABLE IF NOT EXISTS users (
