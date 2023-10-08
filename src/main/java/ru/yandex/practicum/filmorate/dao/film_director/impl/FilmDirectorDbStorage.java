@@ -34,7 +34,16 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
     @Override
     public List<Director> findDirectorByFilmId(int id) {
 
-       return new ArrayList<>();
+        String sqlQuery = "SELECT fd.film_id,\n" +
+                "fd.director_id,\n" +
+                "d.name\n" +
+                "FROM film_director AS fd\n" +
+                "LEFT JOIN directors AS d ON fd.director_id = d.director_id\n" +
+                "GROUP BY fd.film_id,\n" +
+                "fd.director_id\n" +
+                "HAVING fd.film_id = ?;";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeDirector(rs), id);
     }
 
     private Director makeDirector(ResultSet rs) throws SQLException {
