@@ -154,7 +154,7 @@ public class FilmDbStorage implements FilmStorage {
             film.setRate(filmRows.getInt("rate"));
             film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
             film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(id)));
-
+            film.setDirector(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(id)));
             return film;
         } else {
             throw new NotFoundException("Фильм не найден!");

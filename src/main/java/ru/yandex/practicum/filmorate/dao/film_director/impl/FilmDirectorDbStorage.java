@@ -5,7 +5,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
 import ru.yandex.practicum.filmorate.model.Director;
+import ru.yandex.practicum.filmorate.model.Genre;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -29,6 +33,16 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
 
     @Override
     public List<Director> findDirectorByFilmId(int id) {
-        return null;
+
+       return new ArrayList<>();
+    }
+
+    private Director makeDirector(ResultSet rs) throws SQLException {
+
+        Director director = new Director();
+        director.setId(rs.getInt("director_id"));
+        director.setName(rs.getString("name"));
+
+        return director;
     }
 }
