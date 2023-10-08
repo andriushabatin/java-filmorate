@@ -47,6 +47,8 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
     @Override
     public void updateFilmDirectorRelations(int id, List<Director> newDirector) {
 
+        deleteAllFilmDirectorRelationsById(id);
+        createFilmDirectorRelations(id, newDirector);
     }
 
     @Override
