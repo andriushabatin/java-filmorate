@@ -209,6 +209,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setRate(rs.getInt("rate"));
         film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
         film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id"))));
+        film.setDirector(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(rs.getInt("film_id"))));
 
         return film;
     }
