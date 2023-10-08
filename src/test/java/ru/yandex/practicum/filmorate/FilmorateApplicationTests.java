@@ -69,6 +69,7 @@ class FilmorateApplicationTests {
 				Duration.ofMinutes(100),
 				0,
 				mpa,
+				new HashSet<>(),
 				new HashSet<>()
 		);
 

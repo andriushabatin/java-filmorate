@@ -81,6 +81,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     public void deleteLike(int id, User user) {
     }
 
+    @Override
+    public List<Film> findAllFilmsByDirector(int id, String sortBy) {
+        return null;
+    }
+
     public int getNextId() {
         return nextId++;
     }

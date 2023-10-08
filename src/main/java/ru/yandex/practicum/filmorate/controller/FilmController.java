@@ -51,6 +51,11 @@ public class FilmController {
         return filmService.getPopularFilms(Integer.parseInt(count));
     }
 
+    @GetMapping("films/director/{directorId}")
+    public List<Film> findAllFilmsOfDirector(@PathVariable int id, @RequestParam String sortBy) {
+        return filmService.findAllFilmsOfDirector(id, sortBy);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
@@ -62,4 +67,7 @@ public class FilmController {
     public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
         return Map.of("error:", e.getMessage());
     }
+
+
+
 }

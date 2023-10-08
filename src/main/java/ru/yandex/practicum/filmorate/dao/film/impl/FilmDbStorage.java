@@ -188,6 +188,12 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
+    public List<Film> findAllFilmsByDirector(int id, String sortBy) {
+        List<Integer> filmIds = filmDirectorStorage.findFilmIdsOfDirector(id);
+        return null;
+    }
+
+    @Override
     public List<Film> getPopularFilms(int count) {
 
         String sqlQuery = "SELECT f.FILM_ID, \n" +

@@ -61,6 +61,13 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
         jdbcTemplate.update(sqlQuery, filmId);
     }
 
+    @Override
+    public List<Integer> findFilmIdsOfDirector(int id) {
+
+        String sqlQuery = "";
+        return null;
+    }
+
     private Director makeDirector(ResultSet rs) throws SQLException {
 
         Director director = new Director();
