@@ -44,12 +44,12 @@ public class DirectorDbStorage implements DirectorStorage {
                 "FROM DIRECTORS d\n" +
                 "WHERE DIRECTOR_ID = ?;";
 
-        SqlRowSet DirectorRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
+        SqlRowSet directorRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
 
-        if (DirectorRows.next()) {
+        if (directorRows.next()) {
             Director director = new Director();
-            director.setId(DirectorRows.getInt("director_id"));
-            director.setName(DirectorRows.getString("name"));
+            director.setId(directorRows.getInt("director_id"));
+            director.setName(directorRows.getString("name"));
             return director;
         } else {
             throw new NotFoundException("Режиссёр не найден!");
