@@ -48,6 +48,12 @@ public class DirectorController {
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
         return Map.of("error:", e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidationException(final ValidationException e) {
+        return Map.of("error:", "Произошла ошибка!");
+    }
 }
 
 
