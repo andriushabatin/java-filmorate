@@ -1,18 +1,18 @@
 
---drop table IF EXISTS user_table CASCADE;
---drop table IF EXISTS users CASCADE;
---drop table IF EXISTS friendship_status CASCADE;
---drop table IF EXISTS friendship CASCADE;
---drop table IF EXISTS rating CASCADE;
---drop table IF EXISTS film CASCADE;
---drop table IF EXISTS genre CASCADE;
---drop table IF EXISTS film_genre  CASCADE;
---drop table IF EXISTS likes CASCADE;
---drop table IF EXISTS reviews CASCADE;
+drop table IF EXISTS user_table CASCADE;
+drop table IF EXISTS users CASCADE;
+drop table IF EXISTS friendship_status CASCADE;
+drop table IF EXISTS friendship CASCADE;
+drop table IF EXISTS rating CASCADE;
+drop table IF EXISTS film CASCADE;
+drop table IF EXISTS genre CASCADE;
+drop table IF EXISTS film_genre  CASCADE;
+drop table IF EXISTS likes CASCADE;
+drop table IF EXISTS reviews CASCADE;
 
---drop table IF EXISTS feed CASCADE;
---drop table IF EXISTS operations CASCADE;
---drop table IF EXISTS events_types CASCADE;
+drop table IF EXISTS feed CASCADE;
+drop table IF EXISTS operations CASCADE;
+drop table IF EXISTS events_types CASCADE;
 
 
 CREATE TABLE IF NOT EXISTS users (
