@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.review.ReviewStorage;
 import ru.yandex.practicum.filmorate.model.Review;
+import ru.yandex.practicum.filmorate.data.EventType;
+import ru.yandex.practicum.filmorate.data.Operation;
 
 import java.util.List;
 
@@ -11,13 +13,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewStorage reviewStorage;
+    private final EventService eventService;
 
     public Review createReview(Review review) {
-        return reviewStorage.createReview(review);
+        Review createdReview = reviewStorage.createReview(review);
+        eventService.createEvent(createdReview.getUserId(),
+                EventType.REVIEW, Operation.ADD, createdReview.getReviewId());
+        return createdReview;
     }
 
     public Review replaceReview(Review review) {
-        return reviewStorage.replaceReview(review);
+        Review replacedReview = reviewStorage.replaceReview(review);
+        eventService.createEvent(replacedReview.getUserId(),
+                EventType.REVIEW, Operation.UPDATE, replacedReview.getReviewId());
+        return replacedReview;
     }
 
     public Review findReviewById(Integer id) {
@@ -29,7 +38,10 @@ public class ReviewService {
     }
 
     public void deleteReviewById(Integer id) {
+        Review deletedReview = findReviewById(id);
         reviewStorage.deleteReviewById(id);
+        eventService.createEvent(deletedReview.getUserId(),
+                EventType.REVIEW, Operation.REMOVE, deletedReview.getReviewId());
     }
 
     public List<Review> findReviewsByFilmId(Integer filmId, Integer count) {

@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS feed (
     type_id integer NOT NULL,
     operation_id integer NOT NULL,
     entity_id integer NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE cascade,
-    FOREIGN KEY (type_id) REFERENCES events_types (id) ON DELETE cascade,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (type_id) REFERENCES events_types (id) ON DELETE CASCADE,
     FOREIGN KEY (operation_id) REFERENCES operations (id) ON DELETE CASCADE
 );

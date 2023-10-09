@@ -42,10 +42,8 @@ public class EventService {
      * @param userId    идентификатор пользователя
      * @param eventType тип события
      * @param operation тип операции который совершил пользователь
-     * @param entityId  идентификатор сущность над которой пользователь совершал действия
+     * @param entityId  идентификатор сущности над которой пользователь совершал действия
      */
-    //Вызов этого метода надо вставить, где проводится обработка добавления - удаления дружбы
-    // простановки лайков, добавления-удаления отзывов
     public void createEvent(int userId, EventType eventType, Operation operation, int entityId) {
         userStorage.findUserById(userId);
         Event event = Event.builder()
