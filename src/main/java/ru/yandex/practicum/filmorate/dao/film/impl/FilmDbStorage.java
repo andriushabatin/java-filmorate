@@ -65,8 +65,8 @@ public class FilmDbStorage implements FilmStorage {
             filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), genres);
 
             List<Director> directors;
-            if (Optional.ofNullable(film.getDirector()).isPresent()) {
-                directors = new ArrayList<>(film.getDirector());
+            if (Optional.ofNullable(film.getDirectors()).isPresent()) {
+                directors = new ArrayList<>(film.getDirectors());
             } else {
                 directors = new ArrayList<>();
             }
@@ -104,8 +104,8 @@ public class FilmDbStorage implements FilmStorage {
             filmGenreStorage.updateFilmGenreRelations(film.getId(), genres);
 
             List<Director> directors;
-            if (Optional.ofNullable(film.getDirector()).isPresent()) {
-                directors = new ArrayList<>(film.getDirector());
+            if (Optional.ofNullable(film.getDirectors()).isPresent()) {
+                directors = new ArrayList<>(film.getDirectors());
             } else {
                 directors = new ArrayList<>();
             }
@@ -163,7 +163,7 @@ public class FilmDbStorage implements FilmStorage {
             film.setRate(filmRows.getInt("rate"));
             film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
             film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(id)));
-            film.setDirector(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(id)));
+            film.setDirectors(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(id)));
             return film;
         } else {
             throw new NotFoundException("Фильм не найден!");
@@ -227,7 +227,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setRate(rs.getInt("rate"));
         film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
         film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id"))));
-        film.setDirector(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(rs.getInt("film_id"))));
+        film.setDirectors(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(rs.getInt("film_id"))));
 
         return film;
     }
