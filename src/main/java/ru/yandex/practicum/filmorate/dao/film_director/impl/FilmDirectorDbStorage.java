@@ -72,9 +72,11 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
                 "HAVING fd.DIRECTOR_ID = ?\n";
 
         if (sortBy.equals("year")) {
-            sqlQuery = sqlQuery + "ORDER BY f.RELEASE;";
+            sqlQuery = sqlQuery + "ORDER BY f.RELEASE\n" +
+                    "DESC;";
         } else if (sortBy.equals("likes")) {
-            sqlQuery = sqlQuery + "ORDER BY f.RATE;";
+            sqlQuery = sqlQuery + "ORDER BY f.RATE\n" +
+                    "DESC;";
         } else {
             throw new NotFoundException("Не найдена категория сортировки!");
         }
