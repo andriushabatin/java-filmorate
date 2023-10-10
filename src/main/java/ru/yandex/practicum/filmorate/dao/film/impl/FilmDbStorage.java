@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
 import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
@@ -36,6 +37,8 @@ public class FilmDbStorage implements FilmStorage {
     private final FilmGenreStorage filmGenreStorage;
     private final LikeStorage likeStorage;
     private final FilmDirectorStorage filmDirectorStorage;
+
+    private final DirectorStorage directorStorage;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
@@ -190,6 +193,9 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public List<Film> findAllFilmsByDirector(int id, String sortBy) {
+
+        directorStorage.findDirectorById(id);
+
         List<Integer> filmIds = filmDirectorStorage.findFilmIdsOfDirector(id, sortBy);
 
         return filmIds.stream()
