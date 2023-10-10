@@ -91,6 +91,8 @@ public class DirectorDbStorage implements DirectorStorage {
     @Override
     public void delete(int id) {
 
+        findDirectorById(id);
+
         String sqlQuery = "DELETE \n" +
                 "FROM DIRECTORS \n" +
                 "WHERE DIRECTOR_ID = ?;";
