@@ -14,7 +14,7 @@ public interface FilmDirectorStorage {
 
     public void deleteAllFilmDirectorRelationsById(int filmId);
 
-    void deleteAllFilmDirectorRelationsByDirectorId(int DirId);
+    void deleteAllFilmDirectorRelationsByDirectorId(int dirId);
 
     List<Integer> findFilmIdsOfDirector(int id, String sortBy);
 }
