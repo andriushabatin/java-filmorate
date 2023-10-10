@@ -91,13 +91,14 @@ public class DirectorDbStorage implements DirectorStorage {
     @Override
     public void delete(int id) {
 
-        findDirectorById(id);
-
-        String sqlQuery = "DELETE \n" +
-                "FROM DIRECTORS \n" +
-                "WHERE DIRECTOR_ID = ?;";
-
-        jdbcTemplate.update(sqlQuery, id);
+        try {
+            findDirectorById(id);
+            String sqlQuery = "DELETE \n" +
+                    "FROM DIRECTORS \n" +
+                    "WHERE DIRECTOR_ID = ?;";
+            jdbcTemplate.update(sqlQuery, id);
+        } catch (NotFoundException ignored) {
+        }
     }
 
     private Director makeDirector(ResultSet rs) throws SQLException {
