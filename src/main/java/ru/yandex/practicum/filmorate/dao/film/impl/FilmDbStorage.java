@@ -225,13 +225,14 @@ public class FilmDbStorage implements FilmStorage {
                 "WHERE l.film_id in (SELECT film_id from likes l1 where user_id = ?) " +
                 "AND l.user_id <> ? " +
                 "GROUP BY l.user_id " +
-                "ORDER BY count(l.film_id);"/* +
-                "LIMIT 1"*/;
-        String sqlGetRecommendations = "select f.*, r.RATING from film as f LEFT JOIN RATING AS r ON f.RATING_ID  = r.RATING_ID" +
-                "where f.film_id in (" +
-                "select f1.film_id from film as f1 left join likes as l1 on f1.film_id = l1.film_id where l1.user_id = ? " +
+                "ORDER BY count(l.film_id);";
+        String sqlGetRecommendations = "SELECT f.*, r.RATING FROM film as f " +
+                "LEFT JOIN RATING AS r ON f.RATING_ID  = r.RATING_ID WHERE f.film_id in " +
+                "(SELECT f1.film_id FROM film AS f1 LEFT JOIN likes AS l1 ON f1.film_id = l1.film_id " +
+                "WHERE l1.user_id = ? " +
                 "EXCEPT " +
-                "select f2.film_id from film as f2 left join likes as l2 on f2.film_id = l2.film_id where l2.user_id = ? );";
+                "SELECT f2.film_id FROM film AS f2 LEFT JOIN likes AS l2 ON f2.film_id = l2.film_id " +
+                "WHERE l2.user_id = ?);";
         final List<Integer> userIds = jdbcTemplate.query(sqlGetMaximumIntersection,
                 (rs, rowNum) -> rs.getInt("user_id"), userId, userId);
         for (Integer id : userIds) {
