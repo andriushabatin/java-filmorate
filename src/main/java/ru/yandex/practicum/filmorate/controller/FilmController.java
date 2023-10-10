@@ -51,6 +51,11 @@ public class FilmController {
         return filmService.getPopularFilms(Integer.parseInt(count));
     }
 
+    @DeleteMapping("/films/{id}")
+    public void deleteFilm(@PathVariable int id) {
+        filmService.deleteFilm(id);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {

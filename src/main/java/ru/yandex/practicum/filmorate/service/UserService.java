@@ -65,4 +65,8 @@ public class UserService {
                 .filter(otherFriends::contains)
                 .collect(Collectors.toList());
     }
+
+    public void deleteUser(int id) {
+        userStorage.deleteUser(id);
+    }
 }

@@ -44,7 +44,6 @@ class FilmorateApplicationTests {
 		assertThat(userOptional).isPresent();
 	}
 
-
 	@Test
 	public void testFindUserById() {
 
