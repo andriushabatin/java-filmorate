@@ -49,7 +49,15 @@ public class FilmService {
         filmStorage.deleteLike(id, userStorage.findUserById(userId));
     }
 
-    public List<Film> getPopularFilms(int count) {
-        return filmStorage.getPopularFilms(count);
+    public List<Film> getMostPopulars(Integer count, Integer genreId, Integer year) {
+        if (genreId == null && year == null) {
+            return filmStorage.getMostPopulars(count);
+        } else if (genreId == null) {
+            return filmStorage.getMostPopularsByYear(count, year);
+        } else if (year == null) {
+            return filmStorage.getMostPopularsByGenre(count, genreId);
+        } else {
+            return filmStorage.getMostPopularsByGenreAndYear(count, genreId, year);
+        }
     }
 }
