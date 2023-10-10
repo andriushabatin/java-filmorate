@@ -63,6 +63,15 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
     }
 
     @Override
+    public void deleteAllFilmDirectorRelationsByDirectorId(int dirId) {
+
+        String sqlQuery = "DELETE \n" +
+                "FROM FILM_DIRECTOR \n" +
+                "WHERE DIRECTOR_ID = ?;";
+        jdbcTemplate.update(sqlQuery, dirId);
+    }
+
+    @Override
     public List<Integer> findFilmIdsOfDirector(int id, String sortBy) {
 
         String sqlQuery = "SELECT *\n" +
@@ -82,6 +91,8 @@ public class FilmDirectorDbStorage implements FilmDirectorStorage {
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> rs.getInt("film_id"), id);
     }
+
+
 
     private Director makeDirector(ResultSet rs) throws SQLException {
 

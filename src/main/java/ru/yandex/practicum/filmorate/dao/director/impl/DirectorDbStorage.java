@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
+import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Director;
 import ru.yandex.practicum.filmorate.validator.DirectorValidator;
@@ -21,6 +22,8 @@ import java.util.List;
 public class DirectorDbStorage implements DirectorStorage {
 
     private final JdbcTemplate jdbcTemplate;
+
+    private final FilmDirectorStorage filmDirectorStorage;
 
     @Override
     public Director create(Director director) {
@@ -91,14 +94,14 @@ public class DirectorDbStorage implements DirectorStorage {
     @Override
     public void delete(int id) {
 
-        try {
-            findDirectorById(id);
-            String sqlQuery = "DELETE \n" +
-                    "FROM DIRECTORS \n" +
-                    "WHERE DIRECTOR_ID = ?;";
-            jdbcTemplate.update(sqlQuery, id);
-        } catch (NotFoundException ignored) {
-        }
+        findDirectorById(id);
+
+        filmDirectorStorage.deleteAllFilmDirectorRelationsByDirectorId(id);
+
+        String sqlQuery = "DELETE \n" +
+                "FROM DIRECTORS \n" +
+                "WHERE DIRECTOR_ID = ?;";
+        jdbcTemplate.update(sqlQuery, id);
     }
 
     private Director makeDirector(ResultSet rs) throws SQLException {
