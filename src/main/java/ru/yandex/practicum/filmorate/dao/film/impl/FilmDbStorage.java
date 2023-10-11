@@ -266,6 +266,7 @@ public class FilmDbStorage implements FilmStorage {
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), query);
 
+    @Override
     public List<Film> getMostPopularFilmsByYear(Integer count, Integer year) {
 
         String sqlQuery = "SELECT f.*, r.rating " +
