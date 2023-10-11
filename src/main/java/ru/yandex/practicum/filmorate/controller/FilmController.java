@@ -58,6 +58,11 @@ public class FilmController {
         return filmService.findAllFilmsOfDirector(id, sortBy);
     }
 
+    @GetMapping("/films/common")
+    public List<Film> findCommonFilms(@RequestParam String userId, @RequestParam String friendId) {
+        return filmService.findCommonFilms(Integer.parseInt(userId), Integer.parseInt(friendId));
+    }
+
     @GetMapping("films/search")
     public List<Film> searchFilmsBySubstring(@RequestParam String query, @RequestParam String by) {
         return filmService.searchFilmsBySubstring(query, by);
@@ -74,7 +79,4 @@ public class FilmController {
     public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
         return Map.of("error:", e.getMessage());
     }
-
-
-
 }

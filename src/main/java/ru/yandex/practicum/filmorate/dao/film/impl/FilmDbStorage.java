@@ -16,6 +16,7 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.*;
+import ru.yandex.practicum.filmorate.service.LikeService;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.sql.PreparedStatement;
@@ -33,6 +34,8 @@ public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final FilmGenreStorage filmGenreStorage;
     private final LikeStorage likeStorage;
+
+    private final LikeService likeService;
     private final FilmDirectorStorage filmDirectorStorage;
 
     private final DirectorStorage directorStorage;
@@ -212,6 +215,22 @@ public class FilmDbStorage implements FilmStorage {
                 "LIMIT ?";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
+    }
+
+    @Override
+    public List<Film> findCommonFilms(int userId, int friendId) {
+
+        List<Film> userFilms = likeService.findFilmsIdsOfUser(userId).stream()
+                .map(this::findFilmById)
+                .collect(Collectors.toList());
+
+        List<Film> friendFilm = likeService.findFilmsIdsOfUser(friendId).stream()
+                .map(this::findFilmById)
+                .collect(Collectors.toList());
+
+        return userFilms.stream()
+                .filter(friendFilm::contains)
+                .collect(Collectors.toList());
     }
 
     @Override
