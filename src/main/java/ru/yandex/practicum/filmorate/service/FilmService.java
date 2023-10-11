@@ -60,6 +60,20 @@ public class FilmService {
         return filmStorage.getPopularFilms(count);
     }
 
+    public List<Film> searchFilmsBySubstring(String query, String by) {
+        List<Film> response = new ArrayList<>();
+        String[] split = by.split(",");
+        String queryAsLowerCase = "%" + query.toLowerCase() + "%";
+        if (split.length == 2) {
+            response = filmStorage.searchFilmsByTitleAndDirector(queryAsLowerCase);
+        } else if (split[0].equals("title")) {
+            response = filmStorage.searchFilmsByTitle(queryAsLowerCase);
+        } else if (split[0].equals("director")) {
+            response = filmStorage.searchFilmsByDirector(queryAsLowerCase);
+        }
+        return response;
+    }
+
     public List<Film> findAllFilmsOfDirector(int id, String sortBy) {
         return filmStorage.findAllFilmsByDirector(id, sortBy);
     }
