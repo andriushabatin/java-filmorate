@@ -44,6 +44,7 @@ class FilmorateApplicationTests {
 		assertThat(userOptional).isPresent();
 	}
 
+
 	@Test
 	public void testFindUserById() {
 
@@ -68,6 +69,7 @@ class FilmorateApplicationTests {
 				Duration.ofMinutes(100),
 				0,
 				mpa,
+				new HashSet<>(),
 				new HashSet<>()
 		);
 

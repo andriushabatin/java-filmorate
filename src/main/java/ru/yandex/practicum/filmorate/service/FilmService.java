@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.data.EventType;
+import ru.yandex.practicum.filmorate.data.Operation;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -25,6 +27,9 @@ public class FilmService {
     @Qualifier("UserDbStorage")
     private UserStorage userStorage;
 
+    @Autowired
+    private EventService eventService;
+
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
         return filmStorage.create(film);
     }
@@ -43,14 +48,20 @@ public class FilmService {
 
     public void likeFilm(int id, int userId) {
         filmStorage.likeFilm(id, userStorage.findUserById(userId));
+        eventService.createEvent(userId, EventType.LIKE, Operation.ADD, id);
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
         filmStorage.deleteLike(id, userStorage.findUserById(userId));
+        eventService.createEvent(userId, EventType.LIKE, Operation.REMOVE, id);
     }
 
     public List<Film> getPopularFilms(int count) {
         return filmStorage.getPopularFilms(count);
+    }
+
+    public List<Film> findAllFilmsOfDirector(int id, String sortBy) {
+        return filmStorage.findAllFilmsByDirector(id, sortBy);
     }
 
     public void deleteFilm(int id) {

@@ -51,6 +51,11 @@ public class FilmController {
         return filmService.getPopularFilms(Integer.parseInt(count));
     }
 
+    @GetMapping("films/director/{directorId}")
+    public List<Film> findAllFilmsOfDirector(@PathVariable("directorId") int id, @RequestParam String sortBy) {
+        return filmService.findAllFilmsOfDirector(id, sortBy);
+    }
+
     @DeleteMapping("/films/{id}")
     public void deleteFilm(@PathVariable int id) {
         filmService.deleteFilm(id);
@@ -67,4 +72,7 @@ public class FilmController {
     public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
         return Map.of("error:", e.getMessage());
     }
+
+
+
 }

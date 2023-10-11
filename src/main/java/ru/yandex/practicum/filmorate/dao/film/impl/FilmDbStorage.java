@@ -7,16 +7,15 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.dao.director.DirectorStorage;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
+import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
 import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.*;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.sql.PreparedStatement;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @Qualifier("FilmDbStorage")
@@ -36,12 +36,9 @@ public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
     private final FilmGenreStorage filmGenreStorage;
     private final LikeStorage likeStorage;
+    private final FilmDirectorStorage filmDirectorStorage;
 
-    public void replaceRate(int filmId, int newRating) {
-        String sqlQuery = "UPDATE film SET rate = ? WHERE film_id = ?";
-        jdbcTemplate.update(sqlQuery, newRating, filmId);
-    }
-
+    private final DirectorStorage directorStorage;
 
     @Override
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
@@ -68,8 +65,15 @@ public class FilmDbStorage implements FilmStorage {
             } else {
                 genres = new ArrayList<>();
             }
-
             filmGenreStorage.createFilmGenreRelations(keyHolder.getKey().intValue(), genres);
+
+            List<Director> directors;
+            if (Optional.ofNullable(film.getDirectors()).isPresent()) {
+                directors = new ArrayList<>(film.getDirectors());
+            } else {
+                directors = new ArrayList<>();
+            }
+            filmDirectorStorage.createFilmDirectorRelations(keyHolder.getKey().intValue(), directors);
 
             return findFilmById(keyHolder.getKey().intValue());
         } else {
@@ -79,6 +83,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film put(Film film) throws ValidationException {
+
         if (FilmValidator.isValid(film)) {
             String sqlQuery = "UPDATE film\n" +
                     "SET name=?, description=?, release=?, duration=?, rating_id=?\n" +
@@ -99,6 +104,14 @@ public class FilmDbStorage implements FilmStorage {
                 genres = new ArrayList<>();
             }
             filmGenreStorage.updateFilmGenreRelations(film.getId(), genres);
+
+            List<Director> directors;
+            if (Optional.ofNullable(film.getDirectors()).isPresent()) {
+                directors = new ArrayList<>(film.getDirectors());
+            } else {
+                directors = new ArrayList<>();
+            }
+            filmDirectorStorage.updateFilmDirectorRelations(film.getId(), directors);
 
             return findFilmById(film.getId());
         } else {
@@ -152,7 +165,7 @@ public class FilmDbStorage implements FilmStorage {
             film.setRate(filmRows.getInt("rate"));
             film.setMpa(new Mpa(filmRows.getInt("rating_id"), filmRows.getString("rating")));
             film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(id)));
-
+            film.setDirectors(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(id)));
             return film;
         } else {
             throw new NotFoundException("Фильм не найден!");
@@ -165,7 +178,7 @@ public class FilmDbStorage implements FilmStorage {
         Film film = findFilmById(id);
         likeStorage.likeFilm(film, user);
         film.setRate(film.getRate() + 1);
-        replaceRate(id, film.getRate());
+        replaceRate(film.getId(), film.getRate());
     }
 
     @Override
@@ -174,7 +187,19 @@ public class FilmDbStorage implements FilmStorage {
         Film film = findFilmById(id);
         likeStorage.deleteLike(film, user);
         film.setRate(film.getRate() - 1);
-        put(film);
+        replaceRate(film.getId(), film.getRate());
+    }
+
+    @Override
+    public List<Film> findAllFilmsByDirector(int id, String sortBy) {
+
+        directorStorage.findDirectorById(id);
+
+        List<Integer> filmIds = filmDirectorStorage.findFilmIdsOfDirector(id, sortBy);
+
+        return filmIds.stream()
+                .map(this::findFilmById)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -206,6 +231,11 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
     }
 
+    private void replaceRate(int filmId, int newRating) {
+        String sqlQuery = "UPDATE film SET rate = ? WHERE film_id = ?";
+        jdbcTemplate.update(sqlQuery, newRating, filmId);
+    }
+
     private Film makeFilm(ResultSet rs) throws SQLException {
 
         Film film = new Film();
@@ -217,6 +247,7 @@ public class FilmDbStorage implements FilmStorage {
         film.setRate(rs.getInt("rate"));
         film.setMpa(new Mpa(rs.getInt("rating_id"), rs.getString("rating")));
         film.setGenres(new HashSet<>(filmGenreStorage.findGenresByFilmId(rs.getInt("film_id"))));
+        film.setDirectors(new HashSet<>(filmDirectorStorage.findDirectorByFilmId(rs.getInt("film_id"))));
 
         return film;
     }
