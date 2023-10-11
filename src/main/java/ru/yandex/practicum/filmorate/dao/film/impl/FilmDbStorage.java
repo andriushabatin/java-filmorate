@@ -54,7 +54,7 @@ public class FilmDbStorage implements FilmStorage {
                 stmt.setString(2, film.getDescription());
                 stmt.setObject(3, film.getReleaseDate());
                 stmt.setObject(4, film.getDuration().toMinutes());
-                stmt.setInt(5, film.getRate());
+                stmt.setInt(5, 0);
                 stmt.setObject(6, film.getMpa().getId());
                 return stmt;
             }, keyHolder);
@@ -86,7 +86,7 @@ public class FilmDbStorage implements FilmStorage {
 
         if (FilmValidator.isValid(film)) {
             String sqlQuery = "UPDATE film\n" +
-                    "SET name=?, description=?, release=?, duration=?, rate=?, rating_id=?\n" +
+                    "SET name=?, description=?, release=?, duration=?, rating_id=?\n" +
                     "WHERE film_id=?";
 
             jdbcTemplate.update(sqlQuery,
@@ -94,7 +94,6 @@ public class FilmDbStorage implements FilmStorage {
                     film.getDescription(),
                     film.getReleaseDate(),
                     film.getDuration().toMinutes(),
-                    film.getRate(),
                     film.getMpa().getId(),
                     film.getId());
 
@@ -179,7 +178,7 @@ public class FilmDbStorage implements FilmStorage {
         Film film = findFilmById(id);
         likeStorage.likeFilm(film, user);
         film.setRate(film.getRate() + 1);
-        put(film);
+        replaceRate(film.getId(), film.getRate());
     }
 
     @Override
@@ -188,7 +187,7 @@ public class FilmDbStorage implements FilmStorage {
         Film film = findFilmById(id);
         likeStorage.deleteLike(film, user);
         film.setRate(film.getRate() - 1);
-        put(film);
+        replaceRate(film.getId(), film.getRate());
     }
 
     @Override
@@ -201,6 +200,16 @@ public class FilmDbStorage implements FilmStorage {
         return filmIds.stream()
                 .map(this::findFilmById)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteFilm(int id) {
+        String genreSql = "DELETE FROM film_genre WHERE film_id = ?";
+        jdbcTemplate.update(genreSql, id);
+        String reviewSql = "DELETE FROM reviews WHERE film_id = ?";
+        jdbcTemplate.update(reviewSql, id);
+        String sql = "DELETE FROM films WHERE film_id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -220,6 +229,11 @@ public class FilmDbStorage implements FilmStorage {
                 "LIMIT ?;";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
+    }
+
+    private void replaceRate(int filmId, int newRating) {
+        String sqlQuery = "UPDATE film SET rate = ? WHERE film_id = ?";
+        jdbcTemplate.update(sqlQuery, newRating, filmId);
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
