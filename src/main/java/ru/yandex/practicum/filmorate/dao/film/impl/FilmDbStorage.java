@@ -224,6 +224,9 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public List<Film> findCommonFilms(int userId, int friendId) {
+
+
+
         return new ArrayList<>();
     }
 

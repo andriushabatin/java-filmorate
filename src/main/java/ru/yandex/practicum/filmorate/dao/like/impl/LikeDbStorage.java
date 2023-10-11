@@ -37,6 +37,11 @@ public class LikeDbStorage implements LikeStorage {
         }
     }
 
+    @Override
+    public List<Film> findFilmsOfUser(int userId) {
+        return null;
+    }
+
 
     private boolean likeExists(int filmId, int userId) {
 

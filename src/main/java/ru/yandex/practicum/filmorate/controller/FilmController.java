@@ -62,7 +62,6 @@ public class FilmController {
         return filmService.findCommonFilms(userId, friendId);
     }
 
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
