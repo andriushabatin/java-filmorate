@@ -58,6 +58,11 @@ public class FilmController {
         return filmService.findAllFilmsOfDirector(id, sortBy);
     }
 
+    @DeleteMapping("/films/{id}")
+    public void deleteFilm(@PathVariable int id) {
+        filmService.deleteFilm(id);
+    }
+
     @GetMapping("/films/common")
     public List<Film> findCommonFilms(@RequestParam String userId, @RequestParam String friendId) {
         return filmService.findCommonFilms(Integer.parseInt(userId), Integer.parseInt(friendId));

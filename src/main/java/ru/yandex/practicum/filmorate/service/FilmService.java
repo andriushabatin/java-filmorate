@@ -86,6 +86,10 @@ public class FilmService {
         return filmStorage.findAllFilmsByDirector(id, sortBy);
     }
 
+    public void deleteFilm(int id) {
+        filmStorage.deleteFilm(id);
+    }
+
     public List<Film> findCommonFilms(int userId, int friendId) {
         return filmStorage.findCommonFilms(userId, friendId);
     }

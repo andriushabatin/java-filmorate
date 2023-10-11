@@ -12,7 +12,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.EventService;
 import ru.yandex.practicum.filmorate.service.UserService;
 
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +66,11 @@ public class UserController {
     @GetMapping("/users/{id}/feed")
     public List<Event> getFeed(@PathVariable int id) {
         return eventService.getFeed(id);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
     }
 
     @GetMapping("/users/{id}/recommendations")

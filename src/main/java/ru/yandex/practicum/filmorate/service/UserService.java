@@ -77,6 +77,10 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public void deleteUser(int id) {
+        userStorage.deleteUser(id);
+    }
+
     public List<Film> getRecommendations(int userId) {
         userStorage.findUserById(userId);
         return filmStorage.getRecommendationsForUser(userId);
