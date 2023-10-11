@@ -265,6 +265,7 @@ public class FilmDbStorage implements FilmStorage {
                 "ORDER BY COUNT(l.film_id) DESC ";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), query);
+    }
 
     @Override
     public List<Film> getMostPopularFilmsByYear(Integer count, Integer year) {
