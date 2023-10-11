@@ -22,10 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -314,6 +311,32 @@ public class FilmDbStorage implements FilmStorage {
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, genreId, count);
 
+    }
+
+    @Override
+    public List<Film> getRecommendationsForUser(int userId) {
+        String sqlGetMaximumIntersection = "SELECT l.user_id as user_id FROM likes as l " +
+                "WHERE l.film_id in (SELECT film_id from likes l1 where user_id = ?) " +
+                "AND l.user_id <> ? " +
+                "GROUP BY l.user_id " +
+                "ORDER BY count(l.film_id);";
+        String sqlGetRecommendations = "SELECT f.*, r.RATING FROM film as f " +
+                "LEFT JOIN RATING AS r ON f.RATING_ID  = r.RATING_ID WHERE f.film_id in " +
+                "(SELECT f1.film_id FROM film AS f1 LEFT JOIN likes AS l1 ON f1.film_id = l1.film_id " +
+                "WHERE l1.user_id = ? " +
+                "EXCEPT " +
+                "SELECT f2.film_id FROM film AS f2 LEFT JOIN likes AS l2 ON f2.film_id = l2.film_id " +
+                "WHERE l2.user_id = ?);";
+        final List<Integer> userIds = jdbcTemplate.query(sqlGetMaximumIntersection,
+                (rs, rowNum) -> rs.getInt("user_id"), userId, userId);
+        for (Integer id : userIds) {
+            List<Film> recommendedFilms = jdbcTemplate.query(sqlGetRecommendations,
+                    (rs, rowNum) -> makeFilm(rs), id, userId);
+            if (!recommendedFilms.isEmpty()) {
+                return recommendedFilms;
+            }
+        }
+        return new ArrayList<Film>();
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
