@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.exception.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +56,12 @@ public class FilmController {
     public List<Film> findAllFilmsOfDirector(@PathVariable("directorId") int id, @RequestParam String sortBy) {
         return filmService.findAllFilmsOfDirector(id, sortBy);
     }
+
+    @GetMapping("/films/common?userId={userId}&friendId={friendId}")
+    public List<Film> findCommonFilms(@RequestParam int userId, @RequestParam int friendId) {
+        return filmService.findCommonFilms(userId, friendId);
+    }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)

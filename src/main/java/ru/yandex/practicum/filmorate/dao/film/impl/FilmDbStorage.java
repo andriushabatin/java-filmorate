@@ -222,6 +222,11 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
     }
 
+    @Override
+    public List<Film> findCommonFilms(int userId, int friendId) {
+        return new ArrayList<>();
+    }
+
     private Film makeFilm(ResultSet rs) throws SQLException {
 
         Film film = new Film();
