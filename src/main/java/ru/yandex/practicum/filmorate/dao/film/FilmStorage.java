@@ -19,7 +19,13 @@ public interface FilmStorage {
 
     public void likeFilm(int id, User user) throws ValidationException;
 
-    public List<Film> getPopularFilms(int count);
+    public List<Film> getMostPopularFilms(Integer count);
+
+    public List<Film> getMostPopularFilmsByYear(Integer count, Integer year);
+
+    public List<Film> getMostPopularFilmsByGenre(Integer count, Integer genreId);
+
+    public List<Film> getMostPopularFilmsByGenreAndYear(Integer count, Integer genreId, Integer year);
 
     public void deleteLike(int id, User user);
 
