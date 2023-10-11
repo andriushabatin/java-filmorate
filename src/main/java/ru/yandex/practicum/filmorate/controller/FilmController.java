@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.exception.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,9 +56,9 @@ public class FilmController {
         return filmService.findAllFilmsOfDirector(id, sortBy);
     }
 
-    @GetMapping("/films/common?userId={userId}&friendId={friendId}")
-    public List<Film> findCommonFilms(@RequestParam int userId, @RequestParam int friendId) {
-        return filmService.findCommonFilms(userId, friendId);
+    @GetMapping("/films/common")
+    public List<Film> findCommonFilms(@RequestParam String userId, @RequestParam String friendId) {
+        return filmService.findCommonFilms(Integer.parseInt(userId), Integer.parseInt(friendId));
     }
 
     @ExceptionHandler
@@ -73,7 +72,4 @@ public class FilmController {
     public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
         return Map.of("error:", e.getMessage());
     }
-
-
-
 }

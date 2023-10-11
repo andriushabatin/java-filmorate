@@ -38,8 +38,13 @@ public class LikeDbStorage implements LikeStorage {
     }
 
     @Override
-    public List<Film> findFilmsOfUser(int userId) {
-        return null;
+    public List<Integer> findFilmsIdsOfUser(int userId) {
+
+        String sqlQuery = "SELECT * \n" +
+                "FROM LIKES l\n" +
+                "WHERE l.USER_ID = ?;";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> rs.getInt("film_id"), userId);
     }
 
 
