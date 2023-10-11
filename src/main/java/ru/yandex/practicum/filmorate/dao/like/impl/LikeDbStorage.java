@@ -20,9 +20,7 @@ public class LikeDbStorage implements LikeStorage {
     @Override
     public void likeFilm(Film film, User user) {
 
-        if (likeExists(film.getId(), user.getId())) {
-            throw new ObjectAlreadyExistException("Лайк уже существует!");
-        } else {
+        if (!likeExists(film.getId(), user.getId())) {
             insertNewLike(film.getId(), user.getId());
         }
     }
@@ -32,8 +30,6 @@ public class LikeDbStorage implements LikeStorage {
 
         if (likeExists(film.getId(), user.getId())) {
             deleteLike(film.getId(), user.getId());
-        } else {
-            throw new NotFoundException("Лайк не найден!");
         }
     }
 
