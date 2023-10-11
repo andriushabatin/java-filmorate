@@ -47,8 +47,10 @@ public class FilmController {
     }
 
     @GetMapping("films/popular")
-    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") String count) {
-        return filmService.getPopularFilms(Integer.parseInt(count));
+    public List<Film> getMostPopulars(@RequestParam(value = "count", defaultValue = "10", required = false) Integer count,
+                                      @RequestParam(value = "genreId", required = false) Integer genreId,
+                                      @RequestParam(value = "year", required = false) Integer year) {
+        return filmService.getMostPopularFilms(count, genreId, year);
     }
 
     @GetMapping("films/director/{directorId}")
@@ -59,6 +61,16 @@ public class FilmController {
     @DeleteMapping("/films/{id}")
     public void deleteFilm(@PathVariable int id) {
         filmService.deleteFilm(id);
+    }
+
+    @GetMapping("/films/common")
+    public List<Film> findCommonFilms(@RequestParam String userId, @RequestParam String friendId) {
+        return filmService.findCommonFilms(Integer.parseInt(userId), Integer.parseInt(friendId));
+    }
+
+    @GetMapping("films/search")
+    public List<Film> searchFilmsBySubstring(@RequestParam String query, @RequestParam String by) {
+        return filmService.searchFilmsBySubstring(query, by);
     }
 
     @ExceptionHandler
@@ -72,7 +84,4 @@ public class FilmController {
     public Map<String, String> handleObjectAlreadyExistException(final ObjectAlreadyExistException e) {
         return Map.of("error:", e.getMessage());
     }
-
-
-
 }
