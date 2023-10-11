@@ -58,6 +58,11 @@ public class FilmController {
         return filmService.findAllFilmsOfDirector(id, sortBy);
     }
 
+    @GetMapping("films/search")
+    public List<Film> searchFilmsBySubstring(@RequestParam String query, @RequestParam String by) {
+        return filmService.searchFilmsBySubstring(query, by);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleNotFoundException(final NotFoundException e) {
