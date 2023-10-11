@@ -204,20 +204,15 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> getPopularFilms(int count) {
+    public List<Film> getMostPopularFilms(Integer count) {
 
-        String sqlQuery = "SELECT f.FILM_ID, \n" +
-                "       f.NAME, \n" +
-                "       f.DESCRIPTION, \n" +
-                "       f.RELEASE,\n" +
-                "       f.DURATION,\n" +
-                "       f.RATE,\n" +
-                "       f.RATING_ID,\n" +
-                "       r.RATING \n" +
-                "FROM FILM f \n" +
-                "LEFT JOIN RATING AS r ON f.RATING_ID  = r.RATING_ID \n" +
-                "ORDER BY f.RATE DESC\n" +
-                "LIMIT ?;";
+        String sqlQuery = "SELECT f.*, r.rating fr, COUNT(l.user_id) " +
+                "FROM film f " +
+                "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                "JOIN rating r ON r.rating_id = f.rating_id " +
+                "GROUP BY f.film_id " +
+                "ORDER BY COUNT(l.user_id) DESC, f.name " +
+                "LIMIT ?";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
     }
@@ -236,6 +231,54 @@ public class FilmDbStorage implements FilmStorage {
         return userFilms.stream()
                 .filter(friendFilm::contains)
                 .collect(Collectors.toList());
+    }
+  
+    @Override
+    public List<Film> getMostPopularFilmsByYear(Integer count, Integer year) {
+
+        String sqlQuery = "SELECT f.*, r.rating " +
+                "FROM film f " +
+                "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                "JOIN rating r ON r.rating_id = f.rating_id " +
+                "JOIN film_genre fg ON f.film_id = fg.film_id " +
+                "WHERE YEAR(f.release) = ? " +
+                "GROUP BY f.film_id " +
+                "ORDER BY COUNT(l.user_id) DESC " +
+                "LIMIT ?";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, count);
+    }
+
+    @Override
+    public List<Film> getMostPopularFilmsByGenre(Integer count, Integer genreId) {
+
+        String sqlQuery = "SELECT f.*, r.rating " +
+                "FROM film f " +
+                "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                "JOIN rating r ON r.rating_id = f.rating_id " +
+                "JOIN film_genre fg ON f.film_id = fg.film_id " +
+                "WHERE fg.genre_id = ? " +
+                "GROUP BY f.film_id " +
+                "ORDER BY COUNT(l.user_id) DESC " +
+                "LIMIT ?";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), genreId, count);
+    }
+
+    @Override
+    public List<Film> getMostPopularFilmsByGenreAndYear(Integer count, Integer genreId, Integer year) {
+
+        String sqlQuery = "SELECT f.*, r.rating, COUNT(l.user_id) " +
+                "FROM film f " +
+                "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                "JOIN rating r ON r.rating_id = f.rating_id " +
+                "JOIN film_genre fg ON f.film_id = fg.film_id " +
+                "WHERE YEAR(f.release) = ? AND fg.genre_id = ?" +
+                "GROUP BY f.film_id " +
+                "ORDER BY COUNT(l.user_id) DESC " +
+                "LIMIT ?";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, genreId, count);
     }
 
     private Film makeFilm(ResultSet rs) throws SQLException {
