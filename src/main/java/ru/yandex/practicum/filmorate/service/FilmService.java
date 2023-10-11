@@ -56,8 +56,16 @@ public class FilmService {
         eventService.createEvent(userId, EventType.LIKE, Operation.REMOVE, id);
     }
 
-    public List<Film> getPopularFilms(int count) {
-        return filmStorage.getPopularFilms(count);
+    public List<Film> getMostPopularFilms(Integer count, Integer genreId, Integer year) {
+        if (genreId == null && year == null) {
+            return filmStorage.getMostPopularFilms(count);
+        } else if (genreId == null) {
+            return filmStorage.getMostPopularFilmsByYear(count, year);
+        } else if (year == null) {
+            return filmStorage.getMostPopularFilmsByGenre(count, genreId);
+        } else {
+            return filmStorage.getMostPopularFilmsByGenreAndYear(count, genreId, year);
+        }
     }
 
     public List<Film> searchFilmsBySubstring(String query, String by) {
