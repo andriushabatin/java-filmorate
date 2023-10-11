@@ -111,6 +111,10 @@ public class UserDbStorage implements UserStorage {
         jdbcTemplate.update(sqlQuery, id);
     }
 
+    public void deleteUserById(int id) {
+        String sqlQueryToUsers = "DELETE FROM ";
+    }
+
     private User makeUser(ResultSet rs) throws SQLException {
 
         User user = new User();

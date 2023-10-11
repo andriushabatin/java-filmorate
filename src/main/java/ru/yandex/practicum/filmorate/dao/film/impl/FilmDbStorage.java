@@ -148,10 +148,10 @@ public class FilmDbStorage implements FilmStorage {
                 "f.rating_id,\n" +
                 "f.rate,\n" +
                 "r.rating\n" +
-        "FROM film AS f\n" +
-        "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
-        "GROUP BY f.FILM_ID\n" +
-        "HAVING f.film_id = ?";
+                "FROM film AS f\n" +
+                "LEFT JOIN rating AS r ON f.rating_id = r.rating_id\n" +
+                "GROUP BY f.FILM_ID\n" +
+                "HAVING f.film_id = ?";
 
         SqlRowSet filmRows = jdbcTemplate.queryForRowSet(sqlQuery, id);
 
@@ -208,7 +208,7 @@ public class FilmDbStorage implements FilmStorage {
         jdbcTemplate.update(genreSql, id);
         String reviewSql = "DELETE FROM reviews WHERE film_id = ?";
         jdbcTemplate.update(reviewSql, id);
-        String sql = "DELETE FROM films WHERE film_id = ?";
+        String sql = "DELETE FROM film WHERE film_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
