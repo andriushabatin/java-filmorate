@@ -232,7 +232,7 @@ public class FilmDbStorage implements FilmStorage {
                 .filter(friendFilm::contains)
                 .collect(Collectors.toList());
     }
-  
+
     @Override
     public List<Film> searchFilmsByTitleAndDirector(String query) {
 
