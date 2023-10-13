@@ -32,16 +32,15 @@ public class FriendshipDbStorage implements FriendshipStorage {
 
     @Override
     public List<User> getAllFriends(int id) {
-        try {
-            jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?", new UserMapper(), id);
-            return jdbcTemplate.query(
-                    "SELECT * FROM USERS WHERE user_id IN (SELECT friend_id FROM FRIENDSHIP WHERE user_id=?)",
-                    new UserMapper(),
-                    id
-            );
-        } catch (RuntimeException e) {
+        String sqlQueryFromUsers = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+        if (jdbcTemplate.queryForObject(sqlQueryFromUsers, Integer.class, id) <= 0) {
             throw new NotFoundException("Пользователя с таким id нет");
         }
+        return jdbcTemplate.query(
+                "SELECT * FROM USERS WHERE user_id IN (SELECT friend_id FROM FRIENDSHIP WHERE user_id=?)",
+                new UserMapper(),
+                id
+        );
     }
 
     @Override
