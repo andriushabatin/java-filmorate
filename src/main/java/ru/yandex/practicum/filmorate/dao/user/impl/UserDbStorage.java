@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.user.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -19,8 +19,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Component
-@Qualifier("UserDbStorage")
+@Component("UserDbStorage")
+@Primary
 @RequiredArgsConstructor
 public class UserDbStorage implements UserStorage {
 
@@ -101,6 +101,18 @@ public class UserDbStorage implements UserStorage {
         } else {
             throw new NotFoundException("Пользователь не найден!");
         }
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        String reviewSql = "DELETE FROM reviews WHERE user_id = ?";
+        jdbcTemplate.update(reviewSql, id);
+        String sqlQuery = "DELETE FROM users WHERE user_id = ?";
+        jdbcTemplate.update(sqlQuery, id);
+    }
+
+    public void deleteUserById(int id) {
+        String sqlQueryToUsers = "DELETE FROM ";
     }
 
     private User makeUser(ResultSet rs) throws SQLException {

@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.event.EventStorage;
 import ru.yandex.practicum.filmorate.dao.user.UserStorage;
@@ -14,16 +12,13 @@ import java.time.Instant;
 import java.util.List;
 
 
-@Slf4j
+@RequiredArgsConstructor
 @Service
 public class EventService {
 
-    @Autowired
-    @Qualifier("EventDbStorage")
-    private EventStorage eventStorage;
-    @Autowired
-    @Qualifier("UserDbStorage")
-    private UserStorage userStorage;
+    private final EventStorage eventStorage;
+
+    private final UserStorage userStorage;
 
     /**
      * Метод возвращает список событий для пользователя с заданным идентификатором

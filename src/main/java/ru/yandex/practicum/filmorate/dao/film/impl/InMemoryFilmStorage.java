@@ -105,6 +105,21 @@ public class InMemoryFilmStorage implements FilmStorage {
         return null;
     }
 
+    @Override
+    public List<Film> getRecommendationsForUser(int userId) {
+        return null;
+    }
+
+    @Override
+    public List<Film> findCommonFilms(int userId, int friendId) {
+        return null;
+    }
+
+    @Override
+    public void deleteFilm(int id) {
+        films.remove(id);
+    }
+
     public int getNextId() {
         return nextId++;
     }

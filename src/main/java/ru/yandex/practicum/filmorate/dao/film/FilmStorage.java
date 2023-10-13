@@ -32,4 +32,10 @@ public interface FilmStorage {
     List<Film> findAllFilmsByDirector(int id, String sortBy);
 
     List<Film> searchFilmsBySubstring(String query, List<String> by);
+
+    public void deleteFilm(int id);
+
+    List<Film> findCommonFilms(int userId, int friendId);
+
+    List<Film> getRecommendationsForUser(int userId);
 }

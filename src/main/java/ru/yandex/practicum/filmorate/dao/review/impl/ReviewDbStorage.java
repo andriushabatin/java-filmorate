@@ -67,67 +67,51 @@ public class ReviewDbStorage implements ReviewStorage {
 
     @Override
     public Review replaceReview(Review review) {
-        try {
-            findReviewById(review.getReviewId());
-            String sqlQueryToReviews = "UPDATE reviews SET content = ?, is_positive = ? WHERE review_id = ?";
-            jdbcTemplate.update(sqlQueryToReviews, review.getContent(), review.getIsPositive(), review.getReviewId());
-            return findReviewById(review.getReviewId());
-        } catch (RuntimeException e) {
-            throw new NotFoundException("Отзыва с таким id нет");
-        }
+        checkAvailabilityReview(review.getReviewId());
+        String sqlQueryToReviews = "UPDATE reviews SET content = ?, is_positive = ? WHERE review_id = ?";
+        jdbcTemplate.update(sqlQueryToReviews, review.getContent(), review.getIsPositive(), review.getReviewId());
+        return findReviewById(review.getReviewId());
     }
 
     @Override
     public void deleteDislike(Integer id, Integer userId) {
-        try {
-            findReviewById(id);
-            String sqlQueryToReviews = "UPDATE reviews SET useful = useful + 1 WHERE review_id = ?";
-            jdbcTemplate.update(sqlQueryToReviews, id);
-        } catch (RuntimeException e) {
-            throw new NotFoundException("Отзыва с таким id нет");
-        }
+        checkAvailabilityReview(id);
+        String sqlQueryToReviews = "UPDATE reviews SET useful = useful + 1 WHERE review_id = ?";
+        jdbcTemplate.update(sqlQueryToReviews, id);
     }
 
     @Override
     public void deleteReviewById(Integer id) {
-        try {
-            findReviewById(id);
-            String sqlQueryToReviews = "DELETE FROM reviews WHERE review_id = ?";
-            jdbcTemplate.update(sqlQueryToReviews, id);
-        } catch (RuntimeException e) {
-            throw new NotFoundException("Отзыва с таким id нет");
-        }
+        checkAvailabilityReview(id);
+        String sqlQueryToReviews = "DELETE FROM reviews WHERE review_id = ?";
+        jdbcTemplate.update(sqlQueryToReviews, id);
     }
 
     @Override
     public void deleteLike(Integer id, Integer userId) {
-        try {
-            findReviewById(id);
-            String sqlQueryToReviews = "UPDATE reviews SET useful = useful - 1 WHERE review_id = ?";
-            jdbcTemplate.update(sqlQueryToReviews, id);
-        } catch (RuntimeException e) {
-            throw new NotFoundException("Отзыва с таким id нет");
-        }
+        checkAvailabilityReview(id);
+        String sqlQueryToReviews = "UPDATE reviews SET useful = useful - 1 WHERE review_id = ?";
+        jdbcTemplate.update(sqlQueryToReviews, id);
     }
 
     @Override
     public void putDislike(Integer id, Integer userId) {
-        try {
-            findReviewById(id);
-            String sqlQueryToReviews = "UPDATE reviews SET useful = useful - 1 WHERE review_id = ?";
-            jdbcTemplate.update(sqlQueryToReviews, id);
-        } catch (RuntimeException e) {
-            throw new NotFoundException("Отзыва с таким id нет");
-        }
+        checkAvailabilityReview(id);
+        String sqlQueryToReviews = "UPDATE reviews SET useful = useful - 1 WHERE review_id = ?";
+        jdbcTemplate.update(sqlQueryToReviews, id);
     }
 
     @Override
     public void putLike(Integer id, Integer userId) {
-        try {
-            findReviewById(id);
-            String sqlQueryToReviews = "UPDATE reviews SET useful = useful + 1 WHERE review_id = ?";
-            jdbcTemplate.update(sqlQueryToReviews, id);
-        } catch (RuntimeException e) {
+        checkAvailabilityReview(id);
+        String sqlQueryToReviews = "UPDATE reviews SET useful = useful + 1 WHERE review_id = ?";
+        jdbcTemplate.update(sqlQueryToReviews, id);
+
+    }
+
+    private void checkAvailabilityReview(Integer id) {
+        String sqlQueryFromReviews = "SELECT COUNT(*) FROM reviews WHERE review_id = ?";
+        if (jdbcTemplate.queryForObject(sqlQueryFromReviews, Integer.class, id) <= 0) {
             throw new NotFoundException("Отзыва с таким id нет");
         }
     }

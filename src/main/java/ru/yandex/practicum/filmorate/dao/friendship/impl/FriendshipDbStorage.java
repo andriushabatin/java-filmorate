@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.friendship.FriendshipStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.mapper.UserMapper;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
 
@@ -20,19 +20,22 @@ public class FriendshipDbStorage implements FriendshipStorage {
     @Override
     public void addToFriends(User user, User friend) {
 
-            if (friendshipExist(user, friend)) {
-                throw new ObjectAlreadyExistException("Дружба уже существует!");
-            } else if (friendshipExist(friend, user)) {
-                friendshipUpdateStatus(friend.getId(), user.getId(), 2);
-                insertNewFriendship(user.getId(), friend.getId(), 2);
-            } else {
-                insertNewFriendship(user.getId(), friend.getId(), 1);
-            }
+        if (friendshipExist(user, friend)) {
+            throw new ObjectAlreadyExistException("Дружба уже существует!");
+        } else if (friendshipExist(friend, user)) {
+            friendshipUpdateStatus(friend.getId(), user.getId(), 2);
+            insertNewFriendship(user.getId(), friend.getId(), 2);
+        } else {
+            insertNewFriendship(user.getId(), friend.getId(), 1);
+        }
     }
 
     @Override
     public List<User> getAllFriends(int id) {
-
+        String sqlQueryFromUsers = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+        if (jdbcTemplate.queryForObject(sqlQueryFromUsers, Integer.class, id) <= 0) {
+            throw new NotFoundException("Пользователя с таким id нет");
+        }
         return jdbcTemplate.query(
                 "SELECT * FROM USERS WHERE user_id IN (SELECT friend_id FROM FRIENDSHIP WHERE user_id=?)",
                 new UserMapper(),
