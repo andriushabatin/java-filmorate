@@ -93,12 +93,12 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 CREATE TABLE IF NOT EXISTS operations (
-    id integer PRIMARY KEY NOT NULL,
+    id integer PRIMARY KEY,
     operation varchar(10) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS events_types (
-    id integer PRIMARY KEY NOT NULL,
+    id integer PRIMARY KEY,
     type varchar(10) NOT NULL
 );
 
