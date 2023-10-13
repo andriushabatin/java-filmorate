@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,18 +61,8 @@ public class FilmService {
         }
     }
 
-    public List<Film> searchFilmsBySubstring(String query, String by) {
-        List<Film> response = new ArrayList<>();
-        String[] split = by.split(",");
-        String queryAsLowerCase = "%" + query.toLowerCase() + "%";
-        if (split.length == 2) {
-            response = filmStorage.searchFilmsByTitleAndDirector(queryAsLowerCase);
-        } else if (split[0].equals("title")) {
-            response = filmStorage.searchFilmsByTitle(queryAsLowerCase);
-        } else if (split[0].equals("director")) {
-            response = filmStorage.searchFilmsByDirector(queryAsLowerCase);
-        }
-        return response;
+    public List<Film> searchFilmsBySubstring(String query, List<String> by) {
+        return filmStorage.searchFilmsBySubstring(query, by);
     }
 
     public List<Film> findAllFilmsOfDirector(int id, String sortBy) {
