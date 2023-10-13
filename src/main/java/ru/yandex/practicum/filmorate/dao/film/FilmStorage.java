@@ -31,9 +31,5 @@ public interface FilmStorage {
 
     List<Film> findAllFilmsByDirector(int id, String sortBy);
 
-    List<Film> searchFilmsByTitleAndDirector(String query);
-
-    List<Film> searchFilmsByTitle(String query);
-
-    List<Film> searchFilmsByDirector(String query);
+    List<Film> searchFilmsBySubstring(String query, List<String> by);
 }

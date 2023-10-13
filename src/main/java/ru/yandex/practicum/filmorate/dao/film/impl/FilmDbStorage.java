@@ -203,6 +203,61 @@ public class FilmDbStorage implements FilmStorage {
                 .collect(Collectors.toList());
     }
 
+    public List<Film> searchFilmsBySubstring(String query, List<String> by) {
+
+        List<Film> response = new ArrayList<>();
+        String queryAsLowerCase = "%" + query.toLowerCase() + "%";
+
+        if (by.contains("title") && by.contains("director")) {
+
+            String sqlQuery = "SELECT DISTINCT f.*, " +
+                    "r.rating, " +
+                    "COUNT(l.film_id)" +
+                    "FROM film f " +
+                    "LEFT JOIN rating r ON f.rating_id = r.rating_id " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "LEFT JOIN film_director fd ON f.film_id = fd.film_id " +
+                    "LEFT JOIN directors d ON fd.director_id = d.director_id " +
+                    "WHERE LOWER(f.name) LIKE ? OR LOWER(d.name) LIKE ? " +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.film_id) DESC";
+
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), queryAsLowerCase, queryAsLowerCase);
+
+        } else if (by.contains("title")) {
+
+            String sqlQuery = "SELECT DISTINCT f.*, " +
+                    "r.rating, " +
+                    "COUNT(l.film_id) " +
+                    "FROM film f " +
+                    "LEFT JOIN rating r ON f.rating_id = r.rating_id " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "WHERE LOWER(f.name) LIKE ? " +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.film_id) DESC ";
+
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), queryAsLowerCase);
+
+        } else if (by.contains("director")) {
+
+            String sqlQuery = "SELECT distinct f.*, " +
+                    "r.rating, " +
+                    "COUNT(l.film_id)  " +
+                    "FROM film f " +
+                    "LEFT JOIN rating r ON f.rating_id = r.rating_id " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "LEFT JOIN film_director fd ON f.film_id = fd.film_id " +
+                    "LEFT JOIN directors d ON d.director_id = fd.director_id " +
+                    "WHERE LOWER(d.name) LIKE ? " +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.film_id) DESC ";
+
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), queryAsLowerCase);
+        }
+
+        return response;
+    }
+
     @Override
     public List<Film> getMostPopularFilms(Integer count) {
 
@@ -215,56 +270,6 @@ public class FilmDbStorage implements FilmStorage {
                 "LIMIT ?";
 
         return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
-    }
-
-    @Override
-    public List<Film> searchFilmsByTitleAndDirector(String query) {
-
-        String sqlQuery = "SELECT DISTINCT f.*, " +
-                "r.rating, " +
-                "COUNT(l.film_id)" +
-                "FROM film f " +
-                "LEFT JOIN rating r ON f.rating_id = r.rating_id " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "LEFT JOIN film_director fd ON f.film_id = fd.film_id " +
-                "LEFT JOIN directors d ON fd.director_id = d.director_id " +
-                "WHERE LOWER(f.name) LIKE ? OR LOWER(d.name) LIKE ? " +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.film_id) DESC";
-
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), query, query);
-    }
-
-    @Override
-    public List<Film> searchFilmsByTitle(String query) {
-        String sqlQuery = "SELECT DISTINCT f.*, " +
-                "r.rating, " +
-                "COUNT(l.film_id) " +
-                "FROM film f " +
-                "LEFT JOIN rating r ON f.rating_id = r.rating_id " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "WHERE LOWER(f.name) LIKE ? " +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.film_id) DESC ";
-
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), query);
-    }
-
-    @Override
-    public List<Film> searchFilmsByDirector(String query) {
-        String sqlQuery = "SELECT distinct f.*, " +
-                "r.rating, " +
-                "COUNT(l.film_id)  " +
-                "FROM film f " +
-                "LEFT JOIN rating r ON f.rating_id = r.rating_id " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "LEFT JOIN film_director fd ON f.film_id = fd.film_id " +
-                "LEFT JOIN directors d ON d.director_id = fd.director_id " +
-                "WHERE LOWER(d.name) LIKE ? " +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.film_id) DESC ";
-
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> (makeFilm(rs)), query);
     }
 
     @Override

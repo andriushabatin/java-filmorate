@@ -92,16 +92,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return null;
     }
 
-    @Override
-    public List<Film> searchFilmsByTitleAndDirector(String query) {
-        return null;
-    }
-
-    public List<Film> searchFilmsByTitle(String query) {
-        return null;
-    }
-
-    public List<Film> searchFilmsByDirector(String query) {
+    public List<Film> searchFilmsBySubstring(String query, List<String> by) {
         return null;
     }
 
