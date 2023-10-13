@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.dao.film.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -12,22 +12,25 @@ import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
 import ru.yandex.practicum.filmorate.dao.film_director.FilmDirectorStorage;
 import ru.yandex.practicum.filmorate.dao.film_genre.FilmGenreStorage;
 import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
+import ru.yandex.practicum.filmorate.dao.like.impl.LikeDbStorage;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.*;
-import ru.yandex.practicum.filmorate.service.LikeService;
 import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
-@Qualifier("FilmDbStorage")
+@Component("FilmDbStorage")
+@Primary
 @RequiredArgsConstructor
 public class FilmDbStorage implements FilmStorage {
 
@@ -35,7 +38,7 @@ public class FilmDbStorage implements FilmStorage {
     private final FilmGenreStorage filmGenreStorage;
     private final LikeStorage likeStorage;
 
-    private final LikeService likeService;
+    private final LikeDbStorage likeDbStorage;
     private final FilmDirectorStorage filmDirectorStorage;
 
     private final DirectorStorage directorStorage;
@@ -234,11 +237,11 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public List<Film> findCommonFilms(int userId, int friendId) {
 
-        List<Film> userFilms = likeService.findFilmsIdsOfUser(userId).stream()
+        List<Film> userFilms = likeDbStorage.findFilmsIdsOfUser(userId).stream()
                 .map(this::findFilmById)
                 .collect(Collectors.toList());
 
-        List<Film> friendFilm = likeService.findFilmsIdsOfUser(friendId).stream()
+        List<Film> friendFilm = likeDbStorage.findFilmsIdsOfUser(friendId).stream()
                 .map(this::findFilmById)
                 .collect(Collectors.toList());
 

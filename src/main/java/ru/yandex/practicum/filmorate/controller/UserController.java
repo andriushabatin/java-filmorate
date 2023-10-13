@@ -1,9 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Event;
@@ -14,79 +12,67 @@ import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
     private final EventService eventService;
 
-    @PostMapping("/users")
+    @PostMapping
     public User create(@RequestBody User user) throws ValidationException, ObjectAlreadyExistException {
         return userService.create(user);
     }
 
-    @PutMapping("/users")
+    @PutMapping
     public User put(@RequestBody User user) throws ValidationException {
         return userService.put(user);
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public List<User> findAll() {
         return userService.findAll();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
-    @PutMapping("/users/{id}/friends/{friendId}")
+    @PutMapping("/{id}/friends/{friendId}")
     public void addToFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.addToFriends(id, friendId);
     }
 
-    @DeleteMapping("/users/{id}/friends/{friendId}")
+    @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFromFriends(@PathVariable int id, @PathVariable int friendId) throws SQLException {
         userService.deleteFromFriends(id, friendId);
     }
 
-    @GetMapping("users/{id}/friends")
+    @GetMapping("/{id}/friends")
     public List<User> getAllFriends(@PathVariable int id) {
         return userService.getAllFriends(id);
     }
 
-    @GetMapping("/users/{id}/friends/common/{otherId}")
+    @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> findCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.findCommonFriends(id, otherId);
     }
 
-    @GetMapping("/users/{id}/feed")
+    @GetMapping("/{id}/feed")
     public List<Event> getFeed(@PathVariable int id) {
         return eventService.getFeed(id);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
     }
 
-    @GetMapping("/users/{id}/recommendations")
+    @GetMapping("/{id}/recommendations")
     public List<Film> getRecommendations(@PathVariable("id") int id) {
         return userService.getRecommendations(id);
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNotFoundException(final NotFoundException e) {
-        return Map.of("error:", e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(final ValidationException e) {
-        return Map.of("error:", "Произошла ошибка!");
     }
 }

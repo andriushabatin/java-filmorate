@@ -1,35 +1,27 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 import ru.yandex.practicum.filmorate.data.EventType;
 import ru.yandex.practicum.filmorate.data.Operation;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    @Qualifier("UserDbStorage")
-    private UserStorage userStorage;
-    @Autowired
-    @Qualifier("FilmDbStorage")
-    private FilmStorage filmStorage;
-    @Autowired
-    private FriendshipService friendshipService;
-    @Autowired
-    private EventService eventService;
+    private final UserStorage userStorage;
+    private final FilmStorage filmStorage;
+    private final FriendshipService friendshipService;
+    private final EventService eventService;
 
     public User create(User user) throws ObjectAlreadyExistException, ValidationException {
         return userStorage.create(user);
