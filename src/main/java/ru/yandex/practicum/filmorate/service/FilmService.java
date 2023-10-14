@@ -1,29 +1,27 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
+import ru.yandex.practicum.filmorate.dao.user.UserStorage;
+import ru.yandex.practicum.filmorate.data.EventType;
+import ru.yandex.practicum.filmorate.data.Operation;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.dao.film.FilmStorage;
-import ru.yandex.practicum.filmorate.dao.user.UserStorage;
 
-import java.util.*;
+import java.util.List;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class FilmService {
 
-    @Autowired
-    @Qualifier("FilmDbStorage")
-    private FilmStorage filmStorage;
+    private final FilmStorage filmStorage;
 
-    @Autowired
-    @Qualifier("UserDbStorage")
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
+
+    private final EventService eventService;
 
     public Film create(Film film) throws ObjectAlreadyExistException, ValidationException {
         return filmStorage.create(film);
@@ -43,13 +41,31 @@ public class FilmService {
 
     public void likeFilm(int id, int userId) {
         filmStorage.likeFilm(id, userStorage.findUserById(userId));
+        eventService.createEvent(userId, EventType.LIKE, Operation.ADD, id);
     }
 
     public void deleteLike(int id, int userId) throws NotFoundException {
         filmStorage.deleteLike(id, userStorage.findUserById(userId));
+        eventService.createEvent(userId, EventType.LIKE, Operation.REMOVE, id);
     }
 
-    public List<Film> getPopularFilms(int count) {
-        return filmStorage.getPopularFilms(count);
+    public List<Film> getMostPopularFilms(Integer count, Integer genreId, Integer year) {
+        return filmStorage.getMostPopularFilms(count, genreId, year);
+    }
+
+    public List<Film> searchFilmsBySubstring(String query, List<String> by) {
+        return filmStorage.searchFilmsBySubstring(query, by);
+    }
+
+    public List<Film> findAllFilmsOfDirector(int id, String sortBy) {
+        return filmStorage.findAllFilmsByDirector(id, sortBy);
+    }
+
+    public void deleteFilm(int id) {
+        filmStorage.deleteFilm(id);
+    }
+
+    public List<Film> findCommonFilms(int userId, int friendId) {
+        return filmStorage.findCommonFilms(userId, friendId);
     }
 }

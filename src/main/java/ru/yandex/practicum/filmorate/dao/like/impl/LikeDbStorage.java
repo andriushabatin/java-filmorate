@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.dao.like.LikeStorage;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.ObjectAlreadyExistException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -20,9 +18,7 @@ public class LikeDbStorage implements LikeStorage {
     @Override
     public void likeFilm(Film film, User user) {
 
-        if (likeExists(film.getId(), user.getId())) {
-            throw new ObjectAlreadyExistException("Лайк уже существует!");
-        } else {
+        if (!likeExists(film.getId(), user.getId())) {
             insertNewLike(film.getId(), user.getId());
         }
     }
@@ -32,9 +28,21 @@ public class LikeDbStorage implements LikeStorage {
 
         if (likeExists(film.getId(), user.getId())) {
             deleteLike(film.getId(), user.getId());
-        } else {
-            throw new NotFoundException("Лайк не найден!");
         }
+    }
+
+    @Override
+    public List<Integer> findFilmsIdsOfUser(int userId) {
+
+        String sqlQuery = "SELECT *\n" +
+                "FROM LIKES l \n" +
+                "LEFT JOIN FILM f ON l.FILM_ID = f.FILM_ID  \n" +
+                "GROUP BY l.USER_ID, \n" +
+                "         l.FILM_ID \n" +
+                "HAVING l.USER_ID = ?\n" +
+                "ORDER BY f.RATE DESC;";
+
+        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> rs.getInt("film_id"), userId);
     }
 
 

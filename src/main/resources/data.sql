@@ -49,3 +49,12 @@ VALUES ('4', 'R');
 MERGE INTO rating
 KEY(rating_id)
 VALUES ('5', 'NC-17');
+
+MERGE INTO operations KEY(id) VALUES
+(1, 'ADD'),
+(2, 'REMOVE'),
+(3, 'UPDATE');
+MERGE INTO events_types KEY(id) VALUES
+(1, 'LIKE'),
+(2, 'REVIEW'),
+(3, 'FRIEND');

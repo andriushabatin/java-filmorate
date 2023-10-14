@@ -9,7 +9,9 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.validator.UserValidator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -62,6 +64,11 @@ public class InMemoryUserStorage implements UserStorage {
         }
     }
 
+    @Override
+    public void deleteUser(int id) {
+        users.remove(id);
+    }
+
     public void deleteAll() {
         users.clear();
     }
@@ -70,6 +77,7 @@ public class InMemoryUserStorage implements UserStorage {
         return nextId++;
     }
 
+    public void deleteUserById(int id) {
 
-
+    }
 }

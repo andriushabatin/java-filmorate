@@ -73,12 +73,36 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> getPopularFilms(int count) {
+    public List<Film> getMostPopularFilms(Integer count, Integer genreId, Integer year) {
+        return null;
+    }
+
+    public List<Film> searchFilmsBySubstring(String query, List<String> by) {
         return null;
     }
 
     @Override
     public void deleteLike(int id, User user) {
+    }
+
+    @Override
+    public List<Film> findAllFilmsByDirector(int id, String sortBy) {
+        return null;
+    }
+
+    @Override
+    public List<Film> getRecommendationsForUser(int userId) {
+        return null;
+    }
+
+    @Override
+    public List<Film> findCommonFilms(int userId, int friendId) {
+        return null;
+    }
+
+    @Override
+    public void deleteFilm(int id) {
+        films.remove(id);
     }
 
     public int getNextId() {

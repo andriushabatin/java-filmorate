@@ -15,4 +15,6 @@ public interface UserStorage  {
     public List<User> findAll();
 
     public User findUserById(int id);
+
+    public void deleteUser(int id);
 }
