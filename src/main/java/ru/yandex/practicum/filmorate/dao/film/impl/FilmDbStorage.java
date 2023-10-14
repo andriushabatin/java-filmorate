@@ -271,20 +271,6 @@ public class FilmDbStorage implements FilmStorage {
         jdbcTemplate.update(sql, id);
     }
 
-    @Override
-    public List<Film> getMostPopularFilms(Integer count) {
-
-        String sqlQuery = "SELECT f.*, r.rating fr, COUNT(l.user_id) " +
-                "FROM film f " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "JOIN rating r ON r.rating_id = f.rating_id " +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.user_id) DESC, f.name " +
-                "LIMIT ?";
-
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
-    }
-
     private void replaceRate(int filmId, int newRating) {
         String sqlQuery = "UPDATE film SET rate = ? WHERE film_id = ?";
         jdbcTemplate.update(sqlQuery, newRating, filmId);
@@ -307,51 +293,65 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> getMostPopularFilmsByYear(Integer count, Integer year) {
+    public List<Film> getMostPopularFilms(Integer count, Integer genreId, Integer year) {
 
-        String sqlQuery = "SELECT f.*, r.rating " +
-                "FROM film f " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "JOIN rating r ON r.rating_id = f.rating_id " +
-                "JOIN film_genre fg ON f.film_id = fg.film_id " +
-                "WHERE YEAR(f.release) = ? " +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.user_id) DESC " +
-                "LIMIT ?";
+        List<Film> response;
 
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, count);
-    }
+        if (genreId == null && year == null) {
+            String sqlQuery = "SELECT f.*, r.rating fr, COUNT(l.user_id) " +
+                    "FROM film f " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "JOIN rating r ON r.rating_id = f.rating_id " +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.user_id) DESC, f.name " +
+                    "LIMIT ?";
 
-    @Override
-    public List<Film> getMostPopularFilmsByGenre(Integer count, Integer genreId) {
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), count);
 
-        String sqlQuery = "SELECT f.*, r.rating " +
-                "FROM film f " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "JOIN rating r ON r.rating_id = f.rating_id " +
-                "JOIN film_genre fg ON f.film_id = fg.film_id " +
-                "WHERE fg.genre_id = ? " +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.user_id) DESC " +
-                "LIMIT ?";
+        } else if (genreId == null) {
 
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), genreId, count);
-    }
+            String sqlQuery = "SELECT f.*, r.rating " +
+                    "FROM film f " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "JOIN rating r ON r.rating_id = f.rating_id " +
+                    "JOIN film_genre fg ON f.film_id = fg.film_id " +
+                    "WHERE YEAR(f.release) = ? " +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.user_id) DESC " +
+                    "LIMIT ?";
 
-    @Override
-    public List<Film> getMostPopularFilmsByGenreAndYear(Integer count, Integer genreId, Integer year) {
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, count);
 
-        String sqlQuery = "SELECT f.*, r.rating, COUNT(l.user_id) " +
-                "FROM film f " +
-                "LEFT JOIN likes l ON f.film_id = l.film_id " +
-                "JOIN rating r ON r.rating_id = f.rating_id " +
-                "JOIN film_genre fg ON f.film_id = fg.film_id " +
-                "WHERE YEAR(f.release) = ? AND fg.genre_id = ?" +
-                "GROUP BY f.film_id " +
-                "ORDER BY COUNT(l.user_id) DESC " +
-                "LIMIT ?";
+        } else if (year == null) {
 
-        return jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, genreId, count);
+            String sqlQuery = "SELECT f.*, r.rating " +
+                    "FROM film f " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "JOIN rating r ON r.rating_id = f.rating_id " +
+                    "JOIN film_genre fg ON f.film_id = fg.film_id " +
+                    "WHERE fg.genre_id = ? " +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.user_id) DESC " +
+                    "LIMIT ?";
+
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), genreId, count);
+
+        } else {
+
+            String sqlQuery = "SELECT f.*, r.rating, COUNT(l.user_id) " +
+                    "FROM film f " +
+                    "LEFT JOIN likes l ON f.film_id = l.film_id " +
+                    "JOIN rating r ON r.rating_id = f.rating_id " +
+                    "JOIN film_genre fg ON f.film_id = fg.film_id " +
+                    "WHERE YEAR(f.release) = ? AND fg.genre_id = ?" +
+                    "GROUP BY f.film_id " +
+                    "ORDER BY COUNT(l.user_id) DESC " +
+                    "LIMIT ?";
+
+            response = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeFilm(rs), year, genreId, count);
+        }
+
+        return response;
 
     }
 
