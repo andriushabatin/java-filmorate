@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dao.review.ReviewStorage;
-import ru.yandex.practicum.filmorate.model.Review;
 import ru.yandex.practicum.filmorate.data.EventType;
 import ru.yandex.practicum.filmorate.data.Operation;
+import ru.yandex.practicum.filmorate.model.Review;
 
 import java.util.List;
 

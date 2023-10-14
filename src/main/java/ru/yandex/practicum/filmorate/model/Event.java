@@ -12,10 +12,10 @@ import ru.yandex.practicum.filmorate.data.Operation;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {
-    int eventId;
-    long timestamp;
-    int userId;
-    EventType eventType;
-    Operation operation;
-    int entityId;
+    private int eventId;
+    private long timestamp;
+    private int userId;
+    private EventType eventType;
+    private Operation operation;
+    private int entityId;
 }
